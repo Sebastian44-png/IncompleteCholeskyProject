@@ -1,0 +1,16 @@
+Code conventions:
+
+- Einrückungen: 4 Spaces
+- 1 Zeile/1 Kommando (aber Gruppieren, Dimensionen, Pointer etc)
+- Laufindizes wenn möglich im for-Loop
+- Zwischen Funktionsname/for/if und Klammer Whitespace
+- Leerzeichen vor-und nach Operator Leerzeichen (Außer bei ) und ().
+- Leerzeichen bei {, ;
+- if/for immer mehrzeilig
+- Für Mathematische Variablen: Nach mathematischer Konvention, keine Unterstriche vor Indizes
+- Für sonstige Variablen: lowerCamelCase
+- Sprache: C
+- Funktionsnamen: matrixformat_funktion, Filename=Funktionsname
+- Sprache: Englisch
+- Header-File mit Deklarationen
+- In der Regel: 1 Funktion/1 File (Ausnahmen bedürfen einer Genehmigung durch das Parlament)
