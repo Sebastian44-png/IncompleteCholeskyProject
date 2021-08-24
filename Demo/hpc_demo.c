@@ -39,8 +39,12 @@ int main (int argc, char **argv)
     if (!A) return(1);
 
     printf ("\nDimension of matrix    = ( %g, %g)\n", (double) A->n, (double) A->m); 
-   
+    gem_print(A, 1);
     if (A->n != A->m) return(1);        /* check input */
+
+    sed * A_sed;
+    A_sed = sed_compress(A_cs);
+    sed_print(A_sed, 1);
 
     /* ------------------------- */
     /* Allocate and initiate x and b */  

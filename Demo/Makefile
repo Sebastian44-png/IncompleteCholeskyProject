@@ -16,7 +16,7 @@ LDLIBS += -lm
 CS = $(LDFLAGS) ../Lib/libhpc.a $(LDLIBS)
 
 all: lib hpc_demo
-	- ./hpc_demo 4
+	- ./hpc_demo 2
 
 lib:
 	( cd ../Lib ; $(MAKE) )
