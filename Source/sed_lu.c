@@ -2,7 +2,7 @@
 /* perform the lu-decompostion on an matrix stored
    in the sed format, the original matrix gets destroyed */
 
-index sed_lu(sed *A, const double *b, const double *x){
+index sed_lu (sed *A){
 
     index n;
     index *ind;   
@@ -12,6 +12,8 @@ index sed_lu(sed *A, const double *b, const double *x){
     n = A->n;
     ind = A->i;
     Ax = A->x;
+
+    if (!A) return (0) ;   /* check inputs */
 
     for(index k = 0; k < n; k++){
         
@@ -35,12 +37,14 @@ index sed_lu(sed *A, const double *b, const double *x){
             
             /* if a_kj-th element zero, go to next column */
             if(!akj){ continue; }
-
-            /* compute a_ij = a_ij a_ik - a-kj */
+            
+            /* compute a_ij = a_ij - a_ik/a_kj */
+            Ax[k] = Ax[k] - akj;  
             for(index i = akj_ind + 1; i < ind[k+1]; i++){
                 
                 Ax[i] = Ax[i] - Ax[k] * akj_ind;
             }
         }
     }
+    return(1);
 }

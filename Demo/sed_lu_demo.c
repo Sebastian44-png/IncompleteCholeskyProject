@@ -10,9 +10,7 @@ struct timeval tv[50];
 
 int main (int argc, char **argv)
 {
-    index j;
-    index n;
-    index N;
+    index N; /* N² is the Dimension of the MAtrix */ 
 
     double *b;
     double *b_ref;
@@ -20,10 +18,10 @@ int main (int argc, char **argv)
     double *x; 
 
     cs *A_cs;
-    gem *A;
-    gem *A_ref;
+    sed *A; /* gets overwritten with the lu decompostition of A*/
+    sed *A_ref;
 
-    printf("\n========================================\n");
+    
     /* Get number N as parameter */ 
     N = 0;
     if ( argc > 1 ) {
@@ -33,63 +31,71 @@ int main (int argc, char **argv)
     } 
    
     A_cs = cs_lapmat_p1_square(N);  
-    A = gem_compress(A_cs);
-    A_ref = gem_compress(A_cs);
+    A = sed_compress(A_cs);
+    A_ref = sed_compress(A_cs);
 
     if (!A) return(1);
 
-    printf ("\nDimension of matrix    = ( %g, %g)\n", (double) A->n, (double) A->m); 
-    if (A->n != A->m) return(1);        /* check input */
+    printf ("\nDimension of matrix    = ( %g, %g)\n", (double) A->n, (double) A->n); 
+    printf("\n========================================\n");
+    printf("A before lu decomposition \n");
+    sed_print(A, 1);
+
+    if (!A->n) return(1);        /* check input */
 
     /* ------------------------- */
     /* Allocate and initiate x and b */  
     /* ------------------------- */
 
-    n = A->n;
+    index n = A->n;
     b = malloc(n * sizeof(double)); 
     b_ref = malloc(n * sizeof(double));
     b_sol = malloc(n * sizeof(double));
     x = malloc(n * sizeof(double));
 
-    for ( j = 0 ; j < n ; j++ ) {
+    for (index j = 0 ; j < n ; j++ ) {
         b[j] = 1;
         b_ref[j] = 1;
         x[j] = 0;
         b_sol[j] = 0;
     }
     /* ---------------------- */
-    /* apply decomposition and solve linear system */ 
+    /* apply decomposition */ 
     /* ---------------------- */
-
     TIME_SAVE(0);
-    if (!gem_gauss(A)) return(1);       /* perform Gauss decomposition  */
+    if (!sed_lu(A)) return(1);       /* perform Gauss decomposition  */
     TIME_SAVE(1);
-    if (!gem_gausssol(A, b)) return(1); /* compute A^(-1) *  b */
-    TIME_SAVE(2);
+
+    printf("\n========================================\n");
+    printf("A after lu decomposition \n");
+    sed_print(A, 1);
+
+    //if (!gem_gausssol(A, b)) return(1); /* compute A^(-1) *  b */
+    //TIME_SAVE(2);
 
     /* --------------------- */    
     /* verify results */
     /* --------------------- */
-    if(!gem_spmv(A_ref, b, b_sol));
-    TIME_SAVE(3);
+    //if(!gem_spmv(A_ref, b, b_sol));
+    //TIME_SAVE(3);
 
-    double error_gauss = 0.0;
-    for ( j = 0 ; j < n ; j++ ) { 
-        error_gauss = HPC_MAX(error_gauss, abs(b_sol[j] - b_ref[j]));
-    }
+    // double error_gauss = 0.0;
+    //for ( j = 0 ; j < n ; j++ ) { 
+      //  error_gauss = HPC_MAX(error_gauss, abs(b_sol[j] - b_ref[j]));
+    //}
 
-    printf("Time Gauss decomp   = %9i ns\n", (int) TIME_ELAPSED(0,1) );
-    printf("Time Gauss solve    = %9i ns\n", (int) TIME_ELAPSED(1,2) );
-    printf("result - max( sol ) = %20.16f \n", error_gauss); 
+    printf("Time lu-decomp   = %9i ns\n", (int) TIME_ELAPSED(0,1) );
+    //printf("Time Gauss solve    = %9i ns\n", (int) TIME_ELAPSED(1,2) );
+    //printf("result - max( sol ) = %20.16f \n", error_gauss); 
 
-    printf("time gem spmv  =  = %9i ns\n", (int) TIME_ELAPSED(2,3));
+    //printf("time gem spmv  =  = %9i ns\n", (int) TIME_ELAPSED(2,3));
 
     /* --------------------- */
     /* clear memory */  
     /* +++++++++++++++++++++ */
     cs_free (A_cs); 
-    gem_free(A); 
-    gem_free(A_ref);
+    sed_free(A); 
+    sed_free(A_ref);
 
     free(b);
     free(b_ref);

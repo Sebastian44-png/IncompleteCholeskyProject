@@ -16,13 +16,14 @@ LDLIBS += -lm
 CS = $(LDFLAGS) ../Lib/libhpc.a $(LDLIBS)
 
 all: lib hpc_demo
-	- ./hpc_demo 2
+	- ./sed_lu_demo 2
 
 lib:
 	( cd ../Lib ; $(MAKE) )
 
-hpc_demo: lib hpc_demo.c Makefile
+hpc_demo: lib hpc_demo.c sed_lu_demo.c Makefile
 	$(CC) $(CF) $(I) -o hpc_demo hpc_demo.c $(CS)
+	$(CC) $(CF) $(I) -o sed_lu_demo sed_lu_demo.c $(CS)
 
 clean:
 	- $(RM) *.o
