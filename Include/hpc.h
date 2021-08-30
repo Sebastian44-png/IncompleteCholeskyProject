@@ -131,7 +131,8 @@ index sed_lu (sed *A);
 index sed_gauss_seidel(const sed *A, const double *b, double *xk, double *w);
 index sed_jacobi(const sed *A, const double *b, double *xk, double *w);
 index sed_richardson(const sed *A, const double *b, double *xk, double *w, const double omega);
-index sed_ILU(sed *A);
+index sed_ILU(sed *A) ;
+index sed_MILU(sed *A, double alpha) ;
 
 #define HPC_MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define HPC_MIN(a, b) (((a) < (b)) ? (a) : (b))

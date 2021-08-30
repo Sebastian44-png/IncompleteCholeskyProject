@@ -11,11 +11,17 @@ int main(int argc, char **argv)
     N = 5;
     A_cs = cs_lapmat_p1_square(N);
 
-    printf("\nDimension of matrix    = ( %g, %g)\n", (double)A_cs->n, (double)A_cs->m);
-
     A_sed = sed_compress(A_cs);
 
     sed_ILU(A_sed);
 
+    printf("After ILU") ;
+    sed_print(A_sed, 0);
+
+    A_sed = sed_compress(A_cs);
+
+    sed_MILU(A_sed, 1) ;
+
+    printf("Solution of MILU:") ;
     sed_print(A_sed, 0);
 }
