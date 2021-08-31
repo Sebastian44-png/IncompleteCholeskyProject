@@ -49,6 +49,7 @@ HPC = \
  sed_gauss_seidel.o \
  sed_jacobi.o \
  sed_richardson.o \
+ sed_icne0.o \
  sed_lu.o \
  sky_compress.o \
  sky_print.o  \

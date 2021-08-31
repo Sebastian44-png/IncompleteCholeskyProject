@@ -20,7 +20,7 @@ int main (int argc, char **argv)
     cs *A_cs;
     sed *A; /* gets overwritten with the lu decompostition of A*/
     sed *A_ref;
-
+    gem *A_gem;
     
     /* Get number N as parameter */ 
     N = 0;
@@ -33,13 +33,16 @@ int main (int argc, char **argv)
     A_cs = cs_lapmat_p1_square(N);  
     A = sed_compress(A_cs);
     A_ref = sed_compress(A_cs);
+    A_gem = gem_compress(A_cs);
+
+    gem_print(A_gem, 1);
 
     if (!A) return(1);
 
     printf ("\nDimension of matrix    = ( %g, %g)\n", (double) A->n, (double) A->n); 
     printf("\n========================================\n");
     printf("A before lu decomposition \n");
-    sed_print(A, 1);
+    sed_print(A, 0);
 
     if (!A->n) return(1);        /* check input */
 
@@ -68,7 +71,7 @@ int main (int argc, char **argv)
 
     printf("\n========================================\n");
     printf("A after lu decomposition \n");
-    sed_print(A, 1);
+    sed_print(A, 0);
 
     //if (!gem_gausssol(A, b)) return(1); /* compute A^(-1) *  b */
     //TIME_SAVE(2);
