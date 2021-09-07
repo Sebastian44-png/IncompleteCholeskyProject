@@ -38,7 +38,7 @@ typedef struct gem_full /* general matrix form, entries stored row wise */
 typedef struct sky_pack  /* sym. matrix in sky storage form */
 {
     index   n ;       /* number of rows/columns          */
-    index  *p ;       /* col pointers (size n+1)         */
+    index  *p ;       /* col pointers (size n)         */
     double *d ;       /* diagonal entries (size n)       */
     double *x ;       /* off-diagonal entries, size p[n] */
 } sky ;
