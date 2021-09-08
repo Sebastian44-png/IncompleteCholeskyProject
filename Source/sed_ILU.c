@@ -18,10 +18,10 @@ index sed_ILU (sed *A)
     Ai = A->i ;
     Ax = A->x ;
 
-    for (index k = 0; k < n - 1; k++)
+    for (index k = 0 ; k < n - 1 ; k++)
     {
         /* computations for diagonal elements */
-        for (index ptr = k + 1; ptr < n; ptr++)
+        for (index ptr = k + 1 ; ptr < n ; ptr++)
         {
             if (Ax[ptr] == 0)
             {
@@ -45,11 +45,11 @@ index sed_ILU (sed *A)
 
             /* find akj */
             akj = 0;
-            for (index iptr = Ai[ptr]; iptr < Ai[ptr + 1]; iptr++)
+            for (index iptr = Ai [ptr] ; iptr < Ai [ptr + 1] ; iptr++)
             {
-                if (Ai[iptr] == k)
+                if (Ai [iptr] == k)
                 {
-                    akj = Ax[iptr] ;
+                    akj = Ax [iptr] ;
                     break ;
                 }
             }
@@ -58,15 +58,15 @@ index sed_ILU (sed *A)
                 continue ;
             }
 
-            Ax[ptr] -= aik * akj / Ax[k] ;
+            Ax [ptr] -= aik * akj / Ax [k] ;
         }
 
         /* other matrix entries */
         for (j = k + 1; j < n; j++)
         {
-            for (index ptr = Ai[j]; ptr < Ai[j + 1]; ptr++)
+            for (index ptr = Ai [j] ; ptr < Ai [j + 1] ; ptr++)
             {
-                if (Ax[ptr] == 0 || Ai[ptr] <= k)
+                if (Ax [ptr] == 0 || Ai [ptr] <= k)
                 {
                     continue ;
                 }
@@ -75,11 +75,11 @@ index sed_ILU (sed *A)
 
                 /* find aik */
                 aik = 0;
-                for (index iptr = Ai[k]; iptr < Ai[k + 1]; iptr++)
+                for (index iptr = Ai [k] ; iptr < Ai [k + 1] ; iptr++)
                 {
-                    if (Ai[iptr] == i)
+                    if (Ai [iptr] == i)
                     {
-                        aik = Ax[iptr] ;
+                        aik = Ax [iptr] ;
                         break ;
                     }
                 }
@@ -90,11 +90,11 @@ index sed_ILU (sed *A)
 
                 /* find akj */
                 akj = 0;
-                for (index iptr = Ai[j]; iptr < Ai[j + 1]; iptr++)
+                for (index iptr = Ai [j] ; iptr < Ai [j + 1] ; iptr++)
                 {
-                    if (Ai[iptr] == k)
+                    if (Ai [iptr] == k)
                     {
-                        akj = Ax[iptr] ;
+                        akj = Ax [iptr] ;
                         break ;
                     }
                 }
@@ -103,7 +103,7 @@ index sed_ILU (sed *A)
                     continue ;
                 }
 
-                Ax[ptr] -= aik * akj / Ax[k] ;
+                Ax [ptr] -= aik * akj / Ax [k] ;
             }
         }
     }
