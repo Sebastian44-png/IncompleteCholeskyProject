@@ -9,12 +9,15 @@ index sky_cholesky(sky *A){
     index *p;
     double *d;
     double *x;
-    double *anzcol;
+    double *anzrow;
+    double sum;
 
     n = A->n;
     p = A->p;
     d = A->d;
     x = A->x;
+
+
     /*calculate the number of nz entries for each row*/
     anzrow = malloc(n*sizeof(index));
     anzrow[0] = 0;
@@ -23,21 +26,36 @@ index sky_cholesky(sky *A){
     }
 
     for (index k = 0; k < n; k++){
-        /*auxiliary variable*/
-        double sum = 0;
+       
+        if(anzrow[k] > 0){
+            for(index ptr = 0; ptr < anzrow[k]; ptr++){
+                index i = k -anzrow[k] + ptr;
+                ptrDiff = (i - anzrow[i]) - (k - anzrow[k]);
 
-        /*calculate all entries in front of a_kk in the k-th row*/
-        if (anzrow[k] > 0){
-            for (index j = 0; j < k - 1; j++){
-                    
-            }
-        }
+                index startItI;
+                if(ptrDiff >= 0){
+                    startItI = 0;
+                }
+                else{
+                    startItI = -ptrDiff;
+                }
+                
+                sum = 0;
+                for(index iPtr = startItI; iPtr < anzrow[i]; iPtr++){
+                    sum += x[p[k] + iPtr + ptrDiff] * x[p[i] + iPtr];
+                }
+                x[p[k] + ptr] = (x[p[k] + ptr] - sum) / d[i]; 
+            
+            } 
+
         
         
+        
+        } 
         
         /*compute l_kk stored in d_k*/
-        for (index i = 0; i < anzrow[k]-1; i++){
-            sum += x[p[k-1] + i]*x[p[k-1] + i];
+        for (index j = 0; j < anzrow[k]-1; j++){
+            sum += x[p[k] + j] * x[p[k] + j];
         }
         d[k] = sqrt(d[k] - sum);
 

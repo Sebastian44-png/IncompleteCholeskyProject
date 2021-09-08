@@ -47,6 +47,8 @@ HPC = \
  sed_print.o \
  sed_util.o  \
  sed_gauss_seidel.o \
+ sed_ILU.o \
+ sed_MILU.o \
  sed_jacobi.o \
  sed_richardson.o \
  sed_lu.o \

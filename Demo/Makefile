@@ -15,19 +15,19 @@ I = -I../Include
 LDLIBS += -lm
 CS = $(LDFLAGS) ../Lib/libhpc.a $(LDLIBS)
 
-all: lib hpc_demo
-	- ./sed_lu_demo 2
+all: lib ILU_dem
+#	- ./hpc_demo 4
+	- ./ILU_dem
 
 lib:
 	( cd ../Lib ; $(MAKE) )
 
-hpc_demo: lib hpc_demo.c sed_lu_demo.c Makefile
-	$(CC) $(CF) $(I) -o hpc_demo hpc_demo.c $(CS)
-	$(CC) $(CF) $(I) -o sed_lu_demo sed_lu_demo.c $(CS)
+ILU_dem: lib ILU_dem.c Makefile
+	$(CC) $(CF) $(I) -o ILU_dem ILU_dem.c $(CS)
 
 clean:
 	- $(RM) *.o
 
 purge: clean
-	- $(RM) -r hpc_demo \
+	- $(RM) -r ILU_dem \
     *.a *.dSYM *.obj *.dll
