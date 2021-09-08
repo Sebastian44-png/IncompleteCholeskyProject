@@ -1,3 +1,4 @@
+
 #include "hpc.h"
 
 int main(int argc, char **argv)
@@ -5,16 +6,17 @@ int main(int argc, char **argv)
     index N;
 
     cs *A_cs;
-    sed *A_sed;
+    sky *A_sky;
 
-    N = 5;
+    N = 3;
     A_cs = cs_lapmat_p1_square(N);
+    gem_print(gem_compress(A_cs), 0);
 
     printf("\nDimension of matrix    = ( %g, %g)\n", (double)A_cs->n, (double)A_cs->m);
 
-    A_sed = sed_compress(A_cs);
+    A_sky = sky_compress(A_cs);
 
-    sed_ILU(A_sed);
+    sky_cholesky(A_sky);
 
-    sed_print(A_sed, 0);
+    sky_print(A_sky, 0);
 }

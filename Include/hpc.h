@@ -36,19 +36,11 @@ typedef struct gem_full /* general matrix form, entries stored row wise */
 
 typedef struct sky_pack /* sym. matrix in sky storage form */
 {
-<<<<<<< HEAD
-    index n;   /* number of rows/columns          */
-    index *p;  /* col pointers (size n+1)         */
-    double *d; /* diagonal entries (size n)       */
-    double *x; /* off-diagonal entries, size p[n] */
-} sky;
-=======
     index   n ;       /* number of rows/columns          */
     index  *p ;       /* col pointers (size n)         */
     double *d ;       /* diagonal entries (size n)       */
     double *x ;       /* off-diagonal entries, size p[n] */
 } sky ;
->>>>>>> a1f9e59be59b8bfa105bfba6656d163df236e6bb
 
 typedef struct bnd_general /* general band matrix */
 {
@@ -111,6 +103,7 @@ sky *sky_load(FILE *f);
 index sky_print(const sky *A, index brief);
 sky *sky_compress(const cs *T);
 index sky_spmv(const sky *A, const double *x, double *y);
+index sky_cholesky(sky *A);
 
 /* jagged format */
 jds *jds_spalloc(index m, index n, index nz, index ndiag);
