@@ -29,30 +29,29 @@ index sky_cholesky(sky *A){
 
     for (index k = 0; k < n; k++){
        
-        if(anzrow[k] > 0){
-            for(index ptr = 0; ptr < anzrow[k]; ptr++){
-                i = k -anzrow[k] + ptr;
-                ptrDiff = (i - anzrow[i]) - (k - anzrow[k]);
+        for(index ptr = 0; ptr < anzrow[k]; ptr++){
+            i = k - anzrow[k] + ptr;
+            ptrDiff = (i - anzrow[i]) - (k - anzrow[k]);
 
-                index startItI;
-                if(ptrDiff >= 0){
-                    startItI = 0;
-                }
-                else{
-                    startItI = -ptrDiff;
-                }
-                
-                sum = 0;
-                for(index iPtr = startItI; iPtr < anzrow[i]; iPtr++){
-                    sum += x[p[k] + iPtr + ptrDiff] * x[p[i] + iPtr];
-                }
-                x[p[k] + ptr] = (x[p[k] + ptr] - sum) / d[i]; 
-            } 
+            index startItI;
+            if(ptrDiff >= 0){
+                startItI = 0;
+            }
+            else{
+                startItI = -ptrDiff;
+            }
+            
+            sum = 0;
+            for(index iPtr = startItI; iPtr < anzrow[i]; iPtr++){
+                sum += x[p[k - 1] + iPtr + ptrDiff] * x[p[i - 1] + iPtr];
+            }
+            x[p[k - 1] + ptr] = (x[p[k - 1] + ptr] - sum) / d[i]; 
         } 
         
         /*compute l_kk stored in d_k*/
-        for (index j = 0; j < anzrow[k]-1; j++){
-            sum += x[p[k] + j] * x[p[k] + j];
+        sum = 0;
+        for (index j = 0; j < anzrow[k]; j++){
+            sum += x[p[k - 1] + j] * x[p[k - 1] + j];
         }
         d[k] = sqrt(d[k] - sum);
 
