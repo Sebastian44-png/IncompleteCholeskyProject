@@ -58,6 +58,7 @@ index sed_icne0(sed* A, double alpha, sed* L){
 
             if(l_j[i] == 0) { continue; } // storing only nonzero inner-products
 
+            
             //store l_j in a linked list datastructure
             cols_tail[i] = append_node(cols_tail[i], l_j[i] /*data */, j /* row index */);
             nzmax_l++; // increment number of nonzero elements
@@ -69,8 +70,10 @@ index sed_icne0(sed* A, double alpha, sed* L){
 
             u_k = cols_head[k]; // u_k = k-th column of L
             l_j[k] = l_j[k] / d[k];
-            
+
             while(u_k->next != NULL){
+
+                u_k = u_k->next;
                 l_j[k] = l_j[k] - u_k->data * l_j[u_k->ind];
             }
         }
@@ -78,20 +81,28 @@ index sed_icne0(sed* A, double alpha, sed* L){
     }
 
     /* store d and  L in a SED-Matrix  */
-    L = sed_alloc(n, nzmax_l, 1);
-    
+    //L = sed_alloc(n, nzmax_l, 1);
+    sed_realloc(L, nzmax_l);
     // store d on the diagonal of L
     for(index i = 0; i < n; i++){
         L->x[i] = d[i];
     }
 
     index count = n+1;
+
     for(index i=0; i<n-1; i++){
         
-        node* current = cols_head[i];
+        node* current_node = cols_head[i];
 
-        while(current->next != NULL){
+        L->i[i] = count; // store column pointers
 
+        while(current_node->next != NULL){ // add colum i to L->x
+
+            current_node = current_node->next;
+            L->x[count] = current_node->data;
+            L->i[count] = current_node->ind;
+
+            count++;
         }
     }
     return (1);

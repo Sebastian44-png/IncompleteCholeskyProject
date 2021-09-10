@@ -18,7 +18,7 @@ CS = $(LDFLAGS) ../Lib/libhpc.a $(LDLIBS)
 all: lib hpc_demo
 	#- ./sed_lu_demo 2
 	- ./sed_icne0 2
-	#- ./linked_list_demo
+	# ./linked_list_demo
 
 lib:
 	( cd ../Lib ; $(MAKE) )

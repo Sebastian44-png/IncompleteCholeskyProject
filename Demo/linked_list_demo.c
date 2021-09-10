@@ -3,23 +3,12 @@
 
 int main(){
 
-    node* head = create_slist();
-
-    node* current = head;
-
-    for (index i=0; i<10; i++){
-        current = add_node(current, i, (double)i+1);
-    }
-    print_list_data(head);
-
-    free(head);
-
     node* head_list1 = create_slist();
 
     node* current = head_list1;
 
     for (index i=0; i<10; i++){
-        current = add_node(current, i, (double)i+1);
+        current = append_node(current, i, (double)i+1);
     }
     
     node* head_list2 = create_slist();
@@ -27,7 +16,7 @@ int main(){
     current = head_list2;
 
     for (index i=0; i<10; i++){
-        current = add_node(current, i*i, (double)i+1);
+        current = append_node(current, i*i, (double)i+1);
     }
 
     node** cols = malloc(sizeof(node*)*2);
@@ -40,6 +29,4 @@ int main(){
 
     free(head_list1);
     free(head_list2);
-}
-
 }
