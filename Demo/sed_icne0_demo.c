@@ -44,12 +44,16 @@ int main (int argc, char **argv)
     //printf("sed_Matrix \n");
     //sed_print(A_sed, 0); 
     printf("Buffers :");
-    printf("x: "); print_buffer_double(A_sed->x, A_sed->nzmax);
-    printf("ind: "); print_buffer_int(A_sed->i, A_sed->nzmax);
+   
     
     sed *L = sed_alloc(A_cs->n, 0, 1);
     sed_icne0(A_sed, 2.0, L);
-    sed_print(L, 1);
+    sed_print(L, 0);
+    printf("x: "); print_buffer_double(A_sed->x, A_sed->nzmax);
+    printf("ind: "); print_buffer_int(A_sed->i, A_sed->nzmax);
+
+    printf("x: "); print_buffer_double(L->x, L->nzmax);
+    printf("ind: "); print_buffer_int(L->i, L->nzmax);
     //printf("%d \n",(int)L->n);
     
     cs_free (A_cs); 
