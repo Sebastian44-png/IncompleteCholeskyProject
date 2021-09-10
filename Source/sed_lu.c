@@ -5,18 +5,35 @@
 index sed_lu (sed *A){
 
     index n;
-    index *ind;   
+    index nnz;
+    index *ind;  
     double *Ax;
+    double f;
     index akj_ind;
 
     n = A->n;
     ind = A->i;
+    nnz = A->nnz;
     Ax = A->x;
 
     if (!A) return (0) ;   /* check inputs */
 
     for(index k = 0; k < n; k++){
         
+        for(index col = 0; col < n; col++){
+            for(index ind[])
+            if (Ax[]){
+
+
+                i = 
+                j = col
+
+
+                f = -Ax[] / Ax[k];
+            }
+        }
+
+
         /* compute a_ik = a_ik / a_kk */
         for(index i = ind[k]; i < ind[k+1]; i++){
                 Ax[i] = Ax[i] / Ax[k];
@@ -35,7 +52,7 @@ index sed_lu (sed *A){
                 }
             }
             
-            /* if a_kj-th element zero, go to next column */
+            /* if a_kj-th element is zero, go to next column */
             if(!akj){ continue; }
             
             /* compute a_ij = a_ij - a_ik/a_kj */

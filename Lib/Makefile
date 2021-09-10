@@ -50,7 +50,6 @@ HPC = \
  sed_jacobi.o \
  sed_richardson.o \
  sed_icne0.o \
- sed_lu.o \
  sky_compress.o \
  sky_print.o  \
  sky_util.o \
@@ -58,6 +57,7 @@ HPC = \
  sky_spmv.o \
  hpc_cumsum.o \
  hpc_malloc.o \
+ s_list.o \
  utils.o 
 
 $(HPC): ../Include/hpc.h Makefile

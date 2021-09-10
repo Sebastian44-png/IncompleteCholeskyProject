@@ -127,12 +127,18 @@ sed *sed_compress (const cs *A);
 index sed_print (const sed *A, index brief);
 index sed_spmv (const sed *A, const double *x, double *y);
 
-index sed_lu (sed *A);
+index sed_icne0 (sed *A, double alpha, sed* L);
+double* sed_find_in_column(sed* A, index row, index col);
+
 
 index sed_gauss_seidel(const sed *A, const double *b, double *xk, double *w);
 index sed_jacobi (const sed *A, const double *b, double *xk, double *w );
 index sed_richardson (const sed *A, const double *b, double *xk, double *w, const double omega);
-   
+
+/*utils */
+void print_buffer_int(index* buffer, int len);
+void print_buffer_double(double* buffer, int len);
+
 #define HPC_MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define HPC_MIN(a,b) (((a) < (b)) ? (a) : (b))
 #define HPC_CSC(A) (A && (A->nz == -1))

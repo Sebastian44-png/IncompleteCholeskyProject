@@ -1,3 +1,6 @@
 compile_commands.json
-Source/sed_lu.c
-Demo/sed_lu_demo.c
+/.vscode
+Demo/scratch.c
+Demo/a.out
+scratch.c
+a.out
