@@ -20,7 +20,7 @@ index sed_icne0(sed* A, double alpha, sed* L){
     double l_ii;
     index nzmax_l = n; // number of nenzro elements of L + d, is set to n initially
     double* a_j = malloc(n*sizeof(double)); // stores rows/cols of A intermediately
-    double* l_j = malloc((n-1)*sizeof(double)); // NOTE evl linked list
+    double* l_j = malloc((n-1)*sizeof(double));
     node* u_k;
 
     /* array of linked lists for storing columns of L */
@@ -40,8 +40,7 @@ index sed_icne0(sed* A, double alpha, sed* L){
         l_ii = 0; //set l_ii to zero
 
         for(index i = ind[j]; i < ind[j+1]; i++){ //iterate through column j
-            
-            
+                 
             l_ii += pow(x[i], 2);  // calucualte l_ii = (a_i, a_i) + alpha
             
             a_j[ind[i]] = x[i];    // extract collumn_j
@@ -60,12 +59,13 @@ index sed_icne0(sed* A, double alpha, sed* L){
             l_j[i] += x[i] * a_j[i];
 
             if(l_j[i] == 0) { continue; } // storing only nonzero inner-products
-
-            
+           
             //store l_j in a linked list datastructure
             cols_tail[i] = append_node(cols_tail[i], l_j[i] /*data */, j /* row index */);
             nzmax_l++; // increment number of nonzero elements
         }
+        l_j[j] = l_ii;
+        printf("l_j = "); print_buffer_double(l_j, n);
 
         for(index k = 0; k < j; k++){
 
@@ -73,17 +73,17 @@ index sed_icne0(sed* A, double alpha, sed* L){
 
             u_k = cols_head[k]; // u_k = k-th column of L
             l_j[k] = l_j[k] / d[k];
-            
-            printf("l_j =  %2.2f", l_j[k]);
+            printf("l_j = "); print_buffer_double(l_j, n);
 
             while(u_k->next != NULL){
 
                 u_k = u_k->next;
-                l_j[k] = l_j[k] - u_k->data * l_j[u_k->ind];
+                l_j[k] = l_j[k] - (u_k->data * l_j[u_k->ind]);
             }
             u_k->data = l_j[k];
         }
         d[j] = l_ii;
+        printf("l_j = "); print_buffer_double(l_j, n);
     }
 
     /* store d and  L in a SED-Matrix  */

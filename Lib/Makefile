@@ -35,6 +35,7 @@ HPC = \
  gem_compress.o \
  gem_gauss.o \
  gem_gausssol.o \
+ gem_lu.o \
  gem_print.o \
  gem_util.o \
  gem_spmv.o \

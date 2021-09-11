@@ -79,6 +79,7 @@ gem *gem_alloc (index n, index m);
 gem *gem_free (gem *A);
 index gem_gausssol(gem *A, double *x); 
 index gem_gauss(gem *A);
+index gem_lu(gem *A);
 index gem_gaxpy (const gem *A, const double *x, double *y);
 index gem_spmv(const gem *A, const double *x, double *y);
 gem *gem_compress (const cs *T);

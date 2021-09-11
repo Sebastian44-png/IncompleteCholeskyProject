@@ -22,7 +22,6 @@ int main (int argc, char **argv)
     double *x; 
 
     cs *A_cs;
-    sed *A_sed;
     gem *A_gem;
 
     printf("\n========================================\n");
@@ -35,32 +34,11 @@ int main (int argc, char **argv)
     } 
    
     A_cs = cs_lapmat_p1_square(N);  
-    A_sed = sed_compress(A_cs);
     A_gem = gem_compress(A_cs);
 
     printf("gem_Matrix \n");
     gem_print(A_gem, 0);
-    
-    //printf("sed_Matrix \n");
-    //sed_print(A_sed, 0); 
-    //printf("Buffers :");
-   
-    
-    sed *L = sed_alloc(A_cs->n, 0, 1);
-    sed_icne0(A_sed, 2.0, L);
-    sed_print(L, 0);
-    printf("x: "); print_buffer_double(A_sed->x, A_sed->nzmax);
-    printf("ind: "); print_buffer_int(A_sed->i, A_sed->nzmax);
 
-    printf("x: "); print_buffer_double(L->x, L->nzmax);
-    printf("ind: "); print_buffer_int(L->i, L->nzmax);
-    //printf("%d \n",(int)L->n);
-    
-    cs_free (A_cs); 
-    sed_free(A_sed);
-    gem_free(A_gem);
-   // sed_free(L);
-    free(b);
-
-    return (0) ;
+    gem_lu(A_gem);
+    gem_print(A_gem, 0);
 }
