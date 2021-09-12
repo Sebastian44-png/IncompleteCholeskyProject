@@ -16,9 +16,9 @@ LDLIBS += -lm
 CS = $(LDFLAGS) ../Lib/libhpc.a $(LDLIBS)
 
 all: lib hpc_demo
-	- ./gem_lu_demo 2
+	#- ./gem_lu_demo 2
 	#- ./sed_lu_demo 2
-	#- ./sed_icne0 2
+	- ./sed_icne0 2
 	# ./linked_list_demo
 
 lib:

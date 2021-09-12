@@ -65,7 +65,7 @@ index sed_icne0(sed* A, double alpha, sed* L){
             nzmax_l++; // increment number of nonzero elements
         }
         l_j[j] = l_ii;
-        printf("l_j = "); print_buffer_double(l_j, n);
+        //printf("l_j = "); print_buffer_double(l_j, n);
 
         for(index k = 0; k < j; k++){
 
@@ -83,7 +83,7 @@ index sed_icne0(sed* A, double alpha, sed* L){
             u_k->data = l_j[k];
         }
         d[j] = l_ii;
-        printf("l_j = "); print_buffer_double(l_j, n);
+        //printf("l_j = "); print_buffer_double(l_j, n);
     }
 
     /* store d and  L in a SED-Matrix  */

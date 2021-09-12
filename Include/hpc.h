@@ -131,10 +131,10 @@ index sed_spmv (const sed *A, const double *x, double *y);
 index sed_icne0 (sed *A, double alpha, sed* L);
 double* sed_find_in_column(sed* A, index row, index col);
 
-
 index sed_gauss_seidel(const sed *A, const double *b, double *xk, double *w);
 index sed_jacobi (const sed *A, const double *b, double *xk, double *w );
 index sed_richardson (const sed *A, const double *b, double *xk, double *w, const double omega);
+index sed_cg (const sed *A, const double *b, double *x, index maxIt, double tol);
 
 /*utils */
 void print_buffer_int(index* buffer, int len);
