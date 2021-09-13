@@ -15,7 +15,7 @@ I = -I../Include
 LDLIBS += -lm
 CS = $(LDFLAGS) ../Lib/libhpc.a $(LDLIBS)
 
-all: lib icholesky_demo 
+all: lib icholesky_demo
 	- ./icholesky_demo
 #	- ./hpc_demo 4
 
