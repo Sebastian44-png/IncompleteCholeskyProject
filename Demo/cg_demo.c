@@ -15,10 +15,11 @@ int main (int argc, char **argv)
     index N;
 
     double *b;
-    double *b_ref;
-    double *b_sol;
-    double *x; 
+    double *x0;
 
+    b = malloc(n*sizeof(double));
+    x0 = malloc(n*sizeof(double));
+    
     cs *A_cs;
     sed *A_sed;
     gem *A_gem;
@@ -36,29 +37,20 @@ int main (int argc, char **argv)
     A_sed = sed_compress(A_cs);
     A_gem = gem_compress(A_cs);
 
+    n = A_cs->n;
     printf("gem_Matrix \n");
+
+    index maxIt = 3;
+    double tol = 0.0000001;
+
+    for(index k = 0; k < n; k++){
+        x0[k] = k;
+        b[k] = 2;
+    }
+
+    sed_cg(A_sed , b, x0, maxIt, tol);
+
+    
     gem_print(A_gem, 0);
-    
-    //printf("sed_Matrix \n");
-    //sed_print(A_sed, 0); 
-    //printf("Buffers :");
-   
-    
-    sed *L = sed_alloc(A_cs->n, 0, 1);
-    sed_icne0(A_sed, 2.0, L);
-    sed_print(L, 0);
-    printf("x: "); print_buffer_double(A_sed->x, A_sed->nzmax);
-    printf("ind: "); print_buffer_int(A_sed->i, A_sed->nzmax);
-
-    printf("x: "); print_buffer_double(L->x, L->nzmax);
-    printf("ind: "); print_buffer_int(L->i, L->nzmax);
-    //printf("%d \n",(int)L->n);
-    
-    cs_free (A_cs); 
-    sed_free(A_sed);
-    gem_free(A_gem);
-   // sed_free(L);
-    free(b);
-
-    return (0) ;
 }
+    
