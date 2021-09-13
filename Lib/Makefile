@@ -43,13 +43,18 @@ HPC = \
  jds_print.o \
  jds_util.o  \
  sed_compress.o \
+ sed_icholesky.o \
+ sed_isoccupied.o \
  sed_spmv.o \
  sed_print.o \
  sed_util.o  \
  sed_gauss_seidel.o \
+ sed_ILU.o \
+ sed_MILU.o \
  sed_jacobi.o \
  sed_richardson.o \
  sed_lu.o \
+ sky_cholesky.o \
  sky_compress.o \
  sky_print.o  \
  sky_util.o \
