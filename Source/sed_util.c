@@ -44,5 +44,3 @@ sed *sed_done (sed *C, void *w, void *x, index ok)
     free (x) ;
     return (ok ? C : sed_free (C)) ;   /* return result if OK, else free it */
 }
-
-

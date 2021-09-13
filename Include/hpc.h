@@ -103,6 +103,8 @@ sky *sky_load(FILE *f);
 index sky_print(const sky *A, index brief);
 sky *sky_compress(const cs *T);
 index sky_spmv(const sky *A, const double *x, double *y);
+
+
 index sky_cholesky(sky *A);
 
 /* jagged format */
@@ -128,6 +130,8 @@ index sed_print(const sed *A, index brief);
 index sed_spmv(const sed *A, const double *x, double *y);
 
 index sed_lu (sed *A);
+index sed_icholesky(sed *A, sed *L);
+index sed_isoccupied(sed *A, index column, index row);
 
 index sed_gauss_seidel(const sed *A, const double *b, double *xk, double *w);
 index sed_jacobi(const sed *A, const double *b, double *xk, double *w);

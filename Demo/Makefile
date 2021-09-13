@@ -15,19 +15,19 @@ I = -I../Include
 LDLIBS += -lm
 CS = $(LDFLAGS) ../Lib/libhpc.a $(LDLIBS)
 
-all: lib cholesky_demo 
-	- ./cholesky_demo
+all: lib icholesky_demo 
+	- ./icholesky_demo
 #	- ./hpc_demo 4
 
 lib:
 	( cd ../Lib ; $(MAKE) )
 
-cholesky_demo: lib cholesky_demo.c Makefile
-	$(CC) $(CF) $(I) -o  cholesky_demo cholesky_demo.c $(CS)
+icholesky_demo: lib icholesky_demo.c Makefile
+	$(CC) $(CF) $(I) -o  icholesky_demo icholesky_demo.c $(CS)
 
 clean:
 	- $(RM) *.o
 
 purge: clean
-	- $(RM) -r cholesky_demo \
+	- $(RM) -r icholesky_demo \
     *.a *.dSYM *.obj *.dll
