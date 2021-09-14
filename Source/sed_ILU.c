@@ -64,6 +64,21 @@ index sed_ILU (sed *A)
         /* other matrix entries */
         for (j = k + 1; j < n; j++)
         {
+            /* find akj */
+            akj = 0;
+            for (index iptr = Ai[j]; iptr < Ai[j + 1]; iptr++)
+            {
+                if (Ai[iptr] == k)
+                {
+                    akj = Ax[iptr] ;
+                    break ;
+                }
+            }
+            if (akj == 0)
+            {
+                continue ;
+            }
+
             for (index ptr = Ai[j]; ptr < Ai[j + 1]; ptr++)
             {
                 if (Ax[ptr] == 0 || Ai[ptr] <= k)
@@ -84,21 +99,6 @@ index sed_ILU (sed *A)
                     }
                 }
                 if (aik == 0)
-                {
-                    continue ;
-                }
-
-                /* find akj */
-                akj = 0;
-                for (index iptr = Ai[j]; iptr < Ai[j + 1]; iptr++)
-                {
-                    if (Ai[iptr] == k)
-                    {
-                        akj = Ax[iptr] ;
-                        break ;
-                    }
-                }
-                if (akj == 0)
                 {
                     continue ;
                 }
