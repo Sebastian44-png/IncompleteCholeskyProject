@@ -49,21 +49,22 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
             Ap [i] = 0;
         }
 
-        sed_spmv(A, p, Ap);
+        sed_spmv(A, p, Ap); // Ap  = A * p
 
-        alpha = rho / hpc_dot(Ap, p, n);
+        alpha = rho / hpc_dot(Ap, p, n); 
         
-        hpc_scal(x, p,  alpha, n);
-        
-        hpc_scal(r, Ap, -alpha, n);
+        hpc_scal(x, p,  alpha, n); // x_(k) = x_(k-1) + alpha * p
+        hpc_scal(r, Ap, -alpha, n); // r_(k) = r(k-1) - alpha * p
 
+        // store rho(k-1), as it's needed for later calculations
         rho_prev = rho;
-        rho = hpc_dot(r, r, n);
+        rho = hpc_dot(r, r, n); 
 
         if(rho == 0) { continue; }
 
         beta = rho / rho_prev;
 
+        // r_(k) + rho(k) * p(k) / rho(k-1)
         for(index i = 0; i < n; i++)
         {
             p [i] = r [i] + (beta * p [i]);
