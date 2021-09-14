@@ -44,3 +44,17 @@ sed *sed_done (sed *C, void *w, void *x, index ok)
     free (x) ;
     return (ok ? C : sed_free (C)) ;   /* return result if OK, else free it */
 }
+
+/* finds a row element in a given column */
+double* sed_find_in_column(sed* A, index row, index col){
+
+    for(index j = A->i[col]; j < A->i[col+1]; j++){
+        
+        if(A->i[j] == row){
+            return &A->x[j];
+        }
+    }
+    return NULL;
+}
+
+
