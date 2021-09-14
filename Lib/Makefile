@@ -35,6 +35,7 @@ HPC = \
  gem_compress.o \
  gem_gauss.o \
  gem_gausssol.o \
+ gem_lu.o \
  gem_print.o \
  gem_util.o \
  gem_spmv.o \
@@ -55,6 +56,8 @@ HPC = \
  sed_richardson.o \
  sed_lu.o \
  sky_cholesky.o \
+ sed_cg.o \
+ sed_icne0.o \
  sky_compress.o \
  sky_print.o  \
  sky_util.o \
@@ -62,6 +65,7 @@ HPC = \
  sky_spmv.o \
  hpc_cumsum.o \
  hpc_malloc.o \
+ s_list.o \
  utils.o 
 
 $(HPC): ../Include/hpc.h Makefile
