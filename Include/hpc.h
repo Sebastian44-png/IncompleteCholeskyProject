@@ -78,12 +78,8 @@ gem *gem_alloc(index n, index m);
 gem *gem_free(gem *A);
 index gem_gausssol(gem *A, double *x);
 index gem_gauss(gem *A);
-<<<<<<< HEAD
-index gem_gaxpy(const gem *A, const double *x, double *y);
-=======
 index gem_lu(gem *A);
 index gem_gaxpy (const gem *A, const double *x, double *y);
->>>>>>> 508e43e11b0f225107f0469a367085f744fc2afc
 index gem_spmv(const gem *A, const double *x, double *y);
 gem *gem_compress(const cs *T);
 index gem_print(const gem *A, index brief);
@@ -108,8 +104,6 @@ sky *sky_load(FILE *f);
 index sky_print(const sky *A, index brief);
 sky *sky_compress(const cs *T);
 index sky_spmv(const sky *A, const double *x, double *y);
-
-
 index sky_cholesky(sky *A);
 
 /* jagged format */
@@ -134,20 +128,12 @@ sed *sed_compress(const cs *A);
 index sed_print(const sed *A, index brief);
 index sed_spmv(const sed *A, const double *x, double *y);
 
-<<<<<<< HEAD
-index sed_lu (sed *A);
 index sed_icholesky(sed *A, sed *L);
 index sed_isoccupied(sed *A, index column, index row);
 
-index sed_gauss_seidel(const sed *A, const double *b, double *xk, double *w);
-index sed_jacobi(const sed *A, const double *b, double *xk, double *w);
-index sed_richardson(const sed *A, const double *b, double *xk, double *w, const double omega);
 index sed_ILU(sed *A) ;
 index sed_MILU(sed *A, double alpha) ;
 
-#define HPC_MAX(a, b) (((a) > (b)) ? (a) : (b))
-#define HPC_MIN(a, b) (((a) < (b)) ? (a) : (b))
-=======
 index sed_icne0 (sed *A, double alpha, sed* L);
 double* sed_find_in_column(sed* A, index row, index col);
 
@@ -162,7 +148,6 @@ void print_buffer_double(double* buffer, int len);
 
 #define HPC_MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define HPC_MIN(a,b) (((a) < (b)) ? (a) : (b))
->>>>>>> 508e43e11b0f225107f0469a367085f744fc2afc
 #define HPC_CSC(A) (A && (A->nz == -1))
 #define HPC_CSR(A) (A && (A->nz == -2))
 #define HPC_TRIPLET(A) (A && (A->nz >= 0))

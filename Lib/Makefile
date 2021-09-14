@@ -54,7 +54,6 @@ HPC = \
  sed_MILU.o \
  sed_jacobi.o \
  sed_richardson.o \
- sed_lu.o \
  sky_cholesky.o \
  sed_cg.o \
  sed_icne0.o \
