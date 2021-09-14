@@ -132,6 +132,8 @@ index sed_spmv(const sed *A, const double *x, double *y);
 index sed_lu (sed *A);
 index sed_icholesky(sed *A, sed *L);
 index sed_isoccupied(sed *A, index column, index row);
+index sed_forwardInsertion(sed *L, double *x, double *b);
+index sed_backwardInsertion(sed *L, double *x, double *b);
 
 index sed_gauss_seidel(const sed *A, const double *b, double *xk, double *w);
 index sed_jacobi(const sed *A, const double *b, double *xk, double *w);

@@ -45,6 +45,8 @@ HPC = \
  sed_compress.o \
  sed_icholesky.o \
  sed_isoccupied.o \
+ sed_forwardInsertion.o \
+ sed_backwardInsertion.o \
  sed_spmv.o \
  sed_print.o \
  sed_util.o  \
