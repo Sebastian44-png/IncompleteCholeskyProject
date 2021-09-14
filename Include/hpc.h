@@ -144,9 +144,15 @@ index sed_jacobi (const sed *A, const double *b, double *xk, double *w );
 index sed_richardson (const sed *A, const double *b, double *xk, double *w, const double omega);
 index sed_cg (const sed *A, double *b, double *x, index maxIt, double tol);
 
-/*utils */
+/* hpc utils */
+double hpc_dot(const double *x, const double *y, index n);
+index hpc_scal(double* y, const double *x, double alpha, index n);
+
+/* utils */
 void print_buffer_int(index* buffer, int len);
 void print_buffer_double(double* buffer, int len);
+index copy_buffer(const double* a, double *b, index n);
+
 
 #define HPC_MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define HPC_MIN(a,b) (((a) < (b)) ? (a) : (b))

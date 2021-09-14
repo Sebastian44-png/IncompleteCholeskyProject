@@ -66,6 +66,8 @@ HPC = \
  sky_spmv.o \
  hpc_cumsum.o \
  hpc_malloc.o \
+ hpc_dot.o \
+ hpc_scal.o \
  s_list.o \
  utils.o 
 
