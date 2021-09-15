@@ -82,6 +82,8 @@ HPC = \
  mesh_refine.o  \
  mesh_getFixed.o  \
  mesh_util.o \
+ hpc_dot.o \
+ hpc_scal.o \
  s_list.o \
  utils.o 
 

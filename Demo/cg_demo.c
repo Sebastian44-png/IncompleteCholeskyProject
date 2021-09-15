@@ -40,8 +40,8 @@ int main (int argc, char **argv)
     n = A_cs->n;
     printf("gem_Matrix \n");
 
-    index maxIt = 3;
-    double tol = 0.0000001;
+    index maxIt = 10;
+    double tol = 0.5;
 
     for(index k = 0; k < n; k++){
         x0[k] = k;

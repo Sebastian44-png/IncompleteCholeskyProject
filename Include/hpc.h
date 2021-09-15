@@ -195,9 +195,15 @@ index mesh_getEdge2no(const index nElem, const index *Elem,
 void mesh_buildRhs(const mesh *M, double *b, double (*f)(double *, index), 
                    double (*g)(double *, index));
 
-/*utils */
+/* hpc utils */
+double hpc_dot(const double *x, const double *y, index n);
+index hpc_scal(double* y, const double *x, double alpha, index n);
+
+/* utils */
 void print_buffer_int(index* buffer, int len);
 void print_buffer_double(double* buffer, int len);
+index copy_buffer(const double* a, double *b, index n);
+
 
 #define HPC_MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define HPC_MIN(a,b) (((a) < (b)) ? (a) : (b))
