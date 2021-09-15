@@ -1,10 +1,5 @@
 #include "hpc.h"
 
-double hpc_dot(const double *x, const double *y, index n);
-index hpc_scal(double* y, const double *x, double alpha, index n);
-index sed_geaxpy(const sed* A, double *x, double *y, double *f, double alpha);
-index copy_buffer(const double* a, double *b, index n);
-
 /* f = A * x + alpha*y */
 index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
 
@@ -26,16 +21,24 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
     double rho_prev;
     double error;
     
-    sed_geaxpy(A, x, b , r, -1.0); // r(0) = b - Ax(0)
+   // r(0) = b - Ax(0)
+    sed_spmv(A, x, r);
+
+    for ( index i = 0; i < n; i++)
+    {
+        r [i] = b[i] - r [i];
+    }
+
     copy_buffer(r, p ,n);
     rho = hpc_dot(r, r, n);
 
     for(index k = 0; k < maxIt; k++){
 
-        // return if ||r||_2 < tol  
+        // return if ||r||_2 < tol
+        error = 0;
         for(index i = 0; i < n; i++)
         {
-            error += r[i] * r[i];
+            error += r [i] * r [i];
         }
         if(error < tol){
             return(1);
@@ -43,92 +46,31 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
         
         for(index i = 0; i < n; i++)
         {
-            Ap[i] = 0;
+            Ap [i] = 0;
         }
 
-        sed_spmv(A, p, Ap);
+        sed_spmv(A, p, Ap); // Ap  = A * p
 
-        alpha = rho / hpc_dot(Ap, p, n);
+        alpha = rho / hpc_dot(Ap, p, n); 
         
-        hpc_scal(x, p,  alpha, n);
-        
-        hpc_scal(r, Ap, -alpha, n);
+        hpc_scal(x, p,  alpha, n); // x_(k) = x_(k-1) + alpha * p
+        hpc_scal(r, Ap, -alpha, n); // r_(k) = r(k-1) - alpha * p
 
+        // store rho(k-1), as it's needed for later calculations
         rho_prev = rho;
-        rho = hpc_dot(r, r, n);
+        rho = hpc_dot(r, r, n); 
 
         if(rho == 0) { continue; }
 
         beta = rho / rho_prev;
 
+        // r_(k) + rho(k) * p(k) / rho(k-1)
         for(index i = 0; i < n; i++)
         {
-            p[i] = r[i] + (beta * p[i]);
+            p [i] = r [i] + (beta * p [i]);
         }
         
         printf(" x ="); print_buffer_double(x, n);
+        printf(" r ="); print_buffer_double(r, n);
     }
-}
-
-double hpc_dot(const double *x, const double *y, index n){
-
-    double res = 0;
-
-    for(index i = 0; i < n; i++)
-    {
-        res += x[i] * y[i];
-    }
-    return res;
-}
-
-/* y = b + alpha A * x */
-index sed_geaxpy(const sed* A, double *x, double *b, double *y, double alpha){
-
-    index p, j, m, n, nz, *Ap, *Ai ;
-    double *Ax ;
-    double tmp ;
-
-    n = A->n ; 
-    Ai = A->i ; 
-    Ax = A->x ;
-
-
-    for (j = 0 ; j < n ; j++)
-    {
-        y [j] = b [j] ;
-    }
-    
-    for (j = 0 ; j < n ; j++)
-    {
-
-        y [j] += alpha * (Ax [j] * x [j]) ;
-
-        for (p = Ai[j] ; p < Ai[j+1] ; p++)
-        {
-            y [Ai [p] ] += alpha * ( Ax [p] * x [j]) ;
-        }
-        
-    }
-    return (1) ;
-}
-
-/* y = y + alpha * x */
-index hpc_scal(double* y, const double *x, double alpha, index n)
-{
-
-    if (!x || !y) return (0) ;
-
-    for(index i = 0; i < n; i++)
-    {       
-        y [i] += alpha * x [i];
-    }
-    return (1) ;
-}
-/* copy a to b*/
-index copy_buffer(const double* a, double *b, index n){
-
-    for (index i=0; i <n; i++){
-        b [i] = a[i];
-    }
-    return(1);
 }
