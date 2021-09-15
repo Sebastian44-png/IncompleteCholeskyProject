@@ -13,7 +13,7 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
     // helper variables
     double *r = malloc(n*sizeof(double));
     double *p = malloc(n*sizeof(double));
-    double *Ap =malloc(n+sizeof(double));
+    double *Ap = malloc(n*sizeof(double));
 
     double rho;
     double alpha;
@@ -40,7 +40,7 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
         {
             error += r [i] * r [i];
         }
-        if(error < tol){
+        if(error < tol || rho == 0){
             return(1);
         }
         
@@ -73,4 +73,7 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
         printf(" x ="); print_buffer_double(x, n);
         printf(" r ="); print_buffer_double(r, n);
     }
+    free(r);
+    free(p);
+    free(Ap);
 }
