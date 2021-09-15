@@ -204,6 +204,9 @@ void print_buffer_int(index* buffer, int len);
 void print_buffer_double(double* buffer, int len);
 index copy_buffer(const double* a, double *b, index n);
 
+/* for mg/FEM, declaration in demo files */
+double kappa( double x[2], index typ );
+double F_vol( double x[2], index typ );
 
 #define HPC_MAX(a,b) (((a) > (b)) ? (a) : (b))
 #define HPC_MIN(a,b) (((a) < (b)) ? (a) : (b))

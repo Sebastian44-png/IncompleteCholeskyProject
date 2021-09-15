@@ -14,29 +14,30 @@ I = -I../Include
 LDLIBS += -lm
 CS = $(LDFLAGS) ../Lib/libhpc.a $(LDLIBS)
 
-all: lib icholesky_demo
+all: lib demo
 #	- ./icholesky_demo
 #	- ./hpc_demo 4
 #- ./gem_lu_demo 2
 #- ./sed_lu_demo 2
 #- ./sed_icne0 2
-	- ./cg_demo 2
+#	- ./cg_demo 2
 # ./linked_list_demo
+	- ./pcg_mg_demo1 problem1 2
 
 lib:
 	( cd ../Lib ; $(MAKE) )
 
-icholesky_demo: lib icholesky_demo.c Makefile
+demo: lib pcg_mg_demo1.c Makefile
 #$(CC) $(CF) $(I) -o  icholesky_demo icholesky_demo.c $(CS)
 #$(CC) $(CF) $(I) -o gem_lu_demo gem_lu_demo.c $(CS)
 #$(CC) $(CF) $(I) -o hpc_demo hpc_demo.c $(CS)
 #$(CC) $(CF) $(I) -o linked_list_demo linked_list_demo.c $(CS)
 #$(CC) $(CF) $(I) -o sed_icne0 sed_icne0_demo.c $(CS)
-	$(CC) $(CF) $(I) -o cg_demo cg_demo.c $(CS)
+	$(CC) $(CF) $(I) -o pcg_mg_demo1 pcg_mg_demo1.c $(CS)
 
 clean:
 	- $(RM) *.o
 
 purge: clean
-	- $(RM) -r icholesky_demo \
+	- $(RM) -r pcg_mg_demo1 \
     *.a *.dSYM *.obj *.dll
