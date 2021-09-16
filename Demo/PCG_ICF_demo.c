@@ -8,7 +8,7 @@ int main (int argc, char **argv)
     cs *A_cs ;
     sed *A_sed ;
     double *b ;
-    double *b_tilde ;
+    double *x ;
     
     sed *L_sed ;
     index lnzmax;
@@ -17,12 +17,13 @@ int main (int argc, char **argv)
     N = 3 ;
     index n = pow(N,2) ;
     b = malloc(n*sizeof(double)) ;
-    b_tilde = malloc (n *sizeof(double)) ;
+    x = malloc(n*sizeof(double)) ;
     A_cs = cs_lapmat_p1_square(N) ;
     
     for (index i = 0 ; i < n ; i++)
     {
         b[i] = 1 ;
+        x[i] = 0 ;
     }
 
     printf("\nProblem:\n") ;
@@ -38,16 +39,43 @@ int main (int argc, char **argv)
     sed_icholesky(A_sed, L_sed);      
     
     sed_print(L_sed,0);
-
-
-    printf("\n===========================\n") ;
-    printf("forward insertion L*b_tilde = b\n") ;
     
-    sed_forwardInsertion(L_sed, b_tilde, b );
-
-    for (index i = 0 ; i < n ; i++)
-    {
-        printf("%f\n",b_tilde[i] ) ;
+    printf("b = \n");
+    for (index i = 0 ; i < n ; i++){
+        printf("%f  ", b[i]) ;
     }
+    printf("\n"); 
+    /* ZwischenTest 
+    printf("\n=============================\n") ;
+    printf("forwardInsertion\n");
 
+    sed_forwardInsertion(L_sed, x, b);
+    printf("x = \n");
+    for (index i = 0; i < n ; i++) {
+        printf("%f  ", x[i]);
+        x[i] = 0;
+    } 
+    printf("\n");
+    
+    
+    printf("\n=============================\n") ;
+    printf("backwardInsertion\n");
+
+
+    sed_backwardInsertion(L_sed, x, b);
+
+    printf("x = \n");
+
+    for (index i = 0; i < n ; i++) {
+        printf("%f  ", x[i]);
+    }
+    printf("\n");
+    */
+    
+    printf("\n===========================\n") ;
+    printf("Aplly the pcg method with icf\n") ;
+
+    sed_ccg(A_sed , L_sed , b , x ,n , 1) ;
+    printf("Am Ziel\n"); 
+   
 }

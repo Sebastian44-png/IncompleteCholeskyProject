@@ -6,7 +6,11 @@ index sed_isoccupied( sed *A , index column , index row)
 {
     index isThere = -1 ;
     index *ind ;
-    
+    /*check input*/
+    if(!A)
+    {
+        return (-1) ;
+    }    
     ind = A->i ;
 
     for (index i = 0 ; i < ind[column +1] - ind[column] ; i++ )

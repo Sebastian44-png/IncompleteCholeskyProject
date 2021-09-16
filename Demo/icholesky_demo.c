@@ -12,15 +12,11 @@ int main(int argc, char **argv)
     index n = 9 ;
     double *x = malloc(n*sizeof(double));
     double *b = malloc(n*sizeof(double));
-    b[0] = 1;
-    b[1] = 1;
-    b[2] = 1;
-    b[3] = 1;
-    b[4] = 1;
-    b[5] = 1;
-    b[6] = 1;
-    b[7] = 1;
-    b[8] = 1;
+    
+    for (index k = 0 ; k < n ; k++){
+        b[k] = 1;
+        x[k] = 0;
+    }
 
 
     N = 3;
@@ -40,7 +36,9 @@ int main(int argc, char **argv)
     
     sed_icholesky(A_sed, L_sed);
     
-   /* sed_print(L_sed, 0);*/    
+    printf("==========================\n");
+    printf("L Matrix\n");
+    sed_print(L_sed, 0);    
     
     sed_forwardInsertion(L_sed, x, b);
    

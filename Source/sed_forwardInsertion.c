@@ -16,9 +16,10 @@ index sed_forwardInsertion(sed *L , double *x , double *b)
     n = L->n ;
     ind = L->i ;
     val = L->x ;
+   
     x [0] = b [0] / val [0] ;
     
-    for (index i = 1 ; i < n ;  i++)
+    for (index i = 1 ; i < n ; i++)
     {
         for (index ptr = ind[i - 1] ; ptr < ind[i] ; ptr ++)
         {
@@ -27,4 +28,5 @@ index sed_forwardInsertion(sed *L , double *x , double *b)
 
         x [i] = (b [i] - x [i]) / val [i] ;
     }
+    return (1) ;
 }

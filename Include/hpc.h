@@ -132,7 +132,7 @@ index sed_icholesky(sed *A, sed *L);
 index sed_isoccupied(sed *A, index column, index row);
 index sed_forwardInsertion(sed *L, double *x, double *b);
 index sed_backwardInsertion(sed *L, double *x, double *b);
-
+index sed_ccg(sed *A, sed *L, double *b, double *x, index maxIt, double tol);
 index sed_ILU(sed *A) ;
 index sed_MILU(sed *A, double alpha) ;
 

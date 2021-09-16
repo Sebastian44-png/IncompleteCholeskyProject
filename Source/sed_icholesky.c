@@ -80,4 +80,5 @@ index sed_icholesky (sed *A, sed *L)
         }
     }
     return (1) ;
+
 }
