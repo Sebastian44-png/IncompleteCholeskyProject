@@ -11,8 +11,8 @@ node* create_slist(){
     return (node *) malloc(sizeof(node));
 }
 
-/* adds a node after current node,
-   retruns the new current node */
+/* adds a node after tail node,
+   retruns the new tail node */
 node* append_node(node* tail, double data, index ind){
     
     node* new = malloc(sizeof(node));

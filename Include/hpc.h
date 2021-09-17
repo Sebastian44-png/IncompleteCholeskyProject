@@ -138,6 +138,7 @@ index sed_MILU(sed *A, double alpha) ;
 
 index sed_icne0 (sed *A, double alpha, sed* L);
 double* sed_find_in_column(sed* A, index row, index col);
+index sed_L_to_LLt(sed* L, sed* LLt);
 
 index sed_gauss_seidel(const sed *A, const double *b, double *xk, double *w);
 index sed_jacobi (const sed *A, const double *b, double *xk, double *w );
