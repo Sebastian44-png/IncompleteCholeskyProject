@@ -3,9 +3,8 @@
 index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double tol)
 {
     /*check input*/
-    if(!A || !L || !b || !x || !maxIt || !tol)
+    if(!A || !L || !b || !x)
     {
-        printf("Da ist was schief gelaufen\n");
         return (0) ;
     }
 
@@ -21,17 +20,19 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
     double beta ; 
     double roh ;
     double roh_next ;
-
+    double *Lap ;
+    
     r = malloc(An * sizeof(double)) ;
     r_next = malloc(An * sizeof(double)) ;
     p = malloc(An * sizeof(double)) ;
     Ap = malloc(An * sizeof(double)) ;
+    Lap = malloc(An *sizeof(double)) ;
+    
     for (index i = 0 ; i < An ; i++)
     {
         r [i] = 0. ;
         r_next [i] = 0. ;
         p [i] = 0. ;
-
     }
 
 
@@ -61,7 +62,7 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
     for (index k = 0 ; k < maxIt ; k ++)
     {
         printf("\n=====\n");
-        printf("Iternation: %ld\n", k);
+        printf("Iteration: %ld\n", k);
         /*calculate the Matrix vektor product*/
         for (index i = 0 ; i < An ; i++) 
         {
@@ -70,21 +71,29 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
         
         sed_spmv(A , p , Ap);
         
-        /*check if the norm of Ap == 0, if true error*/
-        if(hpc_dot(Ap, Ap, An) == 0)
-        {
-            return (0) ;
-        } 
         
         /*calculate alpha*/
-        alpha = roh / hpc_dot(Ap , p , An) ;
+        alpha = hpc_dot(Ap, p, An) ;
+        if (alpha == 0)
+        {
+            return (0) ;
+        }
+        alpha = roh / alpha ;
 
         /*calculate the next solution x*/
         hpc_scal(x , p , alpha , An) ;
-
+        
         /*calculate the next residuum*/
-        hpc_scal(r , Ap , -alpha , An) ;
-
+        for (index i = 0 ; i < An ; i++)
+        {
+            Lap [i] = 0 ;
+        }
+        sed_forwardInsertion (L , Lap , Ap) ;
+        hpc_scal(r , Lap , -alpha , An) ;
+        if(hpc_dot(r,r,An) < tol)
+        {
+            return (k);
+        }
         /*caluclate the next roh*/
         roh_next = hpc_dot(r , r , An) ;
 
@@ -118,11 +127,11 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
 
     /*memory release*/
    
-  // free(r) ;
-  // free(r_next) ;
-  // free(p) ;
-  // free(Ap) ;
-   
+    free (r) ;
+    free (r_next) ;
+    free (p) ;
+    free (Ap) ;
+    free (Lap) ; 
    
    return (1) ;  
 }
