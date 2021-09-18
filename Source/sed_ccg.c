@@ -61,8 +61,6 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
     /*cg iteration*/
     for (index k = 0 ; k < maxIt ; k ++)
     {
-        printf("\n=====\n");
-        printf("Iteration: %ld\n", k);
         /*calculate the Matrix vektor product*/
         for (index i = 0 ; i < An ; i++) 
         {
@@ -119,8 +117,6 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
         }
         /*update roh*/
         roh = roh_next ;
-        printf("x = \n");
-        print_buffer_double(x,An);        
     }
 
 
