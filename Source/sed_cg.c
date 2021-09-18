@@ -22,7 +22,8 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
     double error;
     
    // r(0) = b - Ax(0)
-    sed_spmv(A, x, r);
+    sed_gaxpy(A, x, r);
+    //sed_spmv(A, x, r);
 
     for ( index i = 0; i < n; i++)
     {
@@ -49,8 +50,8 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
         {
             Ap [i] = 0;
         }
-
-        sed_spmv(A, p, Ap); // Ap  = A * p
+        sed_gaxpy(A, p, Ap);
+        //sed_spmv(A, p, Ap); // Ap  = A * p
 
         alpha = rho / hpc_dot(Ap, p, n); 
         

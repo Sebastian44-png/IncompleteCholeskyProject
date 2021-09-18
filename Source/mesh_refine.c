@@ -47,7 +47,6 @@ mesh *mesh_refine(mesh *In)
     nC[2*nCoord+2*i  ] = 0.5*(C[2*i0  ] + C[2*i1  ]);
     nC[2*nCoord+2*i+1] = 0.5*(C[2*i0+1] + C[2*i1+1]);
   }   
-
   /* Create new elements */
   for ( i = 0 ; i < nElem ; i++){
     for ( k = 0 ; k < 3 ; k++){

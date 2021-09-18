@@ -26,6 +26,7 @@ index sed_gs_constr (const sed *A, const double *b, double *x, double *w,
         } 
         else 
         {
+          printf("Fixed node, ft = %i\n", (int) ft);
           if (t < nFixed) ft = fixed[t++];
         }
         for (p = Ai[j] ; p < Ai[j+1] ; p++) w[Ai[p]] -= Ax[p] * x [j];    

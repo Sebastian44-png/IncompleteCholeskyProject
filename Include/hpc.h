@@ -93,6 +93,11 @@ index hpc_mg(sed **A, double *b, double *x, double tol, index maxit,
 index hpc_mg_cycle(sed **A, mesh **H, index nLevel, 
                    double **b, double **x, double **r,
                    index pre, index post, index gamma);
+index hpc_mg_jac(sed **A, double *b, double *x, double tol, index maxit,
+             mesh **H, index nLevel, index pre, index post, index gamma);
+index hpc_mg_cycle_jac(sed **A, mesh **H, index nLevel, 
+                   double **b, double **x, double **r,
+                   index pre, index post, index gamma);
 void hpc_prol(double *x, index nx, index *edgeno, index nEdges, double *y);
 void hpc_prol_quad(double *x, double *y, index *elem, index nC, index nT, index nE);
 void hpc_rest(double *x, index *edgeno, index nEdges, double *y, index ny);
@@ -170,10 +175,14 @@ index sed_richardson (const sed *A, const double *b, double *xk, double *w, cons
 index sed_cg (const sed *A, double *b, double *x, index maxIt, double tol);
 index sed_pcg_mg(sed **A, double *b, double *x, double tol, index maxIt,
              mesh **H, index nLevel, index pre, index post, index gamma);
+index sed_pcg_mg_jac(sed **A, double *b, double *x, double tol, index maxIt,
+             mesh **H, index nLevel, index pre, index post, index gamma);
 
 index sed_gaxpy (const sed *A, const double *x, double *y);
 index sed_gs_constr (const sed *A, const double *b, double *x, double *w, 
                      index *fixed, index nFixed, index forward);
+index sed_jacobi_constr(const sed *A, const double *b, double *x, double *w, 
+                     index *fixed, index nFixed);
 index sed_dupl (sed *A);
 
 /* For MG examples */

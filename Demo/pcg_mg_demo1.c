@@ -25,7 +25,8 @@ double g_Neu( double x[2], index typ )
 double u_D( double x[2])
 {
 //  return ( 0.0 );
-  return ( x[0] * x[1] );
+//return ( x[0] * x[1] );
+return (1.0);
 }
 
 
@@ -37,6 +38,12 @@ int main (int argc, char **argv)
     double *b, *x, *w, *Coord, x1[2], x2[2], m[2];
     mesh **H, *T ;
     sed **A;
+    double *bR;
+    sed *AR;
+    double *dBuff;
+    index ft ;
+    index fptr ;
+    index *fixed ;
     
     TIME_SAVE(0);
     printf("\n========================================\n");
@@ -54,9 +61,11 @@ int main (int argc, char **argv)
     /* Load problem */
     H[0] = mesh_load (fname);              /* load geometry */
     mesh_getEdge2no(H[0]->nelem, H[0]->elem, &H[0]->nedges, &H[0]->edge2no);
-    H[0]->fixed = mesh_getFixed(H[0]->ncoord, H[0]->bdry, H[0]->nbdry, &H[0]->nfixed);
+    H[0]-> fixed = malloc(sizeof(double));
+    H[0]-> fixed[0] = -1;
+    //H[0]->fixed = mesh_getFixed(H[0]->ncoord, H[0]->bdry, H[0]->nbdry, &H[0]->nfixed);
     printf("\nInit mesh  # dofs =  %10g\n",(double)  H[0]->ncoord+H[0]->nedges);
-    
+    mesh_print(H[0], 0);
     /* Build stiffness matrix, refine mesh and create hierachy  */ 
     k = 0;
     while(1)
@@ -68,8 +77,10 @@ int main (int argc, char **argv)
       H[k+1] = mesh_refine(H[k]);
       mesh_getEdge2no(H[k+1]->nelem, H[k+1]->elem,
                       &H[k+1]->nedges, &H[k+1]->edge2no);
-      H[k+1]->fixed = mesh_getFixed(H[k+1]->ncoord, H[k+1]->bdry, 
-                                    H[k+1]->nbdry, &H[k+1]->nfixed);
+      //H[k+1]->fixed = mesh_getFixed(H[k+1]->ncoord, H[k+1]->bdry, 
+       //                             H[k+1]->nbdry, &H[k+1]->nfixed);
+      H[k+1]-> fixed = malloc(sizeof(double));
+      H[k+1]-> fixed[0] = -1;
       k++;
     }
     TIME_SAVE(1);
@@ -85,7 +96,7 @@ int main (int argc, char **argv)
     
     /* incorporate Dirichlet data */
     ncoord = H[N]->ncoord ; nelem = H[N]->nelem ; nbdry = H[N]->nbdry ; 
-    bdry = H[N]->bdry; H[N]->fixed = mesh_getFixed(ncoord, bdry, nbdry, &H[N]->nfixed);
+    bdry = H[N]->bdry; //H[N]->fixed = mesh_getFixed(ncoord, bdry, nbdry, &H[N]->nfixed);
     nfixed = H[N]->nfixed ; nedges = H[N]->nedges; Coord = H[N]->coord;
 
     for ( k = 0; k < nbdry; k++)
@@ -101,10 +112,53 @@ int main (int argc, char **argv)
         x[ncoord + bdry[4*k+2]] = u_D(m);
       }
     }
-    
+
+    bR = calloc (n, sizeof(double)) ;
+    dBuff = calloc (n, sizeof(double)) ;
+    fixed = H[N]->fixed ;
+    ft = fixed [0];
+    fptr = 0;
+    for (k = 0 ; k < n ; k++)
+    {
+      bR [k] = b [k] ;
+      if (k == ft)
+      {
+        dBuff [k] = -1 * x [k] ;
+        fptr++ ;
+        if (fptr < nfixed)
+        {
+          ft = fixed [fptr] ;
+        }
+      }
+      else
+      {
+        dBuff [k] = 0 ;
+      }
+    }
+    sed_gaxpy(A [N], dBuff, bR) ;
+    k = 0 ;
+    ft = fixed [0];
+    fptr = 0;
+    for (index kb; kb < n; kb++) 
+    {
+      if (kb == ft)
+      {
+        fptr++ ;
+        if (fptr < nfixed)
+        {
+          ft = fixed [fptr] ;
+        }
+      }
+      else
+      {
+        bR [k] = bR [kb] ;
+        k++ ;
+      }
+    }
+
     TIME_SAVE(3);
     cnt = sed_pcg_mg(A, b, x, 1e-10, 50, H, N, 1, 1, 1);  
-    // cnt = sed_cg(A [N], b, x, 50, 1e-50);
+    // cnt = sed_cg(A [N], b, x, 50, 1e-10);
     TIME_SAVE(4);
                                    
     for (k=0; k<HPC_MIN(10,A[N]->n); k++){ printf(" x[%g] = %g\n",(double) k, x[k]);}
@@ -125,7 +179,6 @@ int main (int argc, char **argv)
     total = ncoord*2*sizeof(double) 
           + (7*nelem+4*nbdry+nedges*2)*sizeof(index);
     printf ("Total :       %12.6g MByte\n", (double) total/1024./1024.);
-
     for (k=0; k<=N; k++) {mesh_free(H[k]); sed_free(A[k]);}
     free(H); free(A);
 

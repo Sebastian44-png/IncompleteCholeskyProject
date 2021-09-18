@@ -2,7 +2,7 @@
 
 /* Preconditioned Conjugate gradient method with multigrid preconditioner
 sed **A needs to be grid hierarchy */
-index sed_pcg_mg(sed **A, double *b, double *x, double tol, index maxIt,
+index sed_pcg_mg_jac(sed **A, double *b, double *x, double tol, index maxIt,
              mesh **H, index nLevel, index pre, index post, index gamma)
 {
     index n;
@@ -38,11 +38,14 @@ index sed_pcg_mg(sed **A, double *b, double *x, double tol, index maxIt,
         z [i] = 0;
         r [i] = b[i] - r [i];
     }
-    printf("Entering mg");
-    hpc_mg(A, r, z, 0, 1, H, nLevel, pre, post, gamma);
+    printf("Entering mg\n");
+    print_buffer_double(r, n);
+    hpc_mg_jac(A, r, z, 0, 1, H, nLevel, pre, post, gamma);
+    print_buffer_double(r, n);
     print_buffer_double(z, n);
-    printf("First mg done");
+    printf("First mg done\n");
     copy_buffer(z, p ,n);
+    print_buffer_double(p, n);
     rho_prev = hpc_dot(r, z, n);
 
     for(index k = 0; k < maxIt; k++){
@@ -52,6 +55,8 @@ index sed_pcg_mg(sed **A, double *b, double *x, double tol, index maxIt,
             z[i] = 0;
         }
         sed_gaxpy(A [nLevel], p, Ap);
+        printf("Ap = ");
+        print_buffer_double(Ap, n);
         //sed_spmv(A [nLevel], p, Ap);
         //printf("spmv done");
         alpha = rho_prev / hpc_dot(Ap, p, n);
@@ -75,7 +80,11 @@ index sed_pcg_mg(sed **A, double *b, double *x, double tol, index maxIt,
             return(k);
         }
         // preconditioning:
-        hpc_mg(A, r, z, 0, 1, H, nLevel, pre, post, gamma);
+        printf("r = ");
+        print_buffer_double(r, n);
+        hpc_mg_jac(A, r, z, 0, 1, H, nLevel, pre, post, gamma);
+        printf("z = ");
+        print_buffer_double(z, n);
         //print_buffer_double(z, n);
 
         for (index i = 0; i < n; i++)

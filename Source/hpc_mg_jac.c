@@ -1,6 +1,6 @@
 #include "hpc.h"
 
-index hpc_mg(sed **A, double *b, double *x, double tol, index maxit,
+index hpc_mg_jac(sed **A, double *b, double *x, double tol, index maxit,
              mesh **H, index nLevel, index pre, index post, index gamma)
 {
     
@@ -12,9 +12,9 @@ index hpc_mg(sed **A, double *b, double *x, double tol, index maxit,
         //	  nIter = hpc_cg_constr(A[0], b, x, H[0]->fixed,
         //                          H[0]->nfixed, tol, maxit);
         wr = malloc( A[0]->n * sizeof(double));
-        for (k = 0; k < 10; k++){
-            sed_gs_constr(A[0], b, x, wr, H[0]->fixed, H[0]->nfixed, 1);
-            sed_gs_constr(A[0], b, x, wr, H[0]->fixed, H[0]->nfixed, 0);
+        for (k = 0; k < 10; k++)
+        {
+            sed_jacobi_constr(A[0], b, x, wr, H[0]->fixed, H[0]->nfixed);
         }
         free(wr);
         nIter = 2 * k;
@@ -67,7 +67,7 @@ index hpc_mg(sed **A, double *b, double *x, double tol, index maxit,
                 free(xx); free(bb); free(rr);
                 return (j);
             }
-            hpc_mg_cycle(A, H, nLevel, bb, xx, rr, pre, post, gamma);
+            hpc_mg_cycle_jac(A, H, nLevel, bb, xx, rr, pre, post, gamma);
         }
         // fprintf(stderr,
         //        "Max iterations reached: maxit = %ld, r = %g\n", maxit, sqrt(tmp));

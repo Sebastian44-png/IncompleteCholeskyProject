@@ -76,7 +76,9 @@ sed *sed_nz_pattern(mesh *M)
     }
   }
   free(w);
-  if (!sed_dupl(S)) return (sed_free(S)) ;          /* remove duplicates */
+  if (!sed_dupl(S)) {
+    return (sed_free(S)) ;          /* remove duplicates */
+  }
   return(S);
 }
 

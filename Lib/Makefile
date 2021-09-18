@@ -42,7 +42,9 @@ HPC = \
  hpc_malloc.o \
  hpc_cumsum.o \
  hpc_mg_cycle.o \
+ hpc_mg_cycle_jac.o \
  hpc_mg.o \
+ hpc_mg_jac.o \
  hpc_prol.o \
  hpc_rest.o \
  jds_spmv.o \
@@ -52,6 +54,7 @@ HPC = \
  sed_gaxpy.o \
  sed_gs_constr.o \
  sed_pcg_mg.o \
+ sed_pcg_mg_jac.o \
  sed_icholesky.o \
  sed_isoccupied.o \
  sed_forwardInsertion.o \
@@ -63,6 +66,7 @@ HPC = \
  sed_ILU.o \
  sed_MILU.o \
  sed_jacobi.o \
+ sed_jacobi_constr.o \
  sed_richardson.o \
  sed_cg.o \
  sed_icne0.o \

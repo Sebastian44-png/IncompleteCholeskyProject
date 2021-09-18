@@ -24,7 +24,7 @@ double g_Neu( double x[2], index typ )
 
 double u_D( double x[2])
 {
-//  return ( 0.0 );
+  //return ( 0.0 );
   return ( x[0] * x[1] );
 }
 
@@ -56,7 +56,6 @@ int main (int argc, char **argv)
     mesh_getEdge2no(H[0]->nelem, H[0]->elem, &H[0]->nedges, &H[0]->edge2no);
     H[0]->fixed = mesh_getFixed(H[0]->ncoord, H[0]->bdry, H[0]->nbdry, &H[0]->nfixed);
     printf("\nInit mesh  # dofs =  %10g\n",(double)  H[0]->ncoord+H[0]->nedges);
-    
     /* Build stiffness matrix, refine mesh and create hierachy  */ 
     k = 0;
     while(1)
