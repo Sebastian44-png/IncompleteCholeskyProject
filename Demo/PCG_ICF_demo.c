@@ -31,7 +31,7 @@ int main (int argc, char **argv)
     double *errorICNE ;
     
     /*allocate memory*/
-    N = 3 ;
+    N = 5 ;
     n = pow (N,2) ;
     maxIt = 2*n ;
     b = malloc(n*sizeof(double)) ;
@@ -60,10 +60,8 @@ int main (int argc, char **argv)
     sed_icholesky (A_sed , L_sed_icf) ;      
     
     /*apply the icne(0) factorization on the prolblem A*/
-    alpha = 1 ;
-    printf("S0\n" );
-    sed_icne0 (A_sed , alpha , L_sed_icne ) ;
-    printf("S1 \n"); 
+    //alpha = 1 ;
+    //sed_icne0 (A_sed , alpha , L_sed_icne ) ;
     /*PCG with Jacobi as preconditioner*/
     /*TODO*/
 
@@ -71,29 +69,44 @@ int main (int argc, char **argv)
     /*TODO*/
 
     /*PCG with ICF as preconditioner*/
+    TIME_SAVE (0) ;
+    anaAnzIt [2] = sed_ccg (A_sed , L_sed_icf , b , x , maxIt , tol, errorICF) ;
+    TIME_SAVE (1) ;
+    anaAvgTime [2] = TIME_ELAPSED (0 , 1) / anaAnzIt [2] ; 
     
-    sed_ccg (A_sed , L_sed_icf , b , x , maxIt , tol) ;
-
     /*PCG with ICNE as preconditioner*/
-    //sed_ccg (A_sed , L_sed_icne , b , x , maxIt, tol) ;    
 
     /*analysis in a txt file*/
-    
-    
+    FILE *f ;
+    f = fopen("Analyse_Problem_1.txt","w") ;
+    fprintf(f,"Preconditioner: Jacobi Gauss-Seidel ICF ICNE Multigrid\n") ;
+    fprintf(f,"Number_of_Iteration: ") ;
+    for (index i = 0 ; i < 5 ; i++)
+    {
+        fprintf(f,"%ld ", anaAnzIt[i]) ;
+    }
+    fprintf(f,"\naverage_time_per_Iteration: ") ;
+    for (index i = 0 ; i < 5 ; i++)
+    {
+        fprintf(f,"%f ", anaAvgTime[i]) ;
+    }
+    fprintf(f,"\nError_ICF: ");
+    for (index i = 0 ; i < anaAnzIt[2]; i++)
+    {
+        fprintf(f,"%f ", errorICF[i]) ;
+    }
+    fclose(f);
 
     /*free memory*/
-
     free (b) ;
     free (x) ;
     sed_free (A_sed) ;
     sed_free (L_sed_icf) ;
-    //sed_free (L_sed_icne) ;
-
+    sed_free (L_sed_icne) ;
     free (anaAnzIt) ;
     free (anaAvgTime) ;
     free (errorJacobi) ;
     free (errorGauss) ;
     free (errorICF) ;
     free (errorICNE) ;
-
-    }
+}

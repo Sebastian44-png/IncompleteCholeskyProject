@@ -1,0 +1,4 @@
+Preconditioner: Jacobi Gauss-Seidel ICF ICNE Multigrid
+Number_of_Iteration: 0 0 5 0 0 
+average_time_per_Iteration: 0.000000 0.000000 20.200000 0.000000 0.000000 
+Error_ICF: 24.001773 0.905382 0.007864 0.000063 0.000000 

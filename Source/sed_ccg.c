@@ -1,6 +1,6 @@
 #include "hpc.h"
 
-index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double tol)
+index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double tol, double *error)
 {
     /*check input*/
     if(!A || !L || !b || !x)
@@ -21,6 +21,7 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
     double roh ;
     double roh_next ;
     double *Lap ;
+    index anzIt ;
     
     r = malloc(An * sizeof(double)) ;
     r_next = malloc(An * sizeof(double)) ;
@@ -81,6 +82,9 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
         /*calculate the next solution x*/
         hpc_scal(x , p , alpha , An) ;
         
+        /*save actuall residual*/
+        error [k] = hpc_dot(r , r , An);
+        
         /*calculate the next residuum*/
         for (index i = 0 ; i < An ; i++)
         {
@@ -88,6 +92,8 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
         }
         sed_forwardInsertion (L , Lap , Ap) ;
         hpc_scal(r , Lap , -alpha , An) ;
+        
+        /*check if abort criterion is reached */
         if(hpc_dot(r,r,An) < tol)
         {
             return (k);
@@ -117,6 +123,7 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
         }
         /*update roh*/
         roh = roh_next ;
+        anzIt = k ;
     }
 
 
@@ -129,5 +136,5 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
     free (Ap) ;
     free (Lap) ; 
    
-   return (1) ;  
+   return (anzIt) ;  
 }
