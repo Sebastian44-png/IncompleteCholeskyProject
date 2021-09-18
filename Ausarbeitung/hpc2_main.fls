@@ -1264,6 +1264,11 @@ INPUT /home/sebastian/Documents/Master/Semester2/HPC2/IncompletCholeskyProject/P
 INPUT /home/sebastian/Documents/Master/Semester2/HPC2/IncompletCholeskyProject/Programmcode/Ausarbeitung/hpc2_main.toc
 INPUT /home/sebastian/Documents/Master/Semester2/HPC2/IncompletCholeskyProject/Programmcode/Ausarbeitung/hpc2_main.toc
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 OUTPUT /home/sebastian/Documents/Master/Semester2/HPC2/IncompletCholeskyProject/Programmcode/Ausarbeitung/hpc2_main.toc
 INPUT /home/sebastian/Documents/Master/Semester2/HPC2/IncompletCholeskyProject/Programmcode/Ausarbeitung/ProjectX/Finalproject0X.tex
 INPUT /home/sebastian/Documents/Master/Semester2/HPC2/IncompletCholeskyProject/Programmcode/Ausarbeitung/ProjectX/Finalproject0X.tex
@@ -1281,13 +1286,9 @@ INPUT /home/sebastian/Documents/Master/Semester2/HPC2/IncompletCholeskyProject/P
 INPUT /home/sebastian/Documents/Master/Semester2/HPC2/IncompletCholeskyProject/Programmcode/Ausarbeitung/ProjectX/Finalproject0X.tex
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsl10.tfm
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr9.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm
 INPUT /home/sebastian/Documents/Master/Semester2/HPC2/IncompletCholeskyProject/Programmcode/Ausarbeitung/./ProjectX/Code/HelloWorld.c

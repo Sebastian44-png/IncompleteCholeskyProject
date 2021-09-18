@@ -8,15 +8,37 @@ Als L\"osungsmethoden f\"ur solche Probleme k\"onnen sich klassische direkte L\"
 Als geeigneter stellen sich iterative Methoden heraus, die sich schrittweise der optimalen L\"osung ann\"ahern, heraus. Ein bew\"ahrtes Verfahren dieser Klasse ist das konjugierte Gradientenverfahren, welches für  symmetrisch positiv definitite Matrizen anwendbar ist. Die anspruchvollste Operation stellt hier das Matrix-Vektor Produkt dar. Dieses kann f\"ur d\"unnbesetze Matrizen mit einem g\"unstigen Aufwand berechnet werden. \cite{GoluVanl96}
 
 % Warum Vorkonditionierung
-Allerdings weisen iterative Verfahren, wie das cg-Verfahren, eine geringere Robustheit als direkte Verfahren auf. Au{\ss}erdem h\"angt die Konvergenzgeschwindigkeit von der Kondition der Matrix ab. Bei Problemen, die sich aus typischen Anwendungen wie der Str\"umungsdynamik oder der Festigkeits- und Verformungsanalyse ergeben, kann dies zu einer langsamen Konvergenz führen.
+Allerdings weisen iterative Verfahren, wie das cg-Verfahren, eine geringere Robustheit als direkte Verfahren auf. Au{\ss}erdem h\"angt die Konvergenzgeschwindigkeit von der Kondition der Matrix ab. Bei Problemen, die sich aus typischen Anwendungen wie der Str\"umungsdynamik oder der Festigkeits- und Verformungsanalyse ergeben, kann dies zu einer langsamen Konvergenz f\"uhren.
 Die Effizienz sowohl als die Robustheit k\"onnen jedoch signifikant durch geeignete Vorkonditionierung signifikant verbessert werden. \cite{saad03:IMS}
 
-Die Wahl eines Vorkonditionierers hängt stark von den Eigenschaften der Matrix ab, weshalb die Wahl eines geeigneten Vorkonditionierers nicht leich ist. W\"ahrend direkte L\"osungsverfahren zur L\"osung von großen und d\"unnbesetzten Gleichungssystemen oft nicht anwendbar sind, stellen sie in modifizierter Form geeignete Vorkonditionierer für iterative Verfahren dar. Für
+Die Wahl eines Vorkonditionierers h\"angt stark von den Eigenschaften der Matrix ab, weshalb die Wahl eines geeigneten Vorkonditionierers nicht leich ist. W\"ahrend direkte L\"osungsverfahren zur L\"osung von gro{\ss}en und d\"unnbesetzten Gleichungssystemen oft nicht anwendbar sind, stellen sie in modifizierter Form geeignete Vorkonditionierer für iterative Verfahren dar. Es ist au{\ss}erdem m\"oglich einige Schritte des Jacobi- oder symmetrischen Gau{\ss}-Seidel-
+Verfahrens als Vorkonditionierer zu nutzen. \cite{saad03:IMS}
 
 % Inhalt der Arbeit
-Im Rahmen der Arbeit werden eine Auswahl an Verfahren zur Vorkonditionierung des konjugierten Gradientenverfahrens vorgestellt und verglichen. Folgende Verfahren wurden als Vorkonditionierer angewendet: Jacob-Verfahren, Gauss-Seidel, multigrid, Incomplete Cholesky und  INCE(0).
+Im Rahmen der Arbeit wurden eine Auswahl an Methoden zur L\"osung von d\"unnbesetzten symmerisch positiv definiten Matrizen implementiert. Au{\ss}erdem wurden Vorkonditionierung des konjugierten Gradientenverfahrens vorgestellt und verglichen. Folgende Verfahren wurden als Vorkonditionierer angewendet: Jacob-Verfahren, Gauss-Seidel, multigrid, Incomplete Cholesky und INCE(0).
 
 \newpage
+
+\section{Implementierte Verfahren}
+
+
+
+\subsection{LR-Zerlegung}
+\subsection{Cholesky Faktorisierung}
+\subsection{Incomplete LR-Zerlegng}
+\subsection{Incomplete Cholesky Faktorisierung}
+\subsection{Modified Incomplete Cholesky Faktorisierung}
+\subsection{ICNE(0)}
+
+
+\section{Vorkonditionierer f\"ur das konjugierte Gradientenverfahren}
+
+\section{Numerischer Vergleich der Vorkonditionierer f\"ur das CG-Verfahren}
+
+
+
+
+
 
 Hier noch ein Algorithmus:
 

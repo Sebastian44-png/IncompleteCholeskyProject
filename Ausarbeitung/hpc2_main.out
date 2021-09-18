@@ -1,1 +1,10 @@
 \BOOKMARK [1][-]{section.1}{Einleitung}{}% 1
+\BOOKMARK [1][-]{section.2}{Implementierte Verfahren}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{LR-Zerlegung}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Cholesky Faktorisierung}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Incomplete LR-Zerlegng}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Incomplete Cholesky Faktorisierung}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.5}{Modified Incomplete Cholesky Faktorisierung}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.6}{ICNE\(0\)}{section.2}% 8
+\BOOKMARK [1][-]{section.3}{Vorkonditionierer f\374r das konjugierte Gradientenverfahren}{}% 9
+\BOOKMARK [1][-]{section.4}{Numerischer Vergleich der Vorkonditionierer f\374r das CG-Verfahren}{}% 10
