@@ -51,22 +51,22 @@ int main (int argc, char **argv)
     //printf("x: "); print_buffer_double(A_sed->x, A_sed->nzmax);
     //printf("ind: "); print_buffer_int(A_sed->i, A_sed->nzmax);
 
-    printf("x: "); print_buffer_double(L->x, L->nzmax);
-    printf("ind: "); print_buffer_int(L->i, L->nzmax);
+    //printf("x: "); print_buffer_double(L->x, L->nzmax);
+    //printf("ind: "); print_buffer_int(L->i, L->nzmax);
     //printf("%d \n",(int)L->n);
     
-    sed * LLt = sed_alloc(L->n, 0, 1);
-    sed_L_to_LLt(L, LLt);
-    sed_print(LLt, 0);
+    //sed * LLt = sed_alloc(L->n, 0, 1);
+    //sed_L_to_LLt(L, LLt);
+    //sed_print(LLt, 0);
 
-    printf("x: "); print_buffer_double(LLt->x, LLt->nzmax);
-    printf("ind: "); print_buffer_int(LLt->i, LLt->nzmax);
+    printf("x: "); print_buffer_double(L->x, L->nzmax);
+    printf("ind: "); print_buffer_int(L->i, L->nzmax);
 
     cs_free (A_cs); 
     sed_free(A_sed);
     gem_free(A_gem);
     sed_free(L);
-    sed_free(LLt);
+    //sed_free(LLt);
     free(b);
 
     return (0) ;

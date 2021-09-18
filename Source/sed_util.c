@@ -30,9 +30,12 @@ index sed_realloc (sed *A, index nzmax)
 /* free a sparse matrix */
 sed *sed_free (sed *A)
 {
-    if (!A) return (NULL) ;      /* do nothing if A already NULL */
-    free (A->i) ;      /* free the sed struct and return NULL */
+    if (!A) return (NULL) ;   /* do nothing if A already NULL */
+    printf("!A\n");
+    free (A->i) ;
+    printf("i\n");  /* free the sed struct and return NULL */
     free (A->x) ;
+    printf("x\n");
     free (A);
     return (NULL) ; 
 }
