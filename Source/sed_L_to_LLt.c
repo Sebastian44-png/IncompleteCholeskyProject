@@ -3,7 +3,6 @@
 /* convert L matrix to L + L-transposed*/
 index sed_L_to_LLt(sed* L, sed* LLt)
 {
-
     if (!L) return (0);
     
     index l_n; 
