@@ -133,6 +133,8 @@ index sed_isoccupied(sed *A, index column, index row);
 index sed_forwardInsertion(sed *L, double *x, double *b);
 index sed_backwardInsertion(sed *L, double *x, double *b);
 index sed_ccg(sed *A, sed *L, double *b, double *x, index maxIt, double tol, double *error);
+index sed_cg_jacobi(sed *A, double *b, double *x, index maxIt, double tol , double *error);
+index sed_cg_gauss_seidel(sed *A, double *b, double *x, index maxIt, double tol , double *error);
 index sed_ILU(sed *A) ;
 index sed_MILU(sed *A, double alpha) ;
 

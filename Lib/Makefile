@@ -45,6 +45,8 @@ HPC = \
  jds_util.o  \
  sed_compress.o \
  sed_ccg.o \
+ sed_cg_jacobi.o \
+ sed_cg_gauss_seidel.o \
  sed_icholesky.o \
  sed_isoccupied.o \
  sed_forwardInsertion.o \

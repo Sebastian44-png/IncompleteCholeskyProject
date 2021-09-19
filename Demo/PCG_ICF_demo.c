@@ -33,7 +33,7 @@ int main (int argc, char **argv)
     /*allocate memory*/
     N = 5 ;
     n = pow (N,2) ;
-    maxIt = 2*n ;
+    maxIt = 10*n ;
     b = malloc(n*sizeof(double)) ;
     x = malloc(n*sizeof(double)) ;
     
@@ -62,38 +62,44 @@ int main (int argc, char **argv)
     /*apply the icne(0) factorization on the prolblem A*/
     //alpha = 1 ;
     //sed_icne0 (A_sed , alpha , L_sed_icne ) ;
+    
     /*PCG with Jacobi as preconditioner*/
-    /*TODO*/
+    TIME_SAVE (0) ;
+    anaAnzIt [0] = sed_cg_jacobi (A_sed , b , x , maxIt , tol, errorJacobi) ;
+    TIME_SAVE (1) ;
+    anaAvgTime [0] = TIME_ELAPSED (0 , 1) / anaAnzIt [0] ; 
+    
 
     /*PCG with Gauss-Seidel as preconditioner*/
-    /*TODO*/
+    for (index i = 0 ; i < n ; i++)
+    {
+        x [i] = 0 ;
+        b [i] = 1 ; 
+    }
+    TIME_SAVE (2) ;
+    anaAnzIt [1] = sed_cg_gauss_seidel (A_sed , b , x , maxIt , tol, errorGauss) ;
+    TIME_SAVE (3) ;
+    anaAvgTime [1] = TIME_ELAPSED (2 , 3) / anaAnzIt [1] ; 
 
     /*PCG with ICF as preconditioner*/
-    TIME_SAVE (0) ;
+    for (index i = 0 ; i < n ; i++)
+    {
+        x [i] = 0 ;
+        b [i] = 1 ;
+    }
+    TIME_SAVE (4) ;
     anaAnzIt [2] = sed_ccg (A_sed , L_sed_icf , b , x , maxIt , tol, errorICF) ;
-    TIME_SAVE (1) ;
-    anaAvgTime [2] = TIME_ELAPSED (0 , 1) / anaAnzIt [2] ; 
-    
+    TIME_SAVE (5) ;
+    anaAvgTime [2] = TIME_ELAPSED (4 , 5) / anaAnzIt [2] ; 
     /*PCG with ICNE as preconditioner*/
 
     /*analysis in a txt file*/
     FILE *f ;
     f = fopen("Analyse_Problem_1.txt","w") ;
-    fprintf(f,"Preconditioner: Jacobi Gauss-Seidel ICF ICNE Multigrid\n") ;
-    fprintf(f,"Number_of_Iteration: ") ;
-    for (index i = 0 ; i < 5 ; i++)
+    fprintf(f,"error_Jacobi error_Gauss error_ICF error_ICNE error_Multigrid\n") ;
+    for (index i = 0 ; i < maxIt ; i++)
     {
-        fprintf(f,"%ld ", anaAnzIt[i]) ;
-    }
-    fprintf(f,"\naverage_time_per_Iteration: ") ;
-    for (index i = 0 ; i < 5 ; i++)
-    {
-        fprintf(f,"%f ", anaAvgTime[i]) ;
-    }
-    fprintf(f,"\nError_ICF: ");
-    for (index i = 0 ; i < anaAnzIt[2]; i++)
-    {
-        fprintf(f,"%f ", errorICF[i]) ;
+        fprintf(f,"%f %f %f %f %f\n" , errorJacobi [i] , errorGauss [i] , errorICF [i] , errorICNE [i] , errorICNE [i]) ;
     }
     fclose(f);
 
