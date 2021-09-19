@@ -19,7 +19,7 @@ all: lib icholesky_demo
 #	- ./hpc_demo 4
 #- ./gem_lu_demo 2
 #- ./sed_lu_demo 2
-	- ./sed_icne0 3
+	- ./sed_icne0 11
 #	- ./cg_demo 2
 # ./linked_list_demo
 
