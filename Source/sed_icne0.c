@@ -73,7 +73,6 @@ index sed_icne0(sed* A, double alpha, sed* L){
 
             u_k = cols_head[k]; // u_k = k-th column of L
             l_j[k] = l_j[k] / d[k];
-            printf("l_j = "); print_buffer_double(l_j, n);
 
             while(u_k->next != NULL){
 

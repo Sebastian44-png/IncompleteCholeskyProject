@@ -15,6 +15,7 @@ LDLIBS += -lm
 CS = $(LDFLAGS) ../Lib/libhpc.a $(LDLIBS)
 
 all: lib demo
+#	- ./PCG_ICF_demo
 #	- ./icholesky_demo
 #	- ./hpc_demo 4
 #- ./gem_lu_demo 2
@@ -37,10 +38,11 @@ demo: lib pcg_mg_demo1.c Makefile
 #$(CC) $(CF) $(I) -o sed_icne0 sed_icne0_demo.c $(CS)
 # 	$(CC) $(CF) $(I) -o mg_demo1 mg_demo1.c $(CS)
 	$(CC) $(CF) $(I) -o pcg_mg_demo1 pcg_mg_demo1.c $(CS)
+#	$(CC) $(CF) $(I) -o  PCG_ICF_demo PCG_ICF_demo.c $(CS)
 
 clean:
 	- $(RM) *.o
 
 purge: clean
-	- $(RM) -r pcg_mg_demo1 \
+	- $(RM) -r pcg_mg_demo \
     *.a *.dSYM *.obj *.dll

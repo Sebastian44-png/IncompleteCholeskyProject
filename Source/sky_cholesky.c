@@ -18,7 +18,12 @@ index sky_cholesky(sky *A){
     p = A->p;
     d = A->d;
     x = A->x;
-
+    
+    /*check input*/
+    if(!A)
+    {
+        return (0) ;
+    }
 
     /*calculate the number of nz entries for each row*/
     anzrow = malloc(n*sizeof(index));
@@ -56,4 +61,5 @@ index sky_cholesky(sky *A){
         d[k] = sqrt(d[k] - sum);
 
     }
+    return (1) ;
 }
