@@ -223,7 +223,7 @@ int main (int argc, char **argv)
     sed_free(L_sed_icf) ;
 
     /*PCG with icne as preconditinoer*/
-    
+    /* 
     double alpha = 2 ; 
     sed *L_sed_icne ;
     L_sed_icne = sed_alloc(AR->n, 0, 1) ;
@@ -233,7 +233,6 @@ int main (int argc, char **argv)
     sed_print(AR , 0) ;
     printf("===================") ;
     sed_print(A_full , 0);
-    /*
     sed_icne0(A_full , alpha , L_sed_icne);
      
     printf("===================") ;
