@@ -208,7 +208,7 @@ int main (int argc, char **argv)
 
     /*PCG with icf as preconditioner*/
     sed *L_sed_icf ;
-    L_sed_icf = sed_alloc(AR->n, AR->nzmax , 1);
+    L_sed_icf = sed_alloc(AR->n, AR->nzmax , 1) ;
     sed_icholesky (AR , L_sed_icf) ;      
     for (k = 0 ; k < AR->n ; k++)
     {
@@ -217,8 +217,34 @@ int main (int argc, char **argv)
     TIME_SAVE (6) ;
     anaAnzIt [2] = sed_ccg (AR , L_sed_icf , bR , x0 , maxIt , tol, errorICF) ;
     TIME_SAVE (7) ;
+    anaAvgTime [2] = TIME_ELAPSED (6 , 7) / anaAnzIt [2] ; 
+    
+    
+    sed_free(L_sed_icf) ;
 
-
+    /*PCG with icne as preconditinoer*/
+    
+    double alpha = 2 ; 
+    sed *L_sed_icne ;
+    L_sed_icne = sed_alloc(AR->n, 0, 1) ;
+    sed * A_full = sed_alloc(AR->n, 0, 1) ;
+    sed_L_to_LLt(AR, A_full) ;
+    printf("===================") ;
+    sed_print(AR , 0) ;
+    printf("===================") ;
+    sed_print(A_full , 0);
+    /*
+    sed_icne0(A_full , alpha , L_sed_icne);
+     
+    printf("===================") ;
+    sed_print(L_sed_icne , 0);
+    
+    
+    TIME_SAVE (8) ;
+    anaAnzIt [3] = sed_ccg (AR , L_sed_icne , bR , x0 , maxIt , tol, errorICNE) ;
+    TIME_SAVE (9) ;
+    anaAvgTime [3] = TIME_ELAPSED (8 , 9) / anaAnzIt [3] ; 
+    */
     /*AR sed ist in L Form
      * bR in dim von AR (ergebnisvektor)*/
     

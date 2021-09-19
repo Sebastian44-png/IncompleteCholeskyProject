@@ -26,7 +26,7 @@ all: lib demo
 #	- ./cg_demo 2
 # ./linked_list_demo
 #   - ./mg_demo1 problem3 2
-	- ./pcg_mg_demo1 problem1 1 
+	- ./pcg_mg_demo1 problem1 0 
 #	- ./mg_demo1 problem4 1
 
 lib:
