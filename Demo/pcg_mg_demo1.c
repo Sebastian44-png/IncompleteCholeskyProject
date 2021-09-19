@@ -160,7 +160,7 @@ int main (int argc, char **argv)
     errStep = malloc(50 * sizeof(double));
     cnt = sed_pcg_mg(AR, A, bR, x, 1e-10, 50, H, N, 1, 1, 1, errStep);  
     //errStep = sed_pcg_mg_jac(AR, A, bR, x, 1e-10, 50, H, N, 1, 1, 1);  
-    // cnt = sed_cg(AR , bR, x, 50, 1e-10);
+    //cnt = sed_cg(AR , bR, x, 50, 1e-10);
     TIME_SAVE(4);
                                    
     for (k=0; k<HPC_MIN(10,A[N]->n); k++){ printf(" x[%g] = %g\n",(double) k, x[k]);}

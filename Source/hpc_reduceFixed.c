@@ -12,9 +12,14 @@ index hpc_reduceFixed (double *x, double *xShort, index n, const index *fixed, c
         return (0) ;
     }
 
+    // kShort is position in shortened vector
     kShort = 0 ;
+
+    // to managed fixed/skipped entries
     fptr = 0 ;
     ft = fixed [fptr] ;
+
+    // k is position in original vector
     for (index k = 0 ; k < n ; k++)
     {
         if (k == ft)

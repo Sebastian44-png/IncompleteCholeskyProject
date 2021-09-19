@@ -12,9 +12,14 @@ index hpc_expandFixed (double *x, double *xLong, index n, const index *fixed, co
         return (0) ;
     }
 
+    // k is position in original vector
     k = 0 ;
+
+    // to manage fixed entries, will be skipped for insertion
     fptr = 0 ;
     ft = fixed [fptr] ;
+
+    // kLong is position in elongated vector
     for (index kLong = 0 ; kLong < n ; kLong++)
     {
         if (kLong == ft)

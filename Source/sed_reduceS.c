@@ -21,13 +21,10 @@ sed *sed_reduceS (const sed *S, const index *fixed, const index nFixed)
     index *SRi ;
     double *SRx ;
 
-    Sn = S->n ;
-    Snzmax = S->nzmax ;
-    Si = S->i ;
-    Sx = S->x ;
-
     isf = malloc (Sn * sizeof(index)) ;
     NewRow = malloc (Sn * sizeof(index)) ;
+
+    // check inputs and if mallocs were sucessfull
     if (!S || !isf || !NewRow)
     {
         free (isf) ;
@@ -35,6 +32,12 @@ sed *sed_reduceS (const sed *S, const index *fixed, const index nFixed)
         return (NULL) ;
     }
 
+    Sn = S->n ;
+    Snzmax = S->nzmax ;
+    Si = S->i ;
+    Sx = S->x ;
+
+    // Store in isf at each index if it is fixed
     for (index k = 0 ; k < Sn ; k++)
     {
         isf [k] = 0 ;
@@ -45,7 +48,7 @@ sed *sed_reduceS (const sed *S, const index *fixed, const index nFixed)
         isf [fixed [fptr]] = 1 ;
     }
 
-    // nRed counts fixed rows
+    // Set NewRow to contain row index of corresponding row in new matrix, nRed counts fixed rows
     nRed = 0;
     for (index k = 0 ; k < Sn ; k++)
     {
@@ -89,10 +92,9 @@ sed *sed_reduceS (const sed *S, const index *fixed, const index nFixed)
         }
     }
 
+    // Allocate new sed Matrix and check if sucessfull
     SRed = sed_alloc (Sn - nFixed, Snzmax - nRed, 1) ;
-    SRn = SRed->n ;
-    SRi = SRed->i ;
-    SRx = SRed->x ;
+
     if (!SRed)
     {
         free (isf) ;
@@ -100,6 +102,10 @@ sed *sed_reduceS (const sed *S, const index *fixed, const index nFixed)
         sed_free(SRed) ;
         return (NULL) ;
     }
+
+    SRn = SRed->n ;
+    SRi = SRed->i ;
+    SRx = SRed->x ;
 
     // Fill reduced matrix with entries
     kR = 0;
@@ -126,6 +132,8 @@ sed *sed_reduceS (const sed *S, const index *fixed, const index nFixed)
             SRi [kR] = Rptr ;
         }
     }
+
+    // success, free buffers and return reduced matrix
     free (isf) ;
     free (NewRow) ;
     return (SRed) ;
