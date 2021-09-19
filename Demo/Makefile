@@ -21,6 +21,8 @@ all: lib demo
 #- ./gem_lu_demo 2
 #- ./sed_lu_demo j
 #- ./sed_icne0 2
+#- ./sed_lu_demo 2
+#	- ./sed_icne0 3
 #	- ./cg_demo 2
 # ./linked_list_demo
 #   - ./mg_demo1 problem3 2
@@ -39,6 +41,8 @@ demo: lib pcg_mg_demo1.c Makefile
 # 	$(CC) $(CF) $(I) -o mg_demo1 mg_demo1.c $(CS)
 	$(CC) $(CF) $(I) -o pcg_mg_demo1 pcg_mg_demo1.c $(CS)
 #	$(CC) $(CF) $(I) -o  PCG_ICF_demo PCG_ICF_demo.c $(CS)
+#	$(CC) $(CF) $(I) -o sed_icne0 sed_icne0_demo.c $(CS)
+#	$(CC) $(CF) $(I) -o cg_demo cg_demo.c $(CS)
 
 clean:
 	- $(RM) *.o

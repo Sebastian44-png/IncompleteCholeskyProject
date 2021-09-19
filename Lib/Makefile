@@ -80,6 +80,7 @@ HPC = \
  sed_buildS.o \
  sed_reduceS.o \
  sed_dupl.o \
+ sed_L_to_LLt.o \
  sky_compress.o \
  sky_print.o  \
  sky_util.o \
