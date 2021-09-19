@@ -39,7 +39,7 @@ index sed_cg_jacobi (sed *A ,  double *b , double *x , index maxIt , double tol,
 
 
     /*calculate the first residual r_0 = b - A*x(0) and store the result in r*/
-    sed_spmv(A , x , r) ;
+    sed_gaxpy(A , x , r) ;
     for (index i = 0 ; i < An ; i++)
     {
         r [i] = b [i] - r [i] ;
@@ -67,8 +67,7 @@ index sed_cg_jacobi (sed *A ,  double *b , double *x , index maxIt , double tol,
             Ap [i] = 0 ;
         }
         
-        sed_spmv(A , p , Ap);
-        
+        sed_gaxpy(A , p , Ap); 
         
         /*calculate alpha*/
         alpha = hpc_dot(Ap, p, An) ;

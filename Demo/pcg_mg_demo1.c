@@ -44,10 +44,8 @@ int main (int argc, char **argv)
     index ft ;
     index fptr ;
     index *fixed ;
-    double *errStep ;
 
     
-    TIME_SAVE(0);
     printf("\n========================================\n");
     if (argc < 2 ){ printf("Problem not specified\n"); return(1); } 
     sprintf(fname,"%s%s",Pdir,argv[1]); /* get problem as parameter */
@@ -80,7 +78,6 @@ int main (int argc, char **argv)
                                    H[k+1]->nbdry, &H[k+1]->nfixed);
       k++;
     }
-    TIME_SAVE(1);
     printf("Final mesh # dofs =  %10g\n",(double)  H[N]->ncoord+H[N]->nedges);
     printf("# refinements     =  %10g\n",(double)  N);
 
@@ -89,7 +86,6 @@ int main (int argc, char **argv)
     w = calloc (n, sizeof(double));       /* get temporary workspace */
     b = calloc (n, sizeof(double));       /* get workspace for rhs*/
     mesh_buildRhs(H[N], b, F_vol, g_Neu); /* build rhs (volume and Neumann data */
-    TIME_SAVE(2);
     
     /* incorporate Dirichlet data */
     ncoord = H[N]->ncoord ; nelem = H[N]->nelem ; nbdry = H[N]->nbdry ; 
@@ -155,47 +151,144 @@ int main (int argc, char **argv)
 
     /* AR*x = bR is LSE for standard CG solver */
     AR = sed_reduceS(A [N], fixed, nfixed) ;
-    TIME_SAVE(3);
-    //cnt = hpc_mg(A, b, x, 1e-50, 50, H, N, 1, 1, 1);
-    errStep = malloc(50 * sizeof(double));
-    cnt = sed_pcg_mg(AR, A, bR, x, 1e-10, 50, H, N, 1, 1, 1, errStep);  
+    
+    /*vorbereitung für Analyse*/
+    
+    index *anaAnzIt ;
+    double *anaAvgTime ; 
+    double *errorJacobi ;
+    double *errorGauss ;
+    double *errorICF ;
+    double *errorICNE ;
+    double * errorMultigrid ;
+    
+    index maxIt = 2 * AR->n ;
+    double tol  = 1e-16 ;
+
+    anaAnzIt = malloc(5*sizeof(index)) ;
+    anaAvgTime = malloc(5*sizeof(double)) ;
+    errorJacobi = malloc(maxIt*sizeof(double)) ;
+    errorGauss = malloc(maxIt*sizeof(double)) ;
+    errorICF = malloc(maxIt*sizeof(double)) ;
+    errorICNE = malloc(maxIt*sizeof(double));
+    errorMultigrid = malloc(maxIt*sizeof(double)) ;
+    
+    /*PCG with multigrid as preconditioner*/
+    double *x0 = malloc (AR ->n *sizeof(double)) ;
+    for (k = 0 ; k < AR->n ; k ++)
+    {
+        x0[k] = 0. ;
+    }
+    
+    TIME_SAVE (0) ;
+    anaAnzIt [4] = sed_pcg_mg(AR, A, bR, x0, tol , maxIt, H, N, 1, 1, 1, errorMultigrid);  
+    TIME_SAVE (1) ;
+    anaAvgTime [4] = TIME_ELAPSED (0 , 1) / anaAnzIt [4] ; 
+    
+    /*PCG with jacobi as preconditioner*/
+    for (k = 0 ; k < AR->n ; k++)
+    {
+        x0 [k] = 0. ;
+    }
+    TIME_SAVE (2) ;
+    anaAnzIt [0] = sed_cg_jacobi (AR , bR , x0 , maxIt , tol, errorJacobi) ;
+    TIME_SAVE (3) ;
+    anaAvgTime [0] = TIME_ELAPSED (2 , 3) / anaAnzIt [0] ; 
+
+    /*PCG with gauss-seidel as preconditioner*/
+    for (k = 0 ; k < AR->n ; k++)
+    {
+        x0 [k] = 0. ;
+    }
+    TIME_SAVE (4) ;
+    anaAnzIt [1] = sed_cg_gauss_seidel (AR , bR , x0 , maxIt , tol, errorGauss) ;
+    TIME_SAVE (5) ;
+    anaAvgTime [1] = TIME_ELAPSED (4 , 5) / anaAnzIt [1] ; 
+
+
+    /*PCG with icf as preconditioner*/
+    sed *L_sed_icf ;
+    L_sed_icf = sed_alloc(AR->n, AR->nzmax , 1) ;
+    sed_icholesky (AR , L_sed_icf) ;      
+    for (k = 0 ; k < AR->n ; k++)
+    {
+        x0 [k] = 0. ;
+    }
+    TIME_SAVE (6) ;
+    anaAnzIt [2] = sed_ccg (AR , L_sed_icf , bR , x0 , maxIt , tol, errorICF) ;
+    TIME_SAVE (7) ;
+    anaAvgTime [2] = TIME_ELAPSED (6 , 7) / anaAnzIt [2] ; 
+    
+    
+    sed_free(L_sed_icf) ;
+
+    /*PCG with icne as preconditinoer*/
+    
+    double alpha = 2 ; 
+    sed *L_sed_icne ;
+    L_sed_icne = sed_alloc(AR->n, 0, 1) ;
+    sed * A_full = sed_alloc(AR->n, 0, 1) ;
+    sed_L_to_LLt(AR, A_full) ;
+    printf("===================") ;
+    sed_print(AR , 0) ;
+    printf("===================") ;
+    sed_print(A_full , 0);
+    /*
+    sed_icne0(A_full , alpha , L_sed_icne);
+     
+    printf("===================") ;
+    sed_print(L_sed_icne , 0);
+    
+    
+    TIME_SAVE (8) ;
+    anaAnzIt [3] = sed_ccg (AR , L_sed_icne , bR , x0 , maxIt , tol, errorICNE) ;
+    TIME_SAVE (9) ;
+    anaAvgTime [3] = TIME_ELAPSED (8 , 9) / anaAnzIt [3] ; 
+    */
+    /*AR sed ist in L Form
+     * bR in dim von AR (ergebnisvektor)*/
+    
+    
+    
+    
+    
+    
+    
     //errStep = sed_pcg_mg_jac(AR, A, bR, x, 1e-10, 50, H, N, 1, 1, 1);  
-    //cnt = sed_cg(AR , bR, x, 50, 1e-10);
-    TIME_SAVE(4);
+    // cnt = sed_cg(AR , bR, x, 50, 1e-10);
                                    
-    for (k=0; k<HPC_MIN(10,A[N]->n); k++){ printf(" x[%g] = %g\n",(double) k, x[k]);}
-     
-    printf("\n");
-    printf("Time load & create hierarchy = %9i ns\n", (int) TIME_ELAPSED(0,1));
-    printf("Time building rhs            = %9i ns\n", (int) TIME_ELAPSED(1,2));
-    printf("Time Dirichlet values        = %9i ns\n", (int) TIME_ELAPSED(2,3));
-    printf("Time solve LSE               = %9i ns\n", (int) TIME_ELAPSED(3,4));
-    printf("No. iterations               = %9g\n", (double) cnt);
-    printf("========================================\n\n");
-    printf("Error progression:\n");
-    if (!errStep)
+    //total = ncoord*2*sizeof(double) 
+    //      + (7*nelem+4*nbdry+nedges*2)*sizeof(index);
+    
+    //printf ("Total :       %12.6g MByte\n", (double) total/1024./1024.);
+    
+    /*analysis in a txt file*/
+    FILE *f ;
+    f = fopen("Analyse_Problem_1.txt","w") ;
+    fprintf(f,"error_Jacobi error_Gauss error_ICF error_ICNE error_Multigrid\n") ;
+    for (index i = 0 ; i < maxIt ; i++)
     {
-      printf("No Err returned");
+        fprintf(f,"%.3e %.3e %.3e %.3e %.3e\n" , errorJacobi [i] , errorGauss [i] , errorICF [i] , errorICNE [i] , errorMultigrid [i]) ;
     }
-    else
-    {
-      print_buffer_double(errStep, 50);
-    }
-     
-    printf ("\nMemory\n");
-    printf ("Coordinates : %12zu Byte\n", ncoord*2*sizeof(double));
-    printf ("Elements :    %12zu Byte\n", nelem*7*sizeof(index));
-    printf ("Boundary :    %12zu Byte\n", nbdry*4*sizeof(index));
-    printf ("Edge2no :     %12zu Byte\n", nedges*2*sizeof(index));
-    total = ncoord*2*sizeof(double) 
-          + (7*nelem+4*nbdry+nedges*2)*sizeof(index);
-    printf ("Total :       %12.6g MByte\n", (double) total/1024./1024.);
-    for (k=0; k<=N; k++) {mesh_free(H[k]); sed_free(A[k]);}
-    free(H); free(A);
+    fclose(f);
+    
+    /*memory release*/
     sed_free(AR);
     free(bR);
     free(dBuff);
-    free(errStep);
+    for (k = 0 ; k <= N ; k++)
+    {
+        mesh_free(H[k]) ;
+        sed_free(A[k]) ;
+    }
+    free(H); free(A);
+    
+    free (anaAnzIt) ;
+    free (anaAvgTime) ;
+    free (errorJacobi) ;
+    free (errorGauss) ;
+    free (errorICF) ;
+    free (errorICNE) ;
 
     return (0) ;
 }

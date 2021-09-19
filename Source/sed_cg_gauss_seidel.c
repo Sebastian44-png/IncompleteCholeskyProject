@@ -39,7 +39,7 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
 
 
     /*calculate the first residual r_0 = b - A*x(0) and store the result in r*/
-    sed_spmv(A , x , r) ;
+    sed_gaxpy(A , x ,r) ;
     for (index i = 0 ; i < An ; i++)
     {
         r [i] = b [i] - r [i] ;
@@ -47,7 +47,8 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
 
 
     /*calculate the preconditoned residual z = M^-1 * r_0 as an Gauss-Seidel Iteration*/
-    sed_gauss_seidel (A , r , z , w) ;
+    sed_gs(A, r, z , w , 1 );
+    sed_gs(A, r, z , w , 0 );
     
     /*calculate p*/
     for (index i = 0 ; i < An ; i++)
@@ -67,7 +68,7 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
             Ap [i] = 0 ;
         }
         
-        sed_spmv(A , p , Ap);
+        sed_gaxpy(A , p , Ap) ;    
         
         
         /*calculate alpha*/
@@ -94,8 +95,9 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
             return (k);
         }
         
-        sed_gauss_seidel (A , r , z_next , w) ;
-
+        sed_gs(A, r, z_next , w , 1 );
+        sed_gs(A, r, z_next , w , 0 );
+        
         /*calculate beta*/
         for (index i = 0 ;i < An ; i++)
         {

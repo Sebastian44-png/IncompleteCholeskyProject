@@ -1,7 +1,46 @@
-
 \section{Einleitung}
-Einordnung des Themas in HPC2, worum geht es...... \\
-\\
+% Problembeschreibung
+Partielle Differentialgleichungen stellen eine der h\"aufigsten Quellen f\"ur Probleme mit d\"unnbesetzten Matrizen dar. Eine typische Vorgehensweise ist die Diskrektrisierung der Gleichungen mit einer finiten Anzahl an Unbekannten. Die hierdurch entstehenden Gleichungssysteme sind meist sehr gro\ss, d\"unnbesetzt und oftmals symmetrisch positiv definit.\cite{saad03:IMS}
+
+
+% Welche Arten von Lösern kommen in Frage(cg)
+Als L\"osungsmethoden f\"ur solche Probleme k\"onnen sich klassische direkte L\"oser  als nicht praktikabel erweisen. Diese nutzen die spezielle Struktur der Matrix nicht aus, und k\"onnen sogar zu dicht besetzen Zerlegungen f\"uhren. 
+Als geeigneter stellen sich iterative Methoden heraus, die sich schrittweise der optimalen L\"osung ann\"ahern, heraus. Ein bew\"ahrtes Verfahren dieser Klasse ist das konjugierte Gradientenverfahren, welches für  symmetrisch positiv definitite Matrizen anwendbar ist. Die anspruchvollste Operation stellt hier das Matrix-Vektor Produkt dar. Dieses kann f\"ur d\"unnbesetze Matrizen mit einem g\"unstigen Aufwand berechnet werden. \cite{GoluVanl96}
+
+% Warum Vorkonditionierung
+Allerdings weisen iterative Verfahren, wie das cg-Verfahren, eine geringere Robustheit als direkte Verfahren auf. Au{\ss}erdem h\"angt die Konvergenzgeschwindigkeit von der Kondition der Matrix ab. Bei Problemen, die sich aus typischen Anwendungen wie der Str\"umungsdynamik oder der Festigkeits- und Verformungsanalyse ergeben, kann dies zu einer langsamen Konvergenz f\"uhren.
+Die Effizienz sowohl als die Robustheit k\"onnen jedoch signifikant durch geeignete Vorkonditionierung signifikant verbessert werden. \cite{saad03:IMS}
+
+Die Wahl eines Vorkonditionierers h\"angt stark von den Eigenschaften der Matrix ab, weshalb die Wahl eines geeigneten Vorkonditionierers nicht leich ist. W\"ahrend direkte L\"osungsverfahren zur L\"osung von gro{\ss}en und d\"unnbesetzten Gleichungssystemen oft nicht anwendbar sind, stellen sie in modifizierter Form geeignete Vorkonditionierer für iterative Verfahren dar. Es ist au{\ss}erdem m\"oglich einige Schritte des Jacobi- oder symmetrischen Gau{\ss}-Seidel-
+Verfahrens als Vorkonditionierer zu nutzen. \cite{saad03:IMS}
+
+% Inhalt der Arbeit
+Im Rahmen der Arbeit wurden eine Auswahl an Methoden zur L\"osung von d\"unnbesetzten symmerisch positiv definiten Matrizen implementiert. Au{\ss}erdem wurden Vorkonditionierung des konjugierten Gradientenverfahrens vorgestellt und verglichen. Folgende Verfahren wurden als Vorkonditionierer angewendet: Jacob-Verfahren, Gauss-Seidel, multigrid, Incomplete Cholesky und INCE(0).
+
+\newpage
+
+\section{Implementierte Verfahren}
+
+
+
+\subsection{LR-Zerlegung}
+\subsection{Cholesky Faktorisierung}
+\subsection{Incomplete LR-Zerlegng}
+\subsection{Incomplete Cholesky Faktorisierung}
+\subsection{Modified Incomplete Cholesky Faktorisierung}
+\subsection{ICNE(0)}
+
+
+\section{Vorkonditionierer f\"ur das konjugierte Gradientenverfahren}
+
+
+\section{Numerischer Vergleich der Vorkonditionierer f\"ur das CG-Verfahren}
+
+
+
+
+
+
 Hier noch ein Algorithmus:
 
 \begin{algorithm}[ht]
@@ -22,7 +61,8 @@ z^k, \delta_k}$ \Comment{Approximate the proximal point}
 \end{algorithmic}
 \end{algorithm}
 
-Referenz: In Algorithmus \ref{SG_alg:vmhippm}.
+%Referenz: In Algorithmus \ref{SG_alg:vmhippm}.
+
 
 Hier noch ein Code: 
 \lstinputlisting{./ProjectX/Code/HelloWorld.c}
@@ -33,4 +73,6 @@ Hier noch ein Code:
 \bibitem{SG_Ben-Tal:2000}{\sc A. Ben-Tal, M. Kocvara, A.
 Nemirovski, J. Zowe}: Free Material Design via Semidefinit
 Programming, SIAM Review, Vol. 42, No. 4 (2000), 695-715.
+\bibitem{saad03:IMS}{\sc Saad, Yousef} : Iterative Methods for Sparse Linear Systems, SIAM, Second Edition, (2003).
+\bibitem{GoluVanl96}{\sc Golub, Gene H. and Van Loan, Charles F.} : Matric Computations, The Johns Hopkins University Press, Third Edition, (1996).
 \end{thebibliography}
