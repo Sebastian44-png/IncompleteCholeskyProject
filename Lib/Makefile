@@ -47,6 +47,8 @@ HPC = \
  hpc_mg_jac.o \
  hpc_prol.o \
  hpc_rest.o \
+ hpc_reduceFixed.o \
+ hpc_expandFixed.o \
  jds_spmv.o \
  jds_print.o \
  jds_util.o  \
@@ -72,6 +74,7 @@ HPC = \
  sed_icne0.o \
  sed_pcg_mg.o \
  sed_buildS.o \
+ sed_reduceS.o \
  sed_dupl.o \
  sky_compress.o \
  sky_print.o  \

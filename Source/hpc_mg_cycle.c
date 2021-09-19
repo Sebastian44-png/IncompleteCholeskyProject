@@ -41,7 +41,6 @@ index hpc_mg_cycle(sed **A, mesh **H, index nLevel,
  		for( k = 0; k < (index) gamma; k++){ 
 		    nIter = hpc_mg_cycle(A, H, nLevel-1, b, x, r, pre, post, gamma); 
 		}
-    
 		/* Prolongate the correction to the finer grid (Level) */
     hpc_prol(x[nLevel-1], H[nLevel]->ncoord, H[nLevel]->edge2no, 
              H[nLevel]->nedges, x[nLevel]);

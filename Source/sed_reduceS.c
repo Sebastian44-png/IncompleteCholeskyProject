@@ -1,7 +1,7 @@
 #include "hpc.h"
 
 /* takes top level Stiffness Matrix A and reduces it to only non-fixed row/columns */
-sed *sed_reduceS (sed *S, index *fixed, index nFixed)
+sed *sed_reduceS (const sed *S, const index *fixed, const index nFixed)
 {
     sed *SRed ;
     index nRed ;
@@ -10,6 +10,7 @@ sed *sed_reduceS (sed *S, index *fixed, index nFixed)
     index Rptr ;
     index ft ;
     index *isf ;
+    index *NewRow ;
 
     index Sn ;
     index Snzmax ;
@@ -25,9 +26,12 @@ sed *sed_reduceS (sed *S, index *fixed, index nFixed)
     Si = S->i ;
     Sx = S->x ;
 
-    isf = malloc (Sn * sizeof(index));
-    if (!S || !isf)
+    isf = malloc (Sn * sizeof(index)) ;
+    NewRow = malloc (Sn * sizeof(index)) ;
+    if (!S || !isf || !NewRow)
     {
+        free (isf) ;
+        free (NewRow) ;
         return (NULL) ;
     }
 
@@ -40,6 +44,21 @@ sed *sed_reduceS (sed *S, index *fixed, index nFixed)
     {
         isf [fixed [fptr]] = 1 ;
     }
+
+    // nRed counts fixed rows
+    nRed = 0;
+    for (index k = 0 ; k < Sn ; k++)
+    {
+        if (isf [k])
+        {
+            nRed++ ;
+        }
+        else
+        {
+            NewRow [k] = k - nRed ;
+        }
+    }
+
 
     // set nRed to number of deleted diagonal entries
     nRed = nFixed ;
@@ -76,6 +95,9 @@ sed *sed_reduceS (sed *S, index *fixed, index nFixed)
     SRx = SRed->x ;
     if (!SRed)
     {
+        free (isf) ;
+        free (NewRow) ;
+        sed_free(SRed) ;
         return (NULL) ;
     }
 
@@ -95,7 +117,7 @@ sed *sed_reduceS (sed *S, index *fixed, index nFixed)
                 if (!isf [Si [ptr]])
                 {
                     SRx [Rptr] = Sx [ptr] ;
-                    SRi [Rptr] = Si [ptr] ;
+                    SRi [Rptr] = NewRow [Si [ptr]] ;
                     Rptr++ ;
                 }
             }
@@ -104,5 +126,7 @@ sed *sed_reduceS (sed *S, index *fixed, index nFixed)
             SRi [kR] = Rptr ;
         }
     }
+    free (isf) ;
+    free (NewRow) ;
     return (SRed) ;
 }

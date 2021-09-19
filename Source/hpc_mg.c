@@ -37,7 +37,6 @@ index hpc_mg(sed **A, double *b, double *x, double tol, index maxit,
         xx = malloc( (nLevel+1) * sizeof(double*) );
         bb = malloc( (nLevel+1) * sizeof(double*) );
         rr = malloc( (nLevel+1) * sizeof(double*) );
-        
         for (j = 0; j < nLevel; j++){
             xx[j] = wx + p[j]; bb[j] = wb + p[j]; rr[j] = wr + p[j];
         }

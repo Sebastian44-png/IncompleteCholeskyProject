@@ -22,8 +22,9 @@ all: lib demo
 #- ./sed_icne0 2
 #	- ./cg_demo 2
 # ./linked_list_demo
-# 	- ./mg_demo1 problem3 (2
-	- ./pcg_mg_demo1 problem5 1
+#   - ./mg_demo1 problem3 2
+	- ./pcg_mg_demo1 problem2 1
+#	- ./mg_demo1 problem4 1
 
 lib:
 	( cd ../Lib ; $(MAKE) )
@@ -34,7 +35,7 @@ demo: lib pcg_mg_demo1.c Makefile
 #$(CC) $(CF) $(I) -o hpc_demo hpc_demo.c $(CS)
 #$(CC) $(CF) $(I) -o linked_list_demo linked_list_demo.c $(CS)
 #$(CC) $(CF) $(I) -o sed_icne0 sed_icne0_demo.c $(CS)
-#	$(CC) $(CF) $(I) -o mg_demo1 mg_demo1.c $(CS)
+# 	$(CC) $(CF) $(I) -o mg_demo1 mg_demo1.c $(CS)
 	$(CC) $(CF) $(I) -o pcg_mg_demo1 pcg_mg_demo1.c $(CS)
 
 clean:

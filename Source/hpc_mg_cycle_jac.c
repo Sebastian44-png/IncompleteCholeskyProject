@@ -11,6 +11,8 @@ index hpc_mg_cycle_jac(sed **A, mesh **H, index nLevel,
   { 
     for (k = 0; k < 40*A[0]->n; k++)
     {
+      //sed_gs_constr (A[0], b[0], x[0], r[0], H[0]->fixed, H[0]->nfixed, 1);
+      //sed_gs_constr (A[0], b[0], x[0], r[0], H[0]->fixed, H[0]->nfixed, 0);
       sed_jacobi_constr(A[0], b[0], x[0], r[0], H[0]->fixed, H[0]->nfixed);
     }
     nIter = 2*k;

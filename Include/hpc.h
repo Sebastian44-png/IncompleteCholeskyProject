@@ -101,6 +101,9 @@ index hpc_mg_cycle_jac(sed **A, mesh **H, index nLevel,
 void hpc_prol(double *x, index nx, index *edgeno, index nEdges, double *y);
 void hpc_prol_quad(double *x, double *y, index *elem, index nC, index nT, index nE);
 void hpc_rest(double *x, index *edgeno, index nEdges, double *y, index ny);
+index hpc_reduceFixed(double *x, double *xShort, index n, const index *fixed, const index nFixed);
+index hpc_expandFixed (double *x, double *xLong, index n, const index *fixed, const index nFixed);
+
 
 
 /* gem format */
@@ -173,9 +176,9 @@ index sed_gauss_seidel(const sed *A, const double *b, double *xk, double *w);
 index sed_jacobi (const sed *A, const double *b, double *xk, double *w );
 index sed_richardson (const sed *A, const double *b, double *xk, double *w, const double omega);
 index sed_cg (const sed *A, double *b, double *x, index maxIt, double tol);
-index sed_pcg_mg(sed **A, double *b, double *x, double tol, index maxIt,
+double *sed_pcg_mg(sed *A, sed **Amg, double *b, double *x, double tol, index maxIt,
              mesh **H, index nLevel, index pre, index post, index gamma);
-index sed_pcg_mg_jac(sed **A, double *b, double *x, double tol, index maxIt,
+double *sed_pcg_mg_jac(sed *A, sed **Amg, double *b, double *x, double tol, index maxIt,
              mesh **H, index nLevel, index pre, index post, index gamma);
 
 index sed_gaxpy (const sed *A, const double *x, double *y);
@@ -190,6 +193,7 @@ void stima_laplace3(double p1[2], double p2[2], double p3[2],
                     index  typ, double dx[6], double ax[9]);
 sed *sed_nz_pattern(mesh *M) ; 
 index sed_buildS(mesh *M, sed *T);
+sed *sed_reduceS(const sed *S, const index *fixed, const index nFixed);
 
 /* mesh operations */
 mesh *mesh_alloc (index ncoord, index nelem, index nbdry);
