@@ -22,9 +22,6 @@ AR_TARGET = $(LIBRARY).a
 all: install
 
 HPC = \
- bnd_compress.o  \
- bnd_print.o  \
- bnd_util.o  \
  cs_compress.o \
  cs_entry.o \
  cs_spmv.o \
@@ -49,9 +46,6 @@ HPC = \
  hpc_rest.o \
  hpc_reduceFixed.o \
  hpc_expandFixed.o \
- jds_spmv.o \
- jds_print.o \
- jds_util.o  \
  sed_compress.o \
  sed_ccg.o \
  sed_cg_jacobi.o \

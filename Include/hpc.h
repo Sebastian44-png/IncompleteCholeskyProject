@@ -42,13 +42,6 @@ typedef struct sky_pack /* sym. matrix in sky storage form */
     double *x ;       /* off-diagonal entries, size p[n] */
 } sky ;
 
-typedef struct bnd_general /* general band matrix */
-{
-    index m;   /* band width */
-    index n;   /* number of rows */
-    double *x; /* numerical values */
-} bnd;
-
 typedef struct sed_sparse /* matrix in sparse matrix in compressed col. */
 {                         /* with extracted diagonal storage form      */
     index nzmax;          /* maximum number of entries */
@@ -56,17 +49,6 @@ typedef struct sed_sparse /* matrix in sparse matrix in compressed col. */
     index *i;             /* col pointers and row indices    */
     double *x;            /* numerical values, size i[n] */
 } sed;
-
-typedef struct jds_sparse /* matrix in jagged or triplet form */
-{
-    index m;     /* number of rows */
-    index n;     /* number of columns */
-    index ndiag; /* number of diagonals */
-    index *p;    /* diagonal pointers (size ndiag+1) */
-    index *j;    /* column indices, size nzmax */
-    index *perm; /* permutation vector */
-    double *x;   /* numerical values, size nzmax */
-} jds;
 
 typedef struct mesh_data  /* mesh */
 {
@@ -138,19 +120,6 @@ index sky_print(const sky *A, index brief);
 sky *sky_compress(const cs *T);
 index sky_spmv(const sky *A, const double *x, double *y);
 index sky_cholesky(sky *A);
-
-/* jagged format */
-jds *jds_spalloc(index m, index n, index nz, index ndiag);
-jds *jds_free(jds *A);
-index jds_print(const jds *A, index brief);
-jds *jds_compress(const cs *A);
-index jds_spmv(const jds *A, const double *x, double *y);
-
-/* bnd format */
-bnd *bnd_alloc(index n, index m);
-bnd *bnd_free(bnd *A);
-index bnd_print(const bnd *A, index brief);
-bnd *bnd_compress(const cs *A);
 
 /* sed format */
 sed *sed_alloc(index n, index nzmax, index values);
