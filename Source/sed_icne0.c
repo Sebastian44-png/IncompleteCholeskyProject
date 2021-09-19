@@ -23,8 +23,8 @@ index sed_icne0(sed* A, double alpha, sed* L){
     node* u_k;
 
     /* array of linked lists for storing columns of L */
-    node** cols_head = malloc(n*sizeof(node*)); // first nodes of rows
-    node** cols_tail = malloc(n*sizeof(node*)); // last nodes of rows
+    node** cols_head = malloc(n*sizeof(node*)); 
+    node** cols_tail = malloc(n*sizeof(node*));
     for(index i=0; i<n; i++) { // initialize linked lists
         cols_head[i] = create_slist();
         cols_tail[i] = cols_head[i]; 
@@ -92,18 +92,23 @@ index sed_icne0(sed* A, double alpha, sed* L){
     }
 
     /* build sed_matrix containing L + d */
-    sed_realloc(L, nzmax);
+    //printf("nzmax = %ld \n", nzmax);
+    if(!sed_realloc(L, nzmax+1)) {return (0);}
+
+    
     // store d on the diagonal of L
     for(index i = 0; i < n; i++){
         L->x[i] = d[i];
     }
-
+    
     index count = n+1;
+    node* current_node;
+
     for(index i=0; i<n; i++){
         
-        node* current_node = cols_head[i];
+        current_node = cols_head[i];
 
-         // store column pointers
+        // store column pointers
         L->i[i] = count;
 
         while(current_node->next != NULL){ // add colum i to L->x
@@ -113,9 +118,37 @@ index sed_icne0(sed* A, double alpha, sed* L){
             L->i[count] = current_node->ind;
 
             count++;
+            //printf("Entry : count %ld ", count);
+            //printf("%ld  ", current_node->ind);
+            //printf("%2.2f ", current_node->data);
         }
+        //printf("\n");
+        //print_list_data(cols_head[i]);
+        //print_list_ind(cols_head[i]);
     }
     L->i[n] = count;
+
+    //printf("data : "); print_buffer_double(L->x, nzmax+1);
+    //printf("index: "); print_buffer_int(L->i, nzmax +1);
+    //sed_print(L, 0);
+    
+    //printf("freeing i \n");
+    //free(L->i);
+
+    //printf("freeing x \n");
+    //free(L->x);
+
+    //printf("freed\n");
+    
+   
+    // freeing structures for intermediate results
+    for(index i = 0; i < n; i++){
+        free(cols_head[i]);
+    }
+
+    free(a_j);
+    free(l_j);
+    free(d);
 
     return (1);
 }

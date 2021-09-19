@@ -42,7 +42,7 @@ int main (int argc, char **argv)
     //printf("sed_Matrix \n");
     //sed_print(A_sed, 0); 
     //printf("Buffers :");
-     
+    
     sed *L = sed_alloc(A_cs->n, 0, 1);
     sed_icne0(A_sed, 2.0, L);
 
@@ -59,13 +59,15 @@ int main (int argc, char **argv)
     //sed_L_to_LLt(L, LLt);
     //sed_print(LLt, 0);
 
-    printf("x: "); print_buffer_double(L->x, L->nzmax);
-    printf("ind: "); print_buffer_int(L->i, L->nzmax);
+    //printf("x: "); print_buffer_double(L->x, L->nzmax+1);
+    //printf("ind: "); print_buffer_int(L->i, L->nzmax+1);
 
     cs_free (A_cs); 
     sed_free(A_sed);
     gem_free(A_gem);
     sed_free(L);
+    //free(L->i);
+    //free(L->x);
     //sed_free(LLt);
     free(b);
 

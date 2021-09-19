@@ -21,7 +21,9 @@ index sed_realloc (sed *A, index nzmax)
     if (nzmax <= 0) nzmax = A->i[A->n];
     nzmax = HPC_MAX (nzmax, 1+A->n) ;
     A->i = hpc_realloc (A->i, nzmax, sizeof (index), &oki) ;
-    if (A->x) A->x = hpc_realloc (A->x, nzmax, sizeof (double), &okx) ;
+    if (A->x) {
+        A->x = hpc_realloc (A->x, nzmax, sizeof (double), &okx);
+    }
     ok = (oki && okx) ;
     if (ok) A->nzmax = nzmax ;
     return (ok) ;
@@ -31,11 +33,8 @@ index sed_realloc (sed *A, index nzmax)
 sed *sed_free (sed *A)
 {
     if (!A) return (NULL) ;   /* do nothing if A already NULL */
-    printf("!A\n");
-    free (A->i) ;
-    printf("i\n");  /* free the sed struct and return NULL */
+    free (A->i) ;  /* free the sed struct and return NULL */
     free (A->x) ;
-    printf("x\n");
     free (A);
     return (NULL) ; 
 }
