@@ -15,6 +15,7 @@ index sed_jacobi (const sed *A, const double *b, double *xk, double *w )
     for(size_t j = 0; j<n; j++){
         for(size_t i = ind[j]; i< ind[j+1]; i++){
             w[ind[i]] -= Ax[i]*xk[j];
+            w[j] -= Ax[i] * xk[ind[i]];
         }
     }
 

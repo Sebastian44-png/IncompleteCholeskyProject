@@ -28,9 +28,16 @@ index sed_icholesky (sed *A, sed *L)
     /*first column starts at position n+1 in L->x*/
     L->i[0] = n+1 ;
     
+    for (index j = 0 ; j < nzmax ; j++)
+    {
+        L->i [j] = ind [j] ;
+        L->x [j] = x [j] ;
+    }
     for (index j = 0 ; j < n ; j++)
     {
         anzCol[j] = ind[j+1] - ind[j] ;/*off diag nz of each col in A*/
+    }
+    /*
         L->x[j] = x[j];
         for (index k = 0 ; k < anzCol[j] ; k ++)
         {
@@ -44,6 +51,7 @@ index sed_icholesky (sed *A, sed *L)
         L->i[j+1] = L->i[j] + counter ;
         counter = 0 ;
     }
+    */
     /*apply the incomplete cholesky decomposition*/
     for (index k = 0 ; k < n ; k++)
     {
