@@ -2,8 +2,8 @@
 
 /* Preconditioned Conjugate gradient method with multigrid preconditioner
 sed **A needs to be grid hierarchy */
-double *sed_pcg_mg_jac (sed *A, sed **Amg, double *b, double *x, double tol, index maxIt,
-             mesh **H, index nLevel, index pre, index post, index gamma)
+index sed_pcg_mg_jac (sed *A, sed **Amg, double *b, double *x, double tol, index maxIt,
+             mesh **H, index nLevel, index pre, index post, index gamma, double *error)
 {
     index n ;
     index nFull ;
@@ -23,13 +23,11 @@ double *sed_pcg_mg_jac (sed *A, sed **Amg, double *b, double *x, double tol, ind
     double *z_prev = malloc (n*sizeof(double)) ;
     double *p = malloc (n*sizeof(double)) ;
     double *Ap = malloc (n*sizeof(double)) ;
-    double *errStep = malloc (maxIt * sizeof (double)) ;
 
     double rho ;
     double alpha ;
     double beta ;
     double rho_prev ;
-    double error ;
     double tmp ;
     
     // r(0) = b - Ax(0)
@@ -59,10 +57,12 @@ double *sed_pcg_mg_jac (sed *A, sed **Amg, double *b, double *x, double tol, ind
         {
             Ap[i] = 0 ;
         }
+
         for (index i = 0 ; i < nFull ; i++)
         {
             zExp [i] = 0 ;
         }
+
         sed_gaxpy (A, p, Ap) ;
         //sed_spmv(A [nLevel], p, Ap);
         //printf("spmv done");
@@ -71,15 +71,9 @@ double *sed_pcg_mg_jac (sed *A, sed **Amg, double *b, double *x, double tol, ind
         hpc_scal (x, p,  alpha, n) ;
         hpc_scal (r, Ap, -alpha, n) ;
 
-        error = 0;
-        // return if ||r||_2 < tol  
-        for (index i = 0 ; i < n ; i++)
-        {
-            error += r[i] * r[i] ;
-        }
-         printf("Error: %g\n", error);
-        errStep [k] = error ;
-        if (error < tol)
+        error [k] = hpc_dot (r, r, n) ;
+        // printf("Error: %g\n", error [k]);
+        if (error [k] < tol)
         {
             free (r) ;
             free (rExp) ;
@@ -88,7 +82,7 @@ double *sed_pcg_mg_jac (sed *A, sed **Amg, double *b, double *x, double tol, ind
             free (z_prev) ;
             free (p) ;
             free (Ap) ;
-            return (errStep) ;
+            return (k) ;
         }
         print_buffer_double(r, n);
         hpc_expandFixed (r, rExp, nFull, fixed, nFixed) ;
@@ -115,8 +109,7 @@ double *sed_pcg_mg_jac (sed *A, sed **Amg, double *b, double *x, double tol, ind
             free (z_prev) ;
             free (p) ;
             free (Ap) ;
-            free (errStep) ;
-            return (NULL) ;
+            return (0) ;
         }
 
         beta = rho / rho_prev ;
@@ -136,5 +129,5 @@ double *sed_pcg_mg_jac (sed *A, sed **Amg, double *b, double *x, double tol, ind
     free (z_prev) ;
     free (p) ;
     free (Ap) ;
-    return (errStep) ;
+    return (maxIt) ;
 }

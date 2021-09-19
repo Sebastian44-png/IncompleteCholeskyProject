@@ -173,13 +173,14 @@ index sed_icne0 (sed *A, double alpha, sed* L);
 double* sed_find_in_column(sed* A, index row, index col);
 
 index sed_gauss_seidel(const sed *A, const double *b, double *xk, double *w);
+index sed_gs(const sed *A, const double *b, double *x, double *w, index forward);
 index sed_jacobi (const sed *A, const double *b, double *xk, double *w );
 index sed_richardson (const sed *A, const double *b, double *xk, double *w, const double omega);
 index sed_cg (const sed *A, double *b, double *x, index maxIt, double tol);
-double *sed_pcg_mg(sed *A, sed **Amg, double *b, double *x, double tol, index maxIt,
-             mesh **H, index nLevel, index pre, index post, index gamma);
-double *sed_pcg_mg_jac(sed *A, sed **Amg, double *b, double *x, double tol, index maxIt,
-             mesh **H, index nLevel, index pre, index post, index gamma);
+index sed_pcg_mg(sed *A, sed **Amg, double *b, double *x, double tol, index maxIt,
+             mesh **H, index nLevel, index pre, index post, index gamma, double *error);
+index sed_pcg_mg_jac(sed *A, sed **Amg, double *b, double *x, double tol, index maxIt,
+             mesh **H, index nLevel, index pre, index post, index gamma, double *error);
 
 index sed_gaxpy (const sed *A, const double *x, double *y);
 index sed_gs_constr (const sed *A, const double *b, double *x, double *w, 

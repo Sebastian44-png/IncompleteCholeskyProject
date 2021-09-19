@@ -45,6 +45,7 @@ int main (int argc, char **argv)
     index fptr ;
     index *fixed ;
     double *errStep ;
+
     
     TIME_SAVE(0);
     printf("\n========================================\n");
@@ -156,9 +157,9 @@ int main (int argc, char **argv)
     AR = sed_reduceS(A [N], fixed, nfixed) ;
     TIME_SAVE(3);
     //cnt = hpc_mg(A, b, x, 1e-50, 50, H, N, 1, 1, 1);
-    //errStep = sed_pcg_mg(AR, A, bR, x, 1e-10, 50, H, N, 1, 1, 1);  
-    errStep = sed_pcg_mg_jac(AR, A, bR, x, 1e-10, 50, H, N, 1, 1, 1);  
-    cnt = 0;
+    errStep = malloc(50 * sizeof(double));
+    cnt = sed_pcg_mg(AR, A, bR, x, 1e-10, 50, H, N, 1, 1, 1, errStep);  
+    //errStep = sed_pcg_mg_jac(AR, A, bR, x, 1e-10, 50, H, N, 1, 1, 1);  
     // cnt = sed_cg(AR , bR, x, 50, 1e-10);
     TIME_SAVE(4);
                                    
