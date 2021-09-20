@@ -163,14 +163,9 @@ int main (int argc, char **argv)
     double *errorGauss ;
     double *errorICF ;
     double *errorICNE ;
-<<<<<<< HEAD
     double *errorMultigrid ;
-    
-=======
-    double * errorMultigrid ;
     double *errorCG ;
 
->>>>>>> dev_Joe
     index maxIt = 2 * AR->n ;
     printf("Maxit = %ld\n", maxIt) ;
     double tol  = 1e-16 ;
@@ -182,12 +177,7 @@ int main (int argc, char **argv)
     errorICF = malloc(maxIt*sizeof(double)) ;
     errorICNE = malloc(maxIt*sizeof(double));
     errorMultigrid = malloc(maxIt*sizeof(double)) ;
-<<<<<<< HEAD
-
-    printf("Multigrid preconditioner\n") ;
-=======
     errorCG = malloc(maxIt * sizeof(double)) ;
->>>>>>> dev_Joe
     
     for (index i = 0 ; i < maxIt ; i++ )
     {
@@ -262,10 +252,7 @@ int main (int argc, char **argv)
     sed_print(AR , 0) ;
     printf("===================") ;
     sed_print(A_full , 0);
-<<<<<<< HEAD
-=======
     
->>>>>>> da4d500da44167c2ba1896d61df08195a40d771a
     sed_icne0(A_full , alpha , L_sed_icne);
      
     printf("===================") ;
