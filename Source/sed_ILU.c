@@ -1,6 +1,7 @@
 #include "hpc.h"
 /* author: Benjamin Bestler */
 
+/*computes incomplete LU factorization on the matrix A*/
 index sed_ILU (sed *A)
 {
     index n ;

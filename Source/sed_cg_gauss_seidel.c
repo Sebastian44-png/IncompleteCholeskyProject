@@ -1,5 +1,7 @@
 #include "hpc.h"
+/*author: Joachim Kröner*/
 
+/*This method solves the linear system Ax = b with Gauss-Mehtod as preconditioner*/
 index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , double tol, double *error)
 {
     /*check input*/
@@ -22,6 +24,7 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
     double roh ;
     double *w ;
     
+    /*allocate memory*/    
     r = malloc(An * sizeof(double)) ;
     z = malloc(An * sizeof(double)) ;
     z_next= malloc(An * sizeof(double)) ;
@@ -69,11 +72,16 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
         
         sed_gaxpy(A , p , Ap) ;    
         
-        
         /*calculate alpha*/
         alpha = hpc_dot(Ap, p, An) ;
         if (alpha == 0)
         {
+            free (r) ;
+            free (z_next) ;
+            free (z) ;
+            free (p) ;
+            free (Ap) ;
+            free (w) ; 
             return (0) ;
         }
         alpha = roh / alpha ;
@@ -91,6 +99,12 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
         /*check if abort criterion is reached */
         if(error [k] < tol)
         {
+            free (r) ;
+            free (z_next) ;
+            free (z) ;
+            free (p) ;
+            free (Ap) ;
+            free (w) ; 
             return (k);
         }
         
@@ -115,10 +129,7 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
         roh = hpc_dot(r , z , An) ;
     }
 
-
-
     /*memory release*/
-   
     free (r) ;
     free (z_next) ;
     free (z) ;

@@ -1,9 +1,10 @@
 #include "hpc.h"
+/*author: Joachim Kröner*/
 
 /*Forward Insecertion: solves the linear System Lx=b where L is a lower triangular matrix*/
-
 index sed_forwardInsertion(sed *L , double *x , double *b)
 {
+    /*check input*/
     if(!L || !x || !b)
     {
         return(0);
@@ -16,16 +17,19 @@ index sed_forwardInsertion(sed *L , double *x , double *b)
     n = L->n ;
     ind = L->i ;
     val = L->x ;
-   
+    
+    /*calculates the first entry of x*/
     x [0] = b [0] / val [0] ;
     
+    /*iteration over the columns of L */
     for (index i = 1 ; i < n ; i++)
-    {
+    {   
+        /*iteration over one column of L*/
         for (index ptr = ind[i - 1] ; ptr < ind[i] ; ptr ++)
         {
             x [ind [ptr]] += val [ptr] * x [i -1] ; 
         }
-
+        /*computes the next entry of x */
         x [i] = (b [i] - x [i]) / val [i] ;
     }
     return (1) ;

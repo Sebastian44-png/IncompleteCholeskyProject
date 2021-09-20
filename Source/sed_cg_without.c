@@ -1,5 +1,7 @@
 #include "hpc.h"
+/*author: Joachim Kröner*/
 
+/*This method solves a linear system with the CG method*/
 index sed_cg_without (sed *A ,  double *b , double *x , index maxIt , double tol, double *error)
 {
     /*check input*/
@@ -20,25 +22,22 @@ index sed_cg_without (sed *A ,  double *b , double *x , index maxIt , double tol
     double roh ;
     double roh_next ;
     
+    /*allocate memory*/
     r = malloc(An * sizeof(double)) ;
     p = malloc(An * sizeof(double)) ;
     Ap = malloc(An * sizeof(double)) ;
-    
     for (index i = 0 ; i < An ; i++)
     {
         r [i] = 0. ;
         p [i] = 0. ;
     }
 
-
     /*calculate the first residual r_0 = b - A*x(0) and store the result in r*/
     sed_gaxpy(A, x , r);
-    //sed_spmv(A , x , r) ;
     for (index i = 0 ; i < An ; i++)
     {
         r [i] = b [i] - r [i] ;
     }
-
 
     /*calculate p_0 =  r_0*/
     for (index i = 0 ; i < An ; i++)
@@ -64,6 +63,9 @@ index sed_cg_without (sed *A ,  double *b , double *x , index maxIt , double tol
         alpha = hpc_dot(Ap, p, An) ;
         if (alpha == 0)
         {
+            free (r) ;
+            free (p) ;
+            free (Ap) ;
             return (0) ;
         }
         alpha = roh / alpha ;
@@ -100,9 +102,7 @@ index sed_cg_without (sed *A ,  double *b , double *x , index maxIt , double tol
         /*calculate beta*/
         beta = roh_next / roh ;
 
-        /*calculate the next p 
-         * Ap is used as a buffer, in the rest of the loop the values of Ap are not used
-         * L^T * Ap = r*/
+        /*calculate the next p*/ 
         for (index i = 0 ; i < An ; i++)
         {
             Ap [i] = 0;

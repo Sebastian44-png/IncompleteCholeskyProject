@@ -1,5 +1,7 @@
 #include "hpc.h"
+/*author: Joachim Kröner*/
 
+/*solves the linear System Ax=b wiht the PCG Method and the jacobi method as a preconditioner*/
 index sed_cg_jacobi (sed *A ,  double *b , double *x , index maxIt , double tol, double *error)
 {
     /*check input*/
@@ -22,6 +24,7 @@ index sed_cg_jacobi (sed *A ,  double *b , double *x , index maxIt , double tol,
     double roh ;
     double *w ;
     
+    /*allcoate memory*/
     r = malloc(An * sizeof(double)) ;
     z = malloc(An * sizeof(double)) ;
     z_next = malloc(An * sizeof(double)) ;
@@ -72,6 +75,12 @@ index sed_cg_jacobi (sed *A ,  double *b , double *x , index maxIt , double tol,
         alpha = hpc_dot(Ap, p, An) ;
         if (alpha == 0)
         {
+            free (r) ;
+            free (z_next) ;
+            free (z) ;
+            free (p) ;
+            free (Ap) ;
+            free (w) ; 
             return (0) ;
         }
         alpha = roh / alpha ;
@@ -89,6 +98,12 @@ index sed_cg_jacobi (sed *A ,  double *b , double *x , index maxIt , double tol,
         /*check if abort criterion is reached */
         if(error [k] < tol)
         {
+            free (r) ;
+            free (z_next) ;
+            free (z) ;
+            free (p) ;
+            free (Ap) ;
+            free (w) ; 
             return (k);
         }
         
@@ -112,10 +127,7 @@ index sed_cg_jacobi (sed *A ,  double *b , double *x , index maxIt , double tol,
         roh = hpc_dot(r, z, An) ;
     }
 
-
-
     /*memory release*/
-   
     free (r) ;
     free (z_next) ;
     free (z) ;

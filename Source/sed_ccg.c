@@ -1,5 +1,7 @@
 #include "hpc.h"
+/*author: Joachim Kröner*/
 
+/*This function applies the PCG-method on a linear System Ax=b and the preconitioner L*/
 index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double tol, double *error)
 {
     /*check input*/
@@ -21,14 +23,15 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
     double roh ;
     double roh_next ;
     double *Lap ;
-    index anzIt ;
     
+    /*allocate memory*/
     r = malloc(An * sizeof(double)) ;
     r_next = malloc(An * sizeof(double)) ;
     p = malloc(An * sizeof(double)) ;
     Ap = malloc(An * sizeof(double)) ;
     Lap = malloc(An *sizeof(double)) ;
     
+    /*set allocated memory to zero*/
     for (index i = 0 ; i < An ; i++)
     {
         r [i] = 0. ;
@@ -39,7 +42,6 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
 
     /*calculate the first residual r_0 = b - A*x(0) and store the result in r*/
     sed_gaxpy(A, x , r);
-    //sed_spmv(A , x , r) ;
     for (index i = 0 ; i < An ; i++)
     {
         r [i] = b [i] - r [i] ;
@@ -70,13 +72,16 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
         }
         
         sed_gaxpy(A , p , Ap) ;
-        //sed_spmv(A , p , Ap) ;
-        
         
         /*calculate alpha*/
         alpha = hpc_dot(Ap, p, An) ;
         if (alpha == 0)
         {
+            free (r) ;
+            free (r_next) ;
+            free (p) ;
+            free (Ap) ;
+            free (Lap) ; 
             return (0) ;
         }
         alpha = roh / alpha ;
@@ -98,6 +103,11 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
         /*check if abort criterion is reached */
         if(hpc_dot(r,r,An) < tol)
         {
+            free (r) ;
+            free (r_next) ;
+            free (p) ;
+            free (Ap) ;
+            free (Lap) ; 
             return (k);
         }
         /*caluclate the next roh*/
@@ -106,6 +116,11 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
         /*check if roh_next == 0*/
         if(roh_next == 0)
         {
+            free (r) ;
+            free (r_next) ;
+            free (p) ;
+            free (Ap) ;
+            free (Lap) ; 
             return (0) ;
         }
         /*calculate beta*/
@@ -125,18 +140,16 @@ index sed_ccg (sed *A , sed *L ,  double *b , double *x , index maxIt , double t
         }
         /*update roh*/
         roh = roh_next ;
-        anzIt = k ;
     }
 
 
 
-    /*memory release*/
-   
+    /*memory release*/ 
     free (r) ;
     free (r_next) ;
     free (p) ;
     free (Ap) ;
     free (Lap) ; 
    
-   return (anzIt) ;  
+   return (maxIt) ;  
 }

@@ -1,6 +1,5 @@
 #include "hpc.h"
 #include <math.h>
-
 /*author: Joachim Kröner*/
 
 /*This method calculates the Cholesky factorization of a symetric positive definite matrix.*/
