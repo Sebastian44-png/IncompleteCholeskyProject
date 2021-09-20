@@ -60,8 +60,6 @@ HPC = \
  sed_ILU.o \
  sed_MILU.o \
  sed_jacobi.o \
- sed_jacobi_constr.o \
- sed_cg.o \
  sed_icne0.o \
  sed_pcg_mg.o \
  sed_buildS.o \
