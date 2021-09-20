@@ -174,7 +174,17 @@ int main (int argc, char **argv)
     errorICNE = malloc(maxIt*sizeof(double));
     errorMultigrid = malloc(maxIt*sizeof(double)) ;
     errorCG = malloc(maxIt * sizeof(double)) ;
+    
+    for (index i = 0 ; i < maxIt ; i++ )
+    {
+        errorJacobi [i] = 0. ; 
+        errorGauss [i] = 0. ;
+        errorICF [i] = 0. ;
+        errorICNE [i] = 0. ;
+        errorMultigrid [i] = 0. ;
+        errorCG [i] = 0. ;
 
+    }
     /*PCG with multigrid as preconditioner*/
     double *x0 = malloc (AR ->n *sizeof(double)) ;
     for (k = 0 ; k < AR->n ; k ++)
@@ -268,10 +278,10 @@ int main (int argc, char **argv)
 
     FILE *f ;
     f = fopen(filename,"w") ;
-    fprintf(f,"#error_Jacobi #error_Gauss #error_ICF #error_ICNE #error_Multigrid #error_CG\n") ;
+    fprintf(f,"#Iteration #error_Jacobi #error_Gauss #error_ICF #error_ICNE #error_Multigrid #error_CG\n") ;
     for (index i = 0 ; i < maxIt ; i++)
     {
-        fprintf(f,"%.3e %.3e %.3e %.3e %.3e %.3e\n" ,
+        fprintf(f,"%ld %.3e %.3e %.3e %.3e %.3e %.3e\n" , i ,
                 errorJacobi [i] , errorGauss [i] , errorICF [i] ,
                 errorICNE [i] , errorMultigrid [i] , errorCG[i]) ;
     }

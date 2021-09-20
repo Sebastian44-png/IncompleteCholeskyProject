@@ -20,7 +20,6 @@ index sed_cg_jacobi (sed *A ,  double *b , double *x , index maxIt , double tol,
     double alpha ;
     double beta ; 
     double roh ;
-    index anzIt ;
     double *w ;
     
     r = malloc(An * sizeof(double)) ;
@@ -111,7 +110,6 @@ index sed_cg_jacobi (sed *A ,  double *b , double *x , index maxIt , double tol,
 
         /*update roh*/
         roh = hpc_dot(r, z, An) ;
-        anzIt = k ;
     }
 
 
@@ -125,5 +123,5 @@ index sed_cg_jacobi (sed *A ,  double *b , double *x , index maxIt , double tol,
     free (Ap) ;
     free (w) ; 
    
-   return (anzIt) ;  
+   return (maxIt) ;  
 }

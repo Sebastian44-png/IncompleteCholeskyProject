@@ -1,6 +1,6 @@
 #include "hpc.h"
 
-index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , double tol, double *error)
+index sed_cg_without (sed *A ,  double *b , double *x , index maxIt , double tol, double *error)
 {
     /*check input*/
     if(!A || !b || !x)
@@ -13,50 +13,41 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
     
     /*local variables*/
     double *r ;
-    double *z ;
-    double *z_next ;
     double *p ;
     double *Ap ;
     double alpha ;
     double beta ; 
     double roh ;
-    double *w ;
+    double roh_next ;
     
     r = malloc(An * sizeof(double)) ;
-    z = malloc(An * sizeof(double)) ;
-    z_next= malloc(An * sizeof(double)) ;
     p = malloc(An * sizeof(double)) ;
     Ap = malloc(An * sizeof(double)) ;
-    w = malloc(An * sizeof(double)) ;
+    
     for (index i = 0 ; i < An ; i++)
     {
         r [i] = 0. ;
-        z [i] = 0. ;
-        z_next [i] = 0. ;
         p [i] = 0. ;
     }
 
 
     /*calculate the first residual r_0 = b - A*x(0) and store the result in r*/
-    sed_gaxpy(A , x ,r) ;
+    sed_gaxpy(A, x , r);
+    //sed_spmv(A , x , r) ;
     for (index i = 0 ; i < An ; i++)
     {
         r [i] = b [i] - r [i] ;
     }
 
 
-    /*calculate the preconditoned residual z = M^-1 * r_0 as an Gauss-Seidel Iteration*/
-    sed_gs(A, r, z , w , 1 );
-    sed_gs(A, r, z , w , 0 );
-    
-    /*calculate p*/
+    /*calculate p_0 =  r_0*/
     for (index i = 0 ; i < An ; i++)
     {
-        p [i] = z [i] ;
-    }
-
+        p [i] = r [i] ;
+    } 
+    
     /*calcluate roh*/
-    roh = hpc_dot(r , z , An) ;
+    roh = hpc_dot(r , r, An) ;
     
     /*cg iteration*/
     for (index k = 0 ; k < maxIt ; k ++)
@@ -67,8 +58,7 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
             Ap [i] = 0 ;
         }
         
-        sed_gaxpy(A , p , Ap) ;    
-        
+        sed_gaxpy(A , p , Ap) ;
         
         /*calculate alpha*/
         alpha = hpc_dot(Ap, p, An) ;
@@ -81,38 +71,48 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
         /*calculate the next solution x*/
         hpc_scal(x , p , alpha , An) ;
         
-        
-        /*calculate the next residuum*/
-        hpc_scal(r , Ap, -alpha , An) ;
-        
         /*save actuall residual*/
         error [k] = hpc_dot(r , r , An);
         
+        /*calculate the next residuum*/
+        hpc_scal(r , Ap , -alpha , An) ;
+        
         /*check if abort criterion is reached */
-        if(error [k] < tol)
+        if(error[k] < tol)
         {
+            free (r) ;
+            free (p) ;
+            free (Ap) ;
             return (k);
         }
-        
-        sed_gs(A, r, z_next , w , 1 );
-        sed_gs(A, r, z_next , w , 0 );
-        
-        /*calculate beta*/
-        for (index i = 0 ;i < An ; i++)
+
+        /*caluclate the next roh*/
+        roh_next = hpc_dot(r , r , An) ;
+
+        /*check if roh_next == 0*/
+        if(roh_next == 0)
         {
-            z [i] = z_next [i] - z [i] ;
+            free (r) ;
+            free (p) ;
+            free (Ap) ;
+            return (0) ;
         }
-        beta = hpc_dot(r, z , An) / roh ;
-        
+        /*calculate beta*/
+        beta = roh_next / roh ;
+
+        /*calculate the next p 
+         * Ap is used as a buffer, in the rest of the loop the values of Ap are not used
+         * L^T * Ap = r*/
         for (index i = 0 ; i < An ; i++)
         {
-            p [i] = beta * p [i] + z_next [i] ;
-            z [i] = z_next [i] ;
-            z_next [i] = 0. ;
+            Ap [i] = 0;
         }
-
+        for (index i = 0 ; i < An ; i++)
+        {
+            p [i] = r[i] + beta * p [i] ;
+        }
         /*update roh*/
-        roh = hpc_dot(r , z , An) ;
+        roh = roh_next ;
     }
 
 
@@ -120,11 +120,8 @@ index sed_cg_gauss_seidel (sed *A ,  double *b , double *x , index maxIt , doubl
     /*memory release*/
    
     free (r) ;
-    free (z_next) ;
-    free (z) ;
     free (p) ;
     free (Ap) ;
-    free (w) ; 
    
-   return (maxIt) ; 
-} 
+   return (maxIt) ;  
+}
