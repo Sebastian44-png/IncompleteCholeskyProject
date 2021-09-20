@@ -221,30 +221,35 @@ int main (int argc, char **argv)
     
     
     sed_free(L_sed_icf) ;
-
     /*PCG with icne as preconditinoer*/
-    
+    for (k = 0 ; k < AR->n ; k++)
+    {
+        x0 [k] = 0. ;
+    }
     double alpha = 2 ; 
-    sed *L_sed_icne ;
-    L_sed_icne = sed_alloc(AR->n, 0, 1) ;
-    sed * A_full = sed_alloc(AR->n, 0, 1) ;
-    sed_L_to_LLt(AR, A_full) ;
-    printf("===================") ;
+    sed * L_sed_icne = sed_alloc(AR->n, 0 , 1) ;
+    sed * A_LLt = sed_alloc(AR->n, 0, 1) ;
+    
+    printf("=========  AR   =====\n") ;
     sed_print(AR , 0) ;
-    printf("===================") ;
-    sed_print(A_full , 0);
-    /*
-    sed_icne0(A_full , alpha , L_sed_icne);
-     
-    printf("===================") ;
+    printf("=========  A_LLt======\n") ;
+    //sed_L_to_LLt(AR, A_LLt) ;
+    //print_buffer_double(A_LLt->x, A_LLt->nzmax) ;
+    //sed_print(A_LLt , 0);
+
+    sed_icne0(AR , alpha , L_sed_icne);
+    print_buffer_double(L_sed_icne->x, L_sed_icne->nzmax+5) ;
+    print_buffer_int(L_sed_icne->i, L_sed_icne->nzmax+5) ;
+   
+    printf("=========icne0 matrix ==========\n") ;
     sed_print(L_sed_icne , 0);
-    
-    
+
     TIME_SAVE (8) ;
     anaAnzIt [3] = sed_ccg (AR , L_sed_icne , bR , x0 , maxIt , tol, errorICNE) ;
     TIME_SAVE (9) ;
     anaAvgTime [3] = TIME_ELAPSED (8 , 9) / anaAnzIt [3] ; 
-    */
+    
+
     /*AR sed ist in L Form
      * bR in dim von AR (ergebnisvektor)*/
     
@@ -271,7 +276,6 @@ int main (int argc, char **argv)
         fprintf(f,"%.3e %.3e %.3e %.3e %.3e\n" , errorJacobi [i] , errorGauss [i] , errorICF [i] , errorICNE [i] , errorMultigrid [i]) ;
     }
     fclose(f);
-    
     /*memory release*/
     sed_free(AR);
     free(bR);
@@ -281,8 +285,9 @@ int main (int argc, char **argv)
         mesh_free(H[k]) ;
         sed_free(A[k]) ;
     }
+    printf("hello4 \n");
     free(H); free(A);
-    
+    printf("hello5 \n");
     free (anaAnzIt) ;
     free (anaAvgTime) ;
     free (errorJacobi) ;
