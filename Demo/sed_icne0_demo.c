@@ -55,9 +55,9 @@ int main (int argc, char **argv)
     //printf("ind: "); print_buffer_int(L->i, L->nzmax);
     //printf("%d \n",(int)L->n);
     
-    //sed * LLt = sed_alloc(L->n, 0, 1);
-    //sed_L_to_LLt(L, LLt);
-    //sed_print(LLt, 0);
+    sed * LLt = sed_alloc(L->n, 0, 1);
+    sed_L_to_LLt(L, LLt);
+    sed_print(LLt, 0);
 
     //printf("x: "); print_buffer_double(L->x, L->nzmax+1);
     //printf("ind: "); print_buffer_int(L->i, L->nzmax+1);
@@ -70,6 +70,5 @@ int main (int argc, char **argv)
     //free(L->x);
     //sed_free(LLt);
     free(b);
-
     return (0) ;
 }

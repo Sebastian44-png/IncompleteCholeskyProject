@@ -22,7 +22,8 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
     double error;
     
    // r(0) = b - Ax(0)
-    sed_spmv(A, x, r);
+    sed_gaxpy(A, x, r);
+    //sed_spmv(A, x, r);
 
     for ( index i = 0; i < n; i++)
     {
@@ -40,16 +41,16 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
         {
             error += r [i] * r [i];
         }
-        if(error < tol || rho == 0){
-            return(1);
+        if(error < tol){
+            return(k);
         }
         
         for(index i = 0; i < n; i++)
         {
             Ap [i] = 0;
         }
-
-        sed_spmv(A, p, Ap); // Ap  = A * p
+        sed_gaxpy(A, p, Ap);
+        //sed_spmv(A, p, Ap); // Ap  = A * p
 
         alpha = rho / hpc_dot(Ap, p, n); 
         
@@ -70,8 +71,8 @@ index sed_cg ( const sed *A, double *b, double *x, index maxIt, double tol ){
             p [i] = r [i] + (beta * p [i]);
         }
         
-        printf(" x ="); print_buffer_double(x, n);
-        printf(" r ="); print_buffer_double(r, n);
+        // printf(" x ="); print_buffer_double(x, n);
+        // printf(" r ="); print_buffer_double(r, n);
     }
     free(r);
     free(p);

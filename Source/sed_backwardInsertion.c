@@ -1,30 +1,38 @@
 #include "hpc.h"                                                                
-
+                                                                                
 /*Backward Insecertion: solves the linear System Lx=b where L is a lower triangular matrix*/
-
-index sed_forwardInsertion(sed *L , double *x , double *b)                      
+                                                                                
+index sed_backwardInsertion(sed *L , double *x , double *b)                
 {                                                                               
     if(!L || !x || !b)                                                          
     {                                                                           
         return(0);                                                              
     }                                                                           
- 
+                                                                                
     index n ;                                                                   
-    index *ind ;
+    index *ind ;                                                                
     double *val ;                                                               
-                                                                             
-    n =  L->n ;                                                                  
+    index temp ;                                                                
+                                                                                
+    n =  L->n ;                                                                 
     ind = L->i ;                                                                
     val = L->x ;                                                                
-    x [n - 1] = b [n - 1] / val [ n-1 ] ;                                                   
-                                                                         
-    for (index i = n-1 ; i >= 0 ; i--)                                            
+    temp = -1 ;                                                                 
+                                                                                
+    x [n - 1] = b [n - 1] / val [n - 1] ;                                       
+                                                                                
+    for (index i = n-1 ; i > 0 ; i--)                                           
     {                                                                           
-        for (index ptr = ind[i] ; ptr < ind[i + 1] ; ptr ++)                      
+        for (index j = 0 ; j < i ; j++)                                         
         {                                                                       
-            x [ind [ptr]] += val [ptr] * x [i] ;                            
+            temp = sed_isoccupied(L, j, i) ;                                    
+            if(temp >= 0)                                                       
+            {                                                                   
+                x[j] += val [ind[j] +temp] * x [i];                             
+            }                                                                   
         }                                                                       
-        
-        x [i -1] = (b [i - 1] - x [i - 1]) / val [i - 1] ;                                     
+                                                                                
+        x [i -1] = (b [i - 1] - x [i - 1]) / val [i - 1] ;                      
     }                                                                           
-}            
+    return (1) ;                                                                
+}                  

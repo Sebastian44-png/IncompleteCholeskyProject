@@ -80,5 +80,8 @@ index sed_L_to_LLt(sed* L, sed* LLt)
             //printf("ind: "); print_buffer_int(llt_ind, llt_nzmax);
         }
     }
+    free(counts) ;
+    //free(col_counts) ;
+    
     return (1);
 }

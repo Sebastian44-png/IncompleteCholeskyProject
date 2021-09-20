@@ -28,9 +28,16 @@ index sed_icholesky (sed *A, sed *L)
     /*first column starts at position n+1 in L->x*/
     L->i[0] = n+1 ;
     
+    for (index j = 0 ; j < nzmax ; j++)
+    {
+        L->i [j] = ind [j] ;
+        L->x [j] = x [j] ;
+    }
     for (index j = 0 ; j < n ; j++)
     {
         anzCol[j] = ind[j+1] - ind[j] ;/*off diag nz of each col in A*/
+    }
+    /*
         L->x[j] = x[j];
         for (index k = 0 ; k < anzCol[j] ; k ++)
         {
@@ -44,11 +51,10 @@ index sed_icholesky (sed *A, sed *L)
         L->i[j+1] = L->i[j] + counter ;
         counter = 0 ;
     }
+    */
     /*apply the incomplete cholesky decomposition*/
     for (index k = 0 ; k < n ; k++)
     {
-        printf("\n============\nk = %ld\n", k);
-        sed_print(L, 0);
         /*calculate the diagonal element*/
         L->x[k] = sqrt(L->x[k]) ;
          
@@ -57,10 +63,8 @@ index sed_icholesky (sed *A, sed *L)
             /*calculate the k-th column*/
             L->x[L->i[k] + l] = L->x[L->i[k] + l] / L->x[k] ;
         }
-        sed_print(L,0);
 
         /*apply on the rest of the matrix*/    
-        printf("\n=============\n allpying on the rest of L");
         for (index m = k + 1 ; m < n ; m++)
         {
             amk = sed_isoccupied(L, k , m) ;
@@ -84,4 +88,5 @@ index sed_icholesky (sed *A, sed *L)
         }
     }
     return (1) ;
+
 }

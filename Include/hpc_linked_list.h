@@ -13,3 +13,4 @@ node* create_slist();
 node* append_node(node* tail, double data, index ind);
 void print_list_data(node* head);
 void print_list_ind(node* head);
+void freeList(struct node* head);

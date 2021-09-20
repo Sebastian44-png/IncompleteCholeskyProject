@@ -1,5 +1,9 @@
 #include "hpc.h"
 #include "hpc_linked_list.h"
+/*
+Author: Sebastian Acerbi
+*/
+
 
 /* perform the ICNE(0)-decomposition on an matrix stored
    in the sed format, the original matrix gets overwritten */
@@ -23,14 +27,19 @@ index sed_icne0(sed* A, double alpha, sed* L){
     node* u_k;
 
     /* array of linked lists for storing columns of L */
-    node** cols_head = malloc(n*sizeof(node*)); 
-    node** cols_tail = malloc(n*sizeof(node*));
+    node** cols_head = malloc(n*sizeof(node*)) ; 
+    node** cols_tail = malloc(n*sizeof(node*)) ;
     for(index i=0; i<n; i++) { // initialize linked lists
-        cols_head[i] = create_slist();
-        cols_tail[i] = cols_head[i]; 
+        cols_head[i] = malloc(sizeof(node)) ;
+        cols_head[i]->data = 0.0;
+        cols_head[i]->ind = 0;
+        cols_head[i]->next = NULL;
+        cols_tail[i] = cols_head[i] ; 
     }
 
     double* d = malloc(n*sizeof(double));
+
+    if(x[0] == 0){return (0);} // return if diagonal element is zero
     d[0] = x[0];
 
     for(index i = 1; i < n; i++){
@@ -45,6 +54,7 @@ index sed_icne0(sed* A, double alpha, sed* L){
             a_j[ind[p]] = x[p];    // extract collumn_j
         }
         a_j[i] = x[i]; // extract collumn_j
+        if(x[i] == 0) { return (0); } // return if diagoanl element is zero
 
         l_ii += pow(x[i], 2);  // calucualte l_ii = (a_i, a_i) + alpha for the diagonal element
         l_ii += alpha;         // calucualte l_ii = (a_i, a_i) + alpha 
@@ -59,15 +69,14 @@ index sed_icne0(sed* A, double alpha, sed* L){
                 l_j[j] += a_j[ind[p]] * x[p];
             }
             l_j[j] += x[j] * a_j[j];
-
             if(l_j[j] == 0) { continue; } // storing only nonzero inner-products
-           
+            
             //store l_j in a linked list datastructure
             cols_tail[j] = append_node(cols_tail[j], l_j[j] /*data */, i /* row index */);
             nzmax++; // increment number of nonzero elements
         }
         l_j[i] = l_ii;
-        //printf("ld_%ld = ", i); print_buffer_double(l_j, n);
+
 
         for(index k = 0; k < i; k++){
 
@@ -76,9 +85,7 @@ index sed_icne0(sed* A, double alpha, sed* L){
             u_k = cols_head[k]; // u_k = k-th column of L
             //printf("u_%ld = ", k);print_list_data(u_k);
 
-            // -2
             l_j[k] = l_j[k] / d[k];
-            //printf("l_j = "); print_buffer_double(l_j, n);
 
             while(u_k->next != NULL){
 
@@ -88,48 +95,53 @@ index sed_icne0(sed* A, double alpha, sed* L){
             u_k->data = l_j[k];
         }
         d[i] = l_ii;
-        //printf("l_j = "); print_buffer_double(l_j, n);
     }
+    free(a_j);
+    free(l_j); 
 
     /* build sed_matrix containing L + d */
     //printf("nzmax = %ld \n", nzmax);
-    if(!sed_realloc(L, nzmax+1)) {return (0);}
 
+    if(!sed_realloc(L, nzmax+1)) {return (0);}
+    //printf("realloced \n");
     
-    // store d on the diagonal of L
+    // storing d on the diagonal of L
     for(index i = 0; i < n; i++){
         L->x[i] = d[i];
     }
     
+    //printf("d on diag \n");
     index count = n+1;
     node* current_node;
 
-    for(index i=0; i<n; i++){
-        
-        current_node = cols_head[i];
+    //printf("nodes initiallized\n");
 
+    //for (index i = 0; i < n; i++){
+    //    print_list_data(cols_head[i]);
+    //    print_list_ind(cols_head[i]);
+    //} 
+
+    for(index i=0; i<n; i++){
+    // printf("iterating throug %ld-th col \n ", i);
+        current_node = cols_head[i];
+    
         // store column pointers
         L->i[i] = count;
-
+        
         while(current_node->next != NULL){ // add colum i to L->x
-
+            
             current_node = current_node->next;
             L->x[count] = current_node->data;
             L->i[count] = current_node->ind;
-
+            
             count++;
             //printf("Entry : count %ld ", count);
-            //printf("%ld  ", current_node->ind);
-            //printf("%2.2f ", current_node->data);
+            //printf(" (%ld  ", current_node->ind);
+            //printf("%2.2f ) ", current_node->data);
         }
-        //printf("\n");
-        //print_list_data(cols_head[i]);
-        //print_list_ind(cols_head[i]);
     }
     L->i[n] = count;
 
-    //printf("data : "); print_buffer_double(L->x, nzmax+1);
-    //printf("index: "); print_buffer_int(L->i, nzmax +1);
     //sed_print(L, 0);
     
     //printf("freeing i \n");
@@ -140,14 +152,14 @@ index sed_icne0(sed* A, double alpha, sed* L){
 
     //printf("freed\n");
     
-   
+    //printf("data2 : "); print_buffer_double(L->x, nzmax+1);
+    //printf("index2: "); print_buffer_int(L->i, nzmax +1);
     // freeing structures for intermediate results
     for(index i = 0; i < n; i++){
-        free(cols_head[i]);
+       freeList(cols_head[i]);
     }
-
-    free(a_j);
-    free(l_j);
+    free(cols_head);
+    free(cols_tail);
     free(d);
 
     return (1);

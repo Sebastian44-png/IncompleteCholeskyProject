@@ -40,10 +40,26 @@ HPC = \
  gem_util.o \
  gem_spmv.o \
  hpc_malloc.o \
+ hpc_cumsum.o \
+ hpc_mg_cycle.o \
+ hpc_mg_cycle_jac.o \
+ hpc_mg.o \
+ hpc_mg_jac.o \
+ hpc_prol.o \
+ hpc_rest.o \
+ hpc_reduceFixed.o \
+ hpc_expandFixed.o \
  jds_spmv.o \
  jds_print.o \
  jds_util.o  \
  sed_compress.o \
+ sed_ccg.o \
+ sed_cg_jacobi.o \
+ sed_cg_gauss_seidel.o \
+ sed_gaxpy.o \
+ sed_gs_constr.o \
+ sed_pcg_mg.o \
+ sed_pcg_mg_jac.o \
  sed_icholesky.o \
  sed_isoccupied.o \
  sed_forwardInsertion.o \
@@ -52,21 +68,32 @@ HPC = \
  sed_print.o \
  sed_util.o  \
  sed_gauss_seidel.o \
+ sed_gs.o \
  sed_ILU.o \
  sed_MILU.o \
  sed_jacobi.o \
+ sed_jacobi_constr.o \
  sed_richardson.o \
- sky_cholesky.o \
  sed_cg.o \
  sed_icne0.o \
+ sed_pcg_mg.o \
+ sed_buildS.o \
+ sed_reduceS.o \
+ sed_dupl.o \
  sed_L_to_LLt.o \
  sky_compress.o \
  sky_print.o  \
  sky_util.o \
  sky_load.o \
  sky_spmv.o \
- hpc_cumsum.o \
- hpc_malloc.o \
+ sky_cholesky.o \
+ mesh_buildRhs.o \
+ mesh_load.o  \
+ mesh_getEdge2no.o \
+ mesh_print.o  \
+ mesh_refine.o  \
+ mesh_getFixed.o  \
+ mesh_util.o \
  hpc_dot.o \
  hpc_scal.o \
  s_list.o \

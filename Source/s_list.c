@@ -7,7 +7,10 @@
 /* creates a singly linked list
     returns the head-node of the list */
 node* create_slist(){
-    node* head = NULL;
+    node* head = malloc(sizeof(node));
+    head->data = 0.0;
+    head->ind = 0;
+    head->next = NULL;
     return (node *) malloc(sizeof(node));
 }
 
@@ -27,6 +30,12 @@ node* append_node(node* tail, double data, index ind){
    all data mambers of the linked list */
 void print_list_data(node* head){
 
+    if (head->next == NULL)
+    {
+        printf("Linked List is empty\n");
+        return;
+    }
+
     node* node = head;
     while(node->next != NULL){
         node = node->next;
@@ -39,10 +48,29 @@ void print_list_data(node* head){
    all index mambers of the linked list */
 void print_list_ind(node*head){
 
+    if (head->next == NULL)
+    {
+        printf("Linked List is empty\n");
+        return;
+    }
+
     node* node = head;
     while(node->next != NULL){
         node = node->next;
         printf("%d ", (int)node->ind);
     }
     printf("\n");
+}
+
+void freeList(struct node* head)
+{
+   struct node* tmp;
+
+   while (head != NULL)
+    {
+       tmp = head;
+       head = head->next;
+       free(tmp);
+    }
+
 }
