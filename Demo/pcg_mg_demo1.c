@@ -163,22 +163,42 @@ int main (int argc, char **argv)
     double *errorGauss ;
     double *errorICF ;
     double *errorICNE ;
+<<<<<<< HEAD
     double *errorMultigrid ;
     
+=======
+    double * errorMultigrid ;
+    double *errorCG ;
+
+>>>>>>> dev_Joe
     index maxIt = 2 * AR->n ;
     printf("Maxit = %ld\n", maxIt) ;
     double tol  = 1e-16 ;
 
-    anaAnzIt = malloc(5*sizeof(index)) ;
-    anaAvgTime = malloc(5*sizeof(double)) ;
+    anaAnzIt = malloc(6*sizeof(index)) ;
+    anaAvgTime = malloc(6*sizeof(double)) ;
     errorJacobi = malloc(maxIt*sizeof(double)) ;
     errorGauss = malloc(maxIt*sizeof(double)) ;
     errorICF = malloc(maxIt*sizeof(double)) ;
     errorICNE = malloc(maxIt*sizeof(double));
     errorMultigrid = malloc(maxIt*sizeof(double)) ;
+<<<<<<< HEAD
 
     printf("Multigrid preconditioner\n") ;
+=======
+    errorCG = malloc(maxIt * sizeof(double)) ;
+>>>>>>> dev_Joe
     
+    for (index i = 0 ; i < maxIt ; i++ )
+    {
+        errorJacobi [i] = 0. ; 
+        errorGauss [i] = 0. ;
+        errorICF [i] = 0. ;
+        errorICNE [i] = 0. ;
+        errorMultigrid [i] = 0. ;
+        errorCG [i] = 0. ;
+
+    }
     /*PCG with multigrid as preconditioner*/
     double *x0 = malloc (AR ->n *sizeof(double)) ;
     for (k = 0 ; k < AR->n ; k ++)
@@ -242,6 +262,10 @@ int main (int argc, char **argv)
     sed_print(AR , 0) ;
     printf("===================") ;
     sed_print(A_full , 0);
+<<<<<<< HEAD
+=======
+    
+>>>>>>> da4d500da44167c2ba1896d61df08195a40d771a
     sed_icne0(A_full , alpha , L_sed_icne);
      
     printf("===================") ;
@@ -253,30 +277,33 @@ int main (int argc, char **argv)
     TIME_SAVE (9) ;
     anaAvgTime [3] = TIME_ELAPSED (8 , 9) / anaAnzIt [3] ; 
     */
-    /*AR sed ist in L Form
-     * bR in dim von AR (ergebnisvektor)*/
-    
-    
-    
-    
-    
-    
-    
-    //errStep = sed_pcg_mg_jac(AR, A, bR, x, 1e-10, 50, H, N, 1, 1, 1);  
-    // cnt = sed_cg(AR , bR, x, 50, 1e-10);
-                                   
-    //total = ncoord*2*sizeof(double) 
-    //      + (7*nelem+4*nbdry+nedges*2)*sizeof(index);
-    
-    //printf ("Total :       %12.6g MByte\n", (double) total/1024./1024.);
-    
-    /*analysis in a txt file*/
+
+    /*CG without preconditioner*/
+    for (k = 0 ; k < AR->n ; k++)
+    {
+        x0 [k] = 0. ;
+    }
+    TIME_SAVE(10) ;
+    anaAnzIt [5] = sed_cg_without(AR, bR, x0, maxIt , tol ,  errorCG);  
+    TIME_SAVE (11) ;
+    anaAvgTime [5] = TIME_ELAPSED (10 , 11) / anaAnzIt [5] ; 
+    printf("====\n");
+    printf("%ld\n", anaAnzIt[5]);
+
+
+    /*analysis in a txt file */
+    char filename[25] ;
+
+    snprintf(filename, 25, "%s_dim_%ld.txt", argv[1], N) ;
+
     FILE *f ;
-    f = fopen("Analyse_Problem_1.txt","w") ;
-    fprintf(f,"error_Jacobi error_Gauss error_ICF error_ICNE error_Multigrid\n") ;
+    f = fopen(filename,"w") ;
+    fprintf(f,"#Iteration #error_Jacobi #error_Gauss #error_ICF #error_ICNE #error_Multigrid #error_CG\n") ;
     for (index i = 0 ; i < maxIt ; i++)
     {
-        fprintf(f,"%.3e %.3e %.3e %.3e %.3e\n" , errorJacobi [i] , errorGauss [i] , errorICF [i] , errorICNE [i] , errorMultigrid [i]) ;
+        fprintf(f,"%ld %.3e %.3e %.3e %.3e %.3e %.3e\n" , i ,
+                errorJacobi [i] , errorGauss [i] , errorICF [i] ,
+                errorICNE [i] , errorMultigrid [i] , errorCG[i]) ;
     }
     fclose(f);
     
@@ -297,6 +324,7 @@ int main (int argc, char **argv)
     free (errorGauss) ;
     free (errorICF) ;
     free (errorICNE) ;
+    free (errorCG) ;
 
     return (0) ;
 }

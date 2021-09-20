@@ -50,6 +50,7 @@ HPC = \
  sed_ccg.o \
  sed_cg_jacobi.o \
  sed_cg_gauss_seidel.o \
+ sed_cg_without.o \
  sed_gaxpy.o \
  sed_gs_constr.o \
  sed_pcg_mg.o \
