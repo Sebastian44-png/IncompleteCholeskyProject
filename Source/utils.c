@@ -1,3 +1,8 @@
+/*
+Utilities for working with buffers
+Author: Sebasian Acerbi
+*/
+
 #include "hpc.h"
 
 void print_buffer_double(double* buffer, int len)

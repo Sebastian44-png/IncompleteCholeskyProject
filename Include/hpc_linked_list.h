@@ -1,5 +1,7 @@
-
 /* --------- linked list datastructure ------------- */
+/* 
+Author: Sebastian Acerbi 
+*/
 
 // Structure for nodes in a singly linked list
 typedef struct node

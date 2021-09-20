@@ -1,5 +1,9 @@
 #include "hpc.h"
 
+/*
+Author: Sebastian Acerbi
+*/
+
 /* convert L matrix to L + L-transposed*/
 index sed_L_to_LLt(sed* L, sed* LLt)
 {
@@ -56,8 +60,6 @@ index sed_L_to_LLt(sed* L, sed* LLt)
         llt_ind[i] += col_counts[i];
     }
     llt_ind[l_n + 1] = 0;
-    //printf("x  : "); print_buffer_double(llt_Ax, llt_nzmax);
-    //printf("ind: "); print_buffer_int(llt_ind, llt_nzmax);
 
     for(index i=0; i<l_n; i++){
         counts[i] = 0;
@@ -76,12 +78,9 @@ index sed_L_to_LLt(sed* L, sed* LLt)
             llt_ind[llt_ind[j] + counts[j]] = l_ind[i];
             llt_Ax[llt_ind[j] + counts[j]] = l_Ax[i];
             counts[j]++;
-            //printf("x  : "); print_buffer_double(llt_Ax, llt_nzmax);
-            //printf("ind: "); print_buffer_int(llt_ind, llt_nzmax);
         }
     }
     free(counts) ;
-    //free(col_counts) ;
     
     return (1);
 }

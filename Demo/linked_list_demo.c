@@ -3,14 +3,17 @@
 
 int main(){
 
+    //create linked list
     node* head_list1 = create_slist();
 
     node* current = head_list1;
 
+    //append nodes to the list
     for (index i=0; i<10; i++){
         current = append_node(current, i, (double)i+1);
     }
     
+    //create another list
     node* head_list2 = create_slist();
 
     current = head_list2;
@@ -27,6 +30,6 @@ int main(){
         print_list_data(cols[i]);
     }
 
-    free(head_list1);
-    free(head_list2);
+    freeList(head_list1);
+    freeList(head_list2);
 }

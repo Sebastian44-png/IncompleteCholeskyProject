@@ -1,8 +1,10 @@
 #include "hpc.h"
 #include "hpc_linked_list.h"
 /* Basic implementation of a singly linked list datastructure, which is used to
-   store colums/rows of sparse matrices. */
-
+   store colums/rows of sparse matrices. 
+    
+    Author: Sebastian Acerbi
+*/
 
 /* creates a singly linked list
     returns the head-node of the list */

@@ -4,7 +4,6 @@
 Author: Sebastian Acerbi
 */
 
-
 /* perform the ICNE(0)-decomposition on an matrix stored
    in the sed format, the original matrix gets overwritten */
 
@@ -59,6 +58,7 @@ index sed_icne0(sed* A, double alpha, sed* L){
         l_ii += pow(x[i], 2);  // calucualte l_ii = (a_i, a_i) + alpha for the diagonal element
         l_ii += alpha;         // calucualte l_ii = (a_i, a_i) + alpha 
         
+
         /* calculate all nonzero inner products: l_ij = (a_i,a_j) */
         for(index j=0; j<n; j++){ l_j[j] = 0;} // set l_j to zero
 
@@ -83,7 +83,6 @@ index sed_icne0(sed* A, double alpha, sed* L){
             if(l_j[k] == 0) { continue; } //proceed only for nonzero inner products
 
             u_k = cols_head[k]; // u_k = k-th column of L
-            //printf("u_%ld = ", k);print_list_data(u_k);
 
             l_j[k] = l_j[k] / d[k];
 
@@ -100,29 +99,18 @@ index sed_icne0(sed* A, double alpha, sed* L){
     free(l_j); 
 
     /* build sed_matrix containing L + d */
-    //printf("nzmax = %ld \n", nzmax);
-
     if(!sed_realloc(L, nzmax+1)) {return (0);}
-    //printf("realloced \n");
     
     // storing d on the diagonal of L
     for(index i = 0; i < n; i++){
         L->x[i] = d[i];
     }
     
-    //printf("d on diag \n");
     index count = n+1;
     node* current_node;
 
-    //printf("nodes initiallized\n");
-
-    //for (index i = 0; i < n; i++){
-    //    print_list_data(cols_head[i]);
-    //    print_list_ind(cols_head[i]);
-    //} 
-
     for(index i=0; i<n; i++){
-    // printf("iterating throug %ld-th col \n ", i);
+    
         current_node = cols_head[i];
     
         // store column pointers
@@ -135,31 +123,13 @@ index sed_icne0(sed* A, double alpha, sed* L){
             L->i[count] = current_node->ind;
             
             count++;
-            //printf("Entry : count %ld ", count);
-            //printf(" (%ld  ", current_node->ind);
-            //printf("%2.2f ) ", current_node->data);
         }
     }
     L->i[n] = count;
 
-    //sed_print(L, 0);
-    
-    //printf("freeing i \n");
-    //free(L->i);
-
-    //printf("freeing x \n");
-    //free(L->x);
-
-    //printf("freed\n");
-    
-    //printf("data2 : "); print_buffer_double(L->x, nzmax+1);
-    //printf("index2: "); print_buffer_int(L->i, nzmax +1);
-    // freeing structures for intermediate results
     for(index i = 0; i < n; i++){
        freeList(cols_head[i]);
     }
-    free(cols_head);
-    free(cols_tail);
     free(d);
 
     return (1);
