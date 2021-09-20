@@ -1,4 +1,5 @@
 #include "hpc.h"
+/* author: Benjamin Bestler */
 
 /* writes non-fixed entries from x into xShort */
 index hpc_reduceFixed (double *x, double *xShort, index n, const index *fixed, const index nFixed)
@@ -7,6 +8,7 @@ index hpc_reduceFixed (double *x, double *xShort, index n, const index *fixed, c
     index ft ;
     index fptr ;
 
+    // check inputs
     if (!x || !xShort || !fixed)
     {
         return (0) ;

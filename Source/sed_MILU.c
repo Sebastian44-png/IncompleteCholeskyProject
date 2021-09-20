@@ -1,7 +1,8 @@
 #include "hpc.h"
+/* author: Benjamin Bestler */
+
 /* Computes relaxed modified incomplete LU-factorization with relaxation factor alpha
 A is required to have only nonzero diagonal entries */
-
 index sed_MILU (sed *A, const double alpha)
 {
     if (alpha == 0)
@@ -28,84 +29,53 @@ index sed_MILU (sed *A, const double alpha)
 
     for (index k = 0 ; k < n - 1 ; k++)
     {
-        /* computations for diagonal elements , no difference to ILU as akk != 0 */
-        for (index ptr = k + 1 ; ptr < n ; ptr++)
-        {
-            if (Ax[ptr] == 0)
-            {
-                return (0) ;
-            }
-
-            /* find aik */
-            aik = 0 ;
-            for (index iptr = Ai[k] ; iptr < Ai[k + 1] ; iptr++)
-            {
-                if (Ai[iptr] == ptr)
-                {
-                    aik = Ax[iptr] ;
-                    break ;
-                }
-            }
-            if (aik == 0)
-            {
-                continue ;
-            }
-
-            /* find akj */
-            akj = 0;
-            for (index iptr = Ai [ptr] ; iptr < Ai[ptr + 1] ; iptr++)
-            {
-                if (Ai [iptr] == k)
-                {
-                    akj = Ax[iptr] ;
-                    break ;
-                }
-            }
-            if (akj == 0)
-            {
-                continue ;
-            }
-
-            Ax [ptr] -= aik * akj / Ax [k] ;
-        }
-
-        /* other matrix entries */
+        /* iterate through k-th row */
         for (j = k + 1 ; j < n ; j++)
         {
+            /* Search for k-th entry in j-th column and do computations if found */ 
             for (index akjptr = Ai [j] ; akjptr < Ai [j + 1]; akjptr++)
             {
-                /* going through akj */
-                if (Ai [akjptr] != k)
-                {
-                    continue ;
-                }
-
-                for (index aikptr = Ai [k] ; aikptr < Ai [k + j] ; aikptr++)
+                if (Ai [akjptr] == k)
                 {
                     /* going through aik */
-                    i = Ai [aikptr] ; 
-
-                    if (i <= k)
+                    for (index aikptr = Ai [k] ; aikptr < Ai [k + j] ; aikptr++)
                     {
-                        continue ;
-                    }
+                        i = Ai [aikptr] ; 
 
-                    /* find aij and modify if found */
-                    found = false ;
-                    for (index iptr = Ai[j] ; iptr < Ai[j + 1] ; iptr++)
-                    {
-                        if (Ai[iptr] == i)
+                        if (i <= k)
                         {
-                            found = true ;
-                            Ax [iptr] -= Ax [akjptr] * Ax [aikptr] / Ax [k] ;
-                            break ;
+                            continue ;
+                        }
+
+                        if (i == j)
+                        {
+                            /* Diagonal entry */
+                            Ax [i] -= Ax [akjptr] * Ax [aikptr] / Ax [k] ;
+                        }
+                        else
+                        {
+                            /* Non-diagonal entry */
+
+                            /* find aij and modify if found */
+                            found = false ;
+                            for (index iptr = Ai[j] ; iptr < Ai[j + 1] ; iptr++)
+                            {
+                                if (Ai[iptr] == i)
+                                {
+                                    found = true ;
+                                    Ax [iptr] -= Ax [akjptr] * Ax [aikptr] / Ax [k] ;
+                                    break ;
+                                }
+                            }
+
+                            /* If not found, modify aii */
+                            if (!found)
+                            {
+                                Ax [i] -= alpha * Ax [akjptr] * Ax [aikptr] / Ax [k] ;
+                            }
                         }
                     }
-
-                    if (!found)
-                    {
-                        Ax [i] -= alpha * Ax [akjptr] * Ax [aikptr] / Ax [k] ;
-                    }
+                    break ;
                 }
             }
         }

@@ -1,4 +1,5 @@
 #include "hpc.h"
+/* author: Benjamin Bestler */
 
 /* Preconditioned Conjugate gradient method for solving A*x = b with multigrid preconditioner
  *sed **Amg needs to be grid hierarchy 
@@ -17,21 +18,28 @@ index sed_pcg_mg (sed *A, sed **Amg, double *b, double *x, double tol, index max
     index nFixed ;
     index *fixed ;
 
+    // problem dimension
     n = A->n ;
+
+    // for adapting data to Multigrid
     nFull = Amg [nLevel]->n ;
     nFixed = H [nLevel]->nfixed ;
     fixed = H [nLevel]->fixed ;
 
-    // helper variables
+    // Buffers for residual, r for CG, rExp for MG
     double *r = malloc (n * sizeof (double)) ;
     double *rExp = malloc (nFull * sizeof(double)) ;
-    double *z = malloc (n*sizeof(double)) ; // to store preconditioned residual
-    double *zExp = malloc (nFull*sizeof(double)) ;
-    double *z_prev = malloc (n*sizeof(double)) ;
-    double *p = malloc (n*sizeof(double)) ;
-    double *Ap = malloc (n*sizeof(double)) ;
 
-    // check if mallocs are sucessfull
+    // Buffers for residual after preconditioningn
+    double *z = malloc (n * sizeof(double)) ;
+    double *zExp = malloc (nFull * sizeof(double)) ;
+    double *z_prev = malloc (n * sizeof(double)) ;
+
+    // Buffer for p and Ap = A * p
+    double *p = malloc (n * sizeof(double)) ;
+    double *Ap = malloc (n * sizeof(double)) ;
+
+    // check if mallocs are successfull
     if (!r || !rExp || !z || !zExp || !z_prev || !p || !Ap)
     {
         free (r) ;

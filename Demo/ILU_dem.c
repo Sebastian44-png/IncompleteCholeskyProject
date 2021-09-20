@@ -1,26 +1,57 @@
 #include "hpc.h"
+/* author: Benjamin Bestler */
 
-int main(int argc, char **argv)
+int main (int argc, char **argv)
 {
-    index N;
+    index N ;
+    N = 5 ;
+    double alpha ;
+    alpha = 0.5 ;
+    
+    /* get grid size */
+    if (argc > 1)
+    {                        
+        if (atoi(argv[1]) > 0) 
+        {
+            N = atoi(argv[1]) ;
+        }
+    } 
 
-    cs *A_cs;
-    sed *A_sed;
+    /* get alpha */
+    if (argc > 2)
+    {                        
+        if (atof(argv[2]) > 0) 
+        {
+            alpha = atof(argv[2]) ;
+        }
+    } 
 
-    N = 5;
-    A_cs = cs_lapmat_p1_square(N);
+    cs *A_cs ;
+    sed *A_sed_ILU ;
+    sed *A_sed_MILU ;
+    sed *A_sed_MILU_rel ;
 
-    A_sed = sed_compress(A_cs);
+    /* Create problem */
+    A_cs = cs_lapmat_p1_square(N) ;
 
-    sed_ILU(A_sed);
+    /* Prepare matrix and apply ILU */
+    A_sed_ILU = sed_compress(A_cs) ;
+    sed_ILU(A_sed_ILU) ;
 
-    printf("After ILU") ;
-    sed_print(A_sed, 0);
+    printf("ILU factorization of Matrix A:\n") ;
+    sed_print(A_sed_ILU, 0) ;
 
-    A_sed = sed_compress(A_cs);
+    /* Prepare matrix and apply MILU */
+    A_sed_MILU = sed_compress(A_cs) ;
+    sed_MILU(A_sed_MILU, 1) ;
 
-    sed_MILU(A_sed, 1) ;
+    printf("MILU factorization of Matrix A:\n") ;
+    sed_print(A_sed_MILU, 0) ;
 
-    printf("Solution of MILU:") ;
-    sed_print(A_sed, 0);
+    /* Prepare matrix and apply MILU */
+    A_sed_MILU_rel = sed_compress(A_cs) ;
+    sed_MILU(A_sed_MILU_rel, alpha) ;
+
+    printf("relaxed MILU factorization of Matrix A with alpha = %.2f:\n", alpha) ;
+    sed_print(A_sed_MILU_rel, 0) ;
 }

@@ -1,4 +1,5 @@
 #include "hpc.h"
+/* author: Benjamin Bestler */
 
 /* takes top level Stiffness Matrix A and reduces it to only non-fixed row/columns */
 sed *sed_reduceS (const sed *S, const index *fixed, const index nFixed)
@@ -21,6 +22,11 @@ sed *sed_reduceS (const sed *S, const index *fixed, const index nFixed)
     index *SRi ;
     double *SRx ;
 
+    Sn = S->n ;
+    Snzmax = S->nzmax ;
+    Si = S->i ;
+    Sx = S->x ;
+
     isf = malloc (Sn * sizeof(index)) ;
     NewRow = malloc (Sn * sizeof(index)) ;
 
@@ -31,11 +37,6 @@ sed *sed_reduceS (const sed *S, const index *fixed, const index nFixed)
         free (NewRow) ;
         return (NULL) ;
     }
-
-    Sn = S->n ;
-    Snzmax = S->nzmax ;
-    Si = S->i ;
-    Sx = S->x ;
 
     // Store in isf at each index if it is fixed
     for (index k = 0 ; k < Sn ; k++)

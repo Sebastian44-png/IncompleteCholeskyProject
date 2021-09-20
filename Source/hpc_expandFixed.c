@@ -1,4 +1,5 @@
 #include "hpc.h"
+/* author: Benjamin Bestler */
 
 /* writes values from x into non-fixed entries from xLong */
 index hpc_expandFixed (double *x, double *xLong, index n, const index *fixed, const index nFixed)
@@ -7,6 +8,7 @@ index hpc_expandFixed (double *x, double *xLong, index n, const index *fixed, co
     index ft ;
     index fptr ;
 
+    // check inputs
     if (!x || !xLong || !fixed)
     {
         return (0) ;

@@ -26,20 +26,23 @@ all: lib demo
 #	- ./cg_demo 2
 # ./linked_list_demo
 #   - ./mg_demo1 problem3 2
-	- ./pcg_mg_demo1 problem1 0 
+#	- ./pcg_mg_demo1 problem1 0 
 #	- ./mg_demo1 problem4 1
+	- ./ILU_dem 6 0.7
+#	- ./ILU_dem
 
 lib:
 	( cd ../Lib ; $(MAKE) )
 
-demo: lib pcg_mg_demo1.c Makefile
+demo: lib ILU_dem.c Makefile
 #$(CC) $(CF) $(I) -o  icholesky_demo icholesky_demo.c $(CS)
 #$(CC) $(CF) $(I) -o gem_lu_demo gem_lu_demo.c $(CS)
 #$(CC) $(CF) $(I) -o hpc_demo hpc_demo.c $(CS)
 #$(CC) $(CF) $(I) -o linked_list_demo linked_list_demo.c $(CS)
 #$(CC) $(CF) $(I) -o sed_icne0 sed_icne0_demo.c $(CS)
+	$(CC) $(CF) $(I) -o ILU_dem ILU_dem.c $(CS)
 # 	$(CC) $(CF) $(I) -o mg_demo1 mg_demo1.c $(CS)
-	$(CC) $(CF) $(I) -o pcg_mg_demo1 pcg_mg_demo1.c $(CS)
+#	$(CC) $(CF) $(I) -o pcg_mg_demo1 pcg_mg_demo1.c $(CS)
 #	$(CC) $(CF) $(I) -o  PCG_ICF_demo PCG_ICF_demo.c $(CS)
 #	$(CC) $(CF) $(I) -o sed_icne0 sed_icne0_demo.c $(CS)
 #	$(CC) $(CF) $(I) -o cg_demo cg_demo.c $(CS)
@@ -48,5 +51,5 @@ clean:
 	- $(RM) *.o
 
 purge: clean
-	- $(RM) -r pcg_mg_demo \
+	- $(RM) -r ILU_dem \
     *.a *.dSYM *.obj *.dll

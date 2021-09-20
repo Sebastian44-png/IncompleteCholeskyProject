@@ -149,8 +149,11 @@ int main (int argc, char **argv)
       }
     }
 
+    printf("Prepare matrix \n") ;
     /* AR*x = bR is LSE for standard CG solver */
     AR = sed_reduceS(A [N], fixed, nfixed) ;
+
+    printf("Problem prepared, success: %d\n", (int) !(!AR)) ;
     
     /*vorbereitung für Analyse*/
     
@@ -160,9 +163,10 @@ int main (int argc, char **argv)
     double *errorGauss ;
     double *errorICF ;
     double *errorICNE ;
-    double * errorMultigrid ;
+    double *errorMultigrid ;
     
     index maxIt = 2 * AR->n ;
+    printf("Maxit = %ld\n", maxIt) ;
     double tol  = 1e-16 ;
 
     anaAnzIt = malloc(5*sizeof(index)) ;
@@ -172,6 +176,8 @@ int main (int argc, char **argv)
     errorICF = malloc(maxIt*sizeof(double)) ;
     errorICNE = malloc(maxIt*sizeof(double));
     errorMultigrid = malloc(maxIt*sizeof(double)) ;
+
+    printf("Multigrid preconditioner\n") ;
     
     /*PCG with multigrid as preconditioner*/
     double *x0 = malloc (AR ->n *sizeof(double)) ;
@@ -186,6 +192,7 @@ int main (int argc, char **argv)
     anaAvgTime [4] = TIME_ELAPSED (0 , 1) / anaAnzIt [4] ; 
     
     /*PCG with jacobi as preconditioner*/
+    printf("Jacobi preconditioner\n") ;
     for (k = 0 ; k < AR->n ; k++)
     {
         x0 [k] = 0. ;
@@ -196,6 +203,7 @@ int main (int argc, char **argv)
     anaAvgTime [0] = TIME_ELAPSED (2 , 3) / anaAnzIt [0] ; 
 
     /*PCG with gauss-seidel as preconditioner*/
+    printf("Gauss-Seider preconditioner\n") ;
     for (k = 0 ; k < AR->n ; k++)
     {
         x0 [k] = 0. ;
@@ -207,6 +215,7 @@ int main (int argc, char **argv)
 
 
     /*PCG with icf as preconditioner*/
+    printf("ICF preconditioner\n") ;
     sed *L_sed_icf ;
     L_sed_icf = sed_alloc(AR->n, AR->nzmax , 1) ;
     sed_icholesky (AR , L_sed_icf) ;      
