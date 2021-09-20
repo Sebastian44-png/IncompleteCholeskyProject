@@ -75,13 +75,7 @@ index hpc_mg(sed **A, double *b, double *x, double tol, index maxit,
 index hpc_mg_cycle(sed **A, mesh **H, index nLevel, 
                    double **b, double **x, double **r,
                    index pre, index post, index gamma);
-index hpc_mg_jac(sed **A, double *b, double *x, double tol, index maxit,
-             mesh **H, index nLevel, index pre, index post, index gamma);
-index hpc_mg_cycle_jac(sed **A, mesh **H, index nLevel, 
-                   double **b, double **x, double **r,
-                   index pre, index post, index gamma);
 void hpc_prol(double *x, index nx, index *edgeno, index nEdges, double *y);
-void hpc_prol_quad(double *x, double *y, index *elem, index nC, index nT, index nE);
 void hpc_rest(double *x, index *edgeno, index nEdges, double *y, index ny);
 index hpc_reduceFixed(double *x, double *xShort, index n, const index *fixed, const index nFixed);
 index hpc_expandFixed (double *x, double *xLong, index n, const index *fixed, const index nFixed);
@@ -91,11 +85,7 @@ index hpc_expandFixed (double *x, double *xLong, index n, const index *fixed, co
 /* gem format */
 gem *gem_alloc(index n, index m);
 gem *gem_free(gem *A);
-index gem_gausssol(gem *A, double *x);
-index gem_gauss(gem *A);
 index gem_lu(gem *A);
-index gem_gaxpy (const gem *A, const double *x, double *y);
-index gem_spmv(const gem *A, const double *x, double *y);
 gem *gem_compress(const cs *T);
 index gem_print(const gem *A, index brief);
 
@@ -108,8 +98,6 @@ index cs_entry(cs *T, index i, index j, double x);
 index cs_print(const cs *A, index brief);
 cs *cs_free(cs *A);
 cs *cs_done(cs *C, void *w, void *x, index ok);
-
-index cs_spmv(const cs *A, const double *x, double *y);
 cs *cs_lapmat_p1_square(index m);
 
 /* skyline format */
@@ -118,7 +106,6 @@ sky *sky_free(sky *A);
 sky *sky_load(FILE *f);
 index sky_print(const sky *A, index brief);
 sky *sky_compress(const cs *T);
-index sky_spmv(const sky *A, const double *x, double *y);
 index sky_cholesky(sky *A);
 
 /* sed format */
@@ -145,21 +132,14 @@ index sed_icne0 (sed *A, double alpha, sed* L);
 double* sed_find_in_column(sed* A, index row, index col);
 index sed_L_to_LLt(sed* L, sed* LLt);
 
-index sed_gauss_seidel(const sed *A, const double *b, double *xk, double *w);
 index sed_gs(const sed *A, const double *b, double *x, double *w, index forward);
 index sed_jacobi (const sed *A, const double *b, double *xk, double *w );
-index sed_richardson (const sed *A, const double *b, double *xk, double *w, const double omega);
-index sed_cg (const sed *A, double *b, double *x, index maxIt, double tol, double *error);
 index sed_pcg_mg(sed *A, sed **Amg, double *b, double *x, double tol, index maxIt,
-             mesh **H, index nLevel, index pre, index post, index gamma, double *error);
-index sed_pcg_mg_jac(sed *A, sed **Amg, double *b, double *x, double tol, index maxIt,
              mesh **H, index nLevel, index pre, index post, index gamma, double *error);
 
 index sed_gaxpy (const sed *A, const double *x, double *y);
 index sed_gs_constr (const sed *A, const double *b, double *x, double *w, 
                      index *fixed, index nFixed, index forward);
-index sed_jacobi_constr(const sed *A, const double *b, double *x, double *w, 
-                     index *fixed, index nFixed);
 index sed_dupl (sed *A);
 
 /* For MG examples */

@@ -1,12 +1,16 @@
 #include "hpc.h"
-
 #include<time.h>
 #include <sys/time.h>
+/* authors: Main problem generation from the lecture HPC2, Summer Term 2021, Ulm University
+ * Extended by: Joachim Kroener, Benjamin Bestler
+ */
 
+// time measurement tools
 struct timeval tv[50];
 #define TIME_SAVE(j)   (gettimeofday(&tv[j], (struct timezone*)0))
 #define TIME_ELAPSED(j,k)	(1.E+6*(tv[k].tv_sec-tv[j].tv_sec)+(tv[k].tv_usec-tv[j].tv_usec))
 
+// FEM problem data
 double kappa( double x[2], index typ )
 {
   return ( 1.0 );
@@ -45,7 +49,7 @@ int main (int argc, char **argv)
     index fptr ;
     index *fixed ;
 
-    
+    /* check inputs */ 
     printf("\n========================================\n");
     if (argc < 2 ){ printf("Problem not specified\n"); return(1); } 
     sprintf(fname,"%s%s",Pdir,argv[1]); /* get problem as parameter */
@@ -106,8 +110,11 @@ int main (int argc, char **argv)
       }
     }
 
-    bR = malloc (n * sizeof(double)) ;
+    /* Reduce top level problem to fit CG-solvers */
+    bR = malloc (n * sizeof(double)) ; // allocate memory for reduced version of b
     dBuff = malloc (n * sizeof(double)) ;
+
+    // set dBuff to -x at fixed indices, 0 anywhere else
     fixed = H[N]->fixed ;
     ft = fixed [0];
     fptr = 0;
@@ -128,7 +135,10 @@ int main (int argc, char **argv)
         dBuff [k] = 0 ;
       }
     }
+    // calculate new b by b += A * dBuff
     sed_gaxpy(A [N], dBuff, bR) ;
+
+    // reduce new b to fit length, skip fixed indices 
     k = 0 ;
     ft = fixed [0];
     fptr = 0;
@@ -149,13 +159,10 @@ int main (int argc, char **argv)
       }
     }
 
-    printf("Prepare matrix \n") ;
     /* AR*x = bR is LSE for standard CG solver */
     AR = sed_reduceS(A [N], fixed, nfixed) ;
 
-    printf("Problem prepared, success: %d\n", (int) !(!AR)) ;
-    
-    /*vorbereitung für Analyse*/
+    /* Prepare analysis */
     
     index *anaAnzIt ;
     double *anaAvgTime ; 
@@ -189,7 +196,9 @@ int main (int argc, char **argv)
         errorCG [i] = 0. ;
 
     }
+
     /*PCG with multigrid as preconditioner*/
+    printf("Multigrid preconditioner\n") ;
     double *x0 = malloc (AR ->n *sizeof(double)) ;
     for (k = 0 ; k < AR->n ; k ++)
     {
@@ -266,6 +275,7 @@ int main (int argc, char **argv)
     */
 
     /*CG without preconditioner*/
+    printf("CG without preconditioning\n") ;
     for (k = 0 ; k < AR->n ; k++)
     {
         x0 [k] = 0. ;
@@ -274,11 +284,9 @@ int main (int argc, char **argv)
     anaAnzIt [5] = sed_cg_without(AR, bR, x0, maxIt , tol ,  errorCG);  
     TIME_SAVE (11) ;
     anaAvgTime [5] = TIME_ELAPSED (10 , 11) / anaAnzIt [5] ; 
-    printf("====\n");
-    printf("%ld\n", anaAnzIt[5]);
 
 
-    /*analysis in a txt file */
+    /* store analysis in a txt file */
     char filename[25] ;
 
     snprintf(filename, 25, "%s_dim_%ld.txt", argv[1], N) ;

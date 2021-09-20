@@ -30,18 +30,13 @@ HPC = \
  cs_util.o \
  cs_lapmat_p1_square.o \
  gem_compress.o \
- gem_gauss.o \
- gem_gausssol.o \
  gem_lu.o \
  gem_print.o \
  gem_util.o \
- gem_spmv.o \
  hpc_malloc.o \
  hpc_cumsum.o \
  hpc_mg_cycle.o \
- hpc_mg_cycle_jac.o \
  hpc_mg.o \
- hpc_mg_jac.o \
  hpc_prol.o \
  hpc_rest.o \
  hpc_reduceFixed.o \
@@ -54,7 +49,6 @@ HPC = \
  sed_gaxpy.o \
  sed_gs_constr.o \
  sed_pcg_mg.o \
- sed_pcg_mg_jac.o \
  sed_icholesky.o \
  sed_isoccupied.o \
  sed_forwardInsertion.o \
@@ -62,13 +56,11 @@ HPC = \
  sed_spmv.o \
  sed_print.o \
  sed_util.o  \
- sed_gauss_seidel.o \
  sed_gs.o \
  sed_ILU.o \
  sed_MILU.o \
  sed_jacobi.o \
  sed_jacobi_constr.o \
- sed_richardson.o \
  sed_cg.o \
  sed_icne0.o \
  sed_pcg_mg.o \
@@ -80,7 +72,6 @@ HPC = \
  sky_print.o  \
  sky_util.o \
  sky_load.o \
- sky_spmv.o \
  sky_cholesky.o \
  mesh_buildRhs.o \
  mesh_load.o  \

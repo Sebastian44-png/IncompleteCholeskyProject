@@ -15,49 +15,45 @@ LDLIBS += -lm
 CS = $(LDFLAGS) ../Lib/libhpc.a $(LDLIBS)
 
 all: lib demo
-#	- ./PCG_ICF_demo
-#	- ./icholesky_demo
-#	- ./hpc_demo 4
-#- ./gem_lu_demo 2
-#- ./sed_lu_demo j
-#- ./sed_icne0 2
-#- ./sed_lu_demo 2
-#	- ./sed_icne0 3
-#	- ./cg_demo 2
-# ./linked_list_demo
-#   - ./mg_demo1 problem3 2
-#	- ./pcg_mg_demo1 problem1 0 
-#	- ./mg_demo1 problem4 1
-#	- ./ILU_dem 6 0.7
-#	- ./mg_demo1 problem4 1
-	- ./pcg_mg_demo1 problem1 1 
-	- ./pcg_mg_demo1 problem1 2 
-	- ./pcg_mg_demo1 problem2 1 
-	- ./pcg_mg_demo1 problem2 2 
-	- ./pcg_mg_demo1 problem3 1 
-	- ./pcg_mg_demo1 problem3 2 
-	- ./pcg_mg_demo1 problem4 1 
-	- ./pcg_mg_demo1 problem4 2
+#	- ./gem_lu_demo 2
+#	- ./linked_list_demo
+#	- ./sed_icne0_demo 2
+#	- ./ILU_demo 6 0.7
+#	- ./ILU_demo
+	- ./comparison_demo problem1 1 
+	- ./comparison_demo problem1 2 
+	- ./comparison_demo problem2 1 
+	- ./comparison_demo problem2 2 
+	- ./comparison_demo problem3 1 
+	- ./comparison_demo problem3 2 
+	- ./comparison_demo problem4 1 
+	- ./comparison_demo problem4 2
 
 lib:
 	( cd ../Lib ; $(MAKE) )
 
-demo: lib pcg_mg_demo1.c Makefile
-#$(CC) $(CF) $(I) -o  icholesky_demo icholesky_demo.c $(CS)
-#$(CC) $(CF) $(I) -o gem_lu_demo gem_lu_demo.c $(CS)
-#$(CC) $(CF) $(I) -o hpc_demo hpc_demo.c $(CS)
-#$(CC) $(CF) $(I) -o linked_list_demo linked_list_demo.c $(CS)
-#$(CC) $(CF) $(I) -o sed_icne0 sed_icne0_demo.c $(CS)
-#	$(CC) $(CF) $(I) -o ILU_dem ILU_dem.c $(CS)
-# 	$(CC) $(CF) $(I) -o mg_demo1 mg_demo1.c $(CS)
-	$(CC) $(CF) $(I) -o pcg_mg_demo1 pcg_mg_demo1.c $(CS)
-#	$(CC) $(CF) $(I) -o  PCG_ICF_demo PCG_ICF_demo.c $(CS)
-#	$(CC) $(CF) $(I) -o sed_icne0 sed_icne0_demo.c $(CS)
-#	$(CC) $(CF) $(I) -o cg_demo cg_demo.c $(CS)
+#demo: lib gem_lu_demo.c Makefile
+#	$(CC) $(CF) $(I) -o gem_lu_demo gem_lu_demo.c $(CS)
+#demo: lib linked_list_demo.c Makefile
+#	$(CC) $(CF) $(I) -o linked_list_demo linked_list_demo.c $(CS)
+#demo: lib  sed_icne0_demo.c Makefile
+#	$(CC) $(CF) $(I) -o sed_icne0_demo sed_icne0_demo.c $(CS)
+#demo: lib  ILU_demo.c Makefile
+#	$(CC) $(CF) $(I) -o ILU_demo ILU_demo.c $(CS)
+demo: lib comparison_demo.c Makefile
+	$(CC) $(CF) $(I) -o comparison_demo comparison_demo.c $(CS)
 
 clean:
 	- $(RM) *.o
 
 purge: clean
-	- $(RM) -r pcg_mg_demo1 \
+#	- $(RM) -r gem_lu_demo \
+    *.a *.dSYM *.obj *.dll
+#	- $(RM) -r linked_list_demo \
+    *.a *.dSYM *.obj *.dll
+# 	- $(RM) -r sed_icne0_demo \
+    *.a *.dSYM *.obj *.dll
+#	- $(RM) -r ILU_demo \
+    *.a *.dSYM *.obj *.dll
+	- $(RM) -r comparison_demo \
     *.a *.dSYM *.obj *.dll
